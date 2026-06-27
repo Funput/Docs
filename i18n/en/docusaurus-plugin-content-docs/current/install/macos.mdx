@@ -1,0 +1,108 @@
+---
+title: macOS
+sidebar_position: 2
+---
+
+# Install on macOS
+
+Funput is a **native Input Method** on macOS — deeply integrated with the system, shown in the menu bar, and works in every app. Releases support both **Apple Silicon** (M-series) and **Intel**.
+
+## Download
+
+Download the latest release from [GitHub Releases](https://github.com/Funput/Funput/releases). Each macOS release typically includes two installers:
+
+| File | Description |
+| ---- | ----------- |
+| `Funput-*.pkg` | System-wide install, **requires admin** |
+| `Funput-*.app.zip` | Extract and install manually, **no admin required** |
+
+Both builds are **Developer ID signed** and **notarized** — macOS Gatekeeper will not block them when you open the file.
+
+:::tip Choose the right installer
+- You have admin rights on the machine → use **`.pkg`** (fast, one step).
+- No admin rights (work machine, Standard account) → use **`.app.zip`**.
+:::
+
+## Option 1: Install with `.pkg` (recommended)
+
+1. Double-click `Funput-*.pkg` — macOS opens **Installer.app**.
+2. Follow the on-screen steps and **enter your password** when prompted.
+3. Funput is installed to `/Library/Input Methods/Funput.app`.
+
+:::info
+This path is the **system-wide** Input Methods folder, not the per-user folder (`~/Library/Input Methods`).
+:::
+
+When installation finishes, continue to [Enable the input method](#enable-the-input-method) below.
+
+## Option 2: Install with `.app.zip` (no admin)
+
+1. Double-click `Funput-*.app.zip` to extract — you will get `Funput.app`.
+2. Open the **Input Methods** folder in your user Library:
+   - Open **Finder**
+   - Press `Cmd + Shift + G`
+   - Type `~/Library/Input Methods` and press Enter
+   - If the folder does not exist, create it with the name `Input Methods`
+3. Drag `Funput.app` into the `Input Methods` folder.
+4. Continue to [Enable the input method](#enable-the-input-method) below.
+
+:::caution
+Do not run Funput from Downloads or Desktop long term — place it in `~/Library/Input Methods` so macOS recognizes it as an Input Method.
+:::
+
+## Enable the input method
+
+After installing (either option), add Funput to macOS input sources:
+
+1. Open **System Settings**
+2. Go to **Keyboard** → **Input Sources**
+3. Click **+**
+4. Select **Vietnamese** → **Funput**
+5. Click **Add**
+
+Funput appears in the menu bar. Use macOS input switching shortcuts (often `Ctrl + Space` or the **Globe** key) to select Funput.
+
+## After installation
+
+- **First launch:** Funput may show an **onboarding** screen to help you enable the input source.
+- **Input method settings:** Open **Funput** from the app menu (Launchpad or Spotlight) to choose **Telex** or **VNI** and other options.
+- **Menu bar:** The Funput icon in the menu bar provides quick access to settings.
+
+## Updates
+
+Funput supports **automatic updates** via Sparkle. When a new version is available, the app notifies you and you can update in place.
+
+To update manually:
+
+1. Download the new release from [GitHub Releases](https://github.com/Funput/Funput/releases)
+2. Install over the previous version using the same method (`.pkg` or `.app.zip`)
+
+## Troubleshooting
+
+### Funput does not appear in Input Sources
+
+- **Log out and log back in** once — macOS needs to refresh the Input Method list.
+- Confirm `Funput.app` is in `/Library/Input Methods` or `~/Library/Input Methods`.
+- Try opening Funput from Launchpad — onboarding may guide you through any missing step.
+
+### macOS warns when opening the file
+
+Official releases are signed and notarized. If you still see a warning:
+
+- Make sure you downloaded from the official [GitHub Releases](https://github.com/Funput/Funput/releases), not an unofficial mirror.
+- Verify the **SHA-256** checksum (`.sha256` file on the release page) to confirm the download is intact.
+
+### Verify SHA-256
+
+On macOS, run this in Terminal (replace the filename as needed):
+
+```bash
+shasum -a 256 Funput-*.pkg
+```
+
+Compare the output with the contents of the `.sha256` file on the release page.
+
+## Need more help?
+
+- [Report issues or discuss on GitHub](https://github.com/Funput/Funput/issues)
+- [Funput website](https://funput.app)

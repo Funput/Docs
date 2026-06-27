@@ -1,0 +1,108 @@
+---
+title: macOS
+sidebar_position: 2
+---
+
+# Cài đặt trên macOS
+
+Funput là **Input Method native** trên macOS — tích hợp sâu vào hệ thống, hiển thị trên Menu bar và hoạt động trong mọi ứng dụng. Bản phát hành hỗ trợ cả **Apple Silicon** (M-series) và **Intel**.
+
+## Tải xuống
+
+Tải bản phát hành mới nhất từ [GitHub Releases](https://github.com/Funput/Funput/releases). Mỗi bản macOS thường có hai file cài đặt:
+
+| File | Mô tả |
+| ---- | ----- |
+| `Funput-*.pkg` | Cài system-wide, **cần quyền admin** |
+| `Funput-*.app.zip` | Giải nén và cài thủ công, **không cần admin** |
+
+Cả hai bản đều được **ký Developer ID** và **notarized** — macOS Gatekeeper sẽ không chặn khi bạn mở file.
+
+:::tip Chọn cách cài phù hợp
+- Có quyền admin trên máy → dùng **`.pkg`** (nhanh, một bước).
+- Không có quyền admin (máy công ty, tài khoản Standard) → dùng **`.app.zip`**.
+:::
+
+## Cách 1: Cài bằng `.pkg` (khuyến nghị)
+
+1. Double-click file `Funput-*.pkg` — macOS mở **Installer.app**.
+2. Làm theo hướng dẫn trên màn hình và **nhập mật khẩu** khi được hỏi.
+3. Funput được cài vào `/Library/Input Methods/Funput.app`.
+
+:::info
+Đường dẫn trên là thư mục Input Methods **toàn hệ thống** (system-wide), khác với thư mục trong thư mục người dùng (`~/Library/Input Methods`).
+:::
+
+Sau khi cài xong, chuyển sang mục [Bật bộ gõ](#bật-bộ-gõ) bên dưới.
+
+## Cách 2: Cài bằng `.app.zip` (không cần admin)
+
+1. Double-click file `Funput-*.app.zip` để giải nén — bạn sẽ có `Funput.app`.
+2. Mở thư mục **Input Methods** trong thư mục người dùng:
+   - Mở **Finder**
+   - Nhấn `Cmd + Shift + G`
+   - Gõ `~/Library/Input Methods` rồi Enter
+   - Nếu thư mục chưa tồn tại, tạo mới với tên `Input Methods`
+3. Kéo `Funput.app` vào thư mục `Input Methods`.
+4. Chuyển sang mục [Bật bộ gõ](#bật-bộ-gõ) bên dưới.
+
+:::caution
+Không chạy Funput trực tiếp từ thư mục Downloads hoặc Desktop lâu dài — hãy đặt vào `~/Library/Input Methods` để macOS nhận diện đúng như một Input Method.
+:::
+
+## Bật bộ gõ
+
+Sau khi cài (cả hai cách), thêm Funput vào nguồn nhập của macOS:
+
+1. Mở **System Settings** (Cài đặt Hệ thống)
+2. Vào **Keyboard** → **Input Sources** (Bàn phím → Nguồn nhập)
+3. Nhấn **+** (Thêm)
+4. Chọn **Vietnamese** → **Funput**
+5. Nhấn **Add** (Thêm)
+
+Funput sẽ xuất hiện trên Menu bar. Dùng phím tắt chuyển bộ gõ của macOS (mặc định thường là `Ctrl + Space` hoặc `Globe`) để chọn Funput.
+
+## Sau khi cài
+
+- **Lần đầu mở:** Funput có thể hiển thị màn hình **onboarding** hướng dẫn bật Input Source.
+- **Cấu hình kiểu gõ:** Mở **Funput** từ menu ứng dụng (Launchpad hoặc Spotlight) để chọn **Telex** hoặc **VNI** và các tùy chọn khác.
+- **Menu bar:** Icon Funput trên thanh menu cho phép truy cập nhanh cài đặt.
+
+## Cập nhật
+
+Funput hỗ trợ **tự cập nhật** qua Sparkle. Khi có bản mới, app sẽ thông báo và bạn có thể cập nhật trực tiếp trong ứng dụng.
+
+Nếu muốn cập nhật thủ công:
+
+1. Tải bản mới từ [GitHub Releases](https://github.com/Funput/Funput/releases)
+2. Cài đè theo cùng cách bạn đã dùng lần trước (`.pkg` hoặc `.app.zip`)
+
+## Xử lý sự cố
+
+### Không thấy Funput trong Input Sources
+
+- **Đăng xuất và đăng nhập lại** (log out/in) một lần — macOS cần làm mới danh sách Input Method.
+- Kiểm tra `Funput.app` đã nằm đúng trong `/Library/Input Methods` hoặc `~/Library/Input Methods` chưa.
+- Thử mở Funput từ Launchpad — onboarding có thể hướng dẫn thêm bước còn thiếu.
+
+### macOS cảnh báo khi mở file
+
+Bản phát hành chính thức đã được ký và notarized. Nếu vẫn gặp cảnh báo:
+
+- Đảm bảo bạn tải từ [GitHub Releases](https://github.com/Funput/Funput/releases) chính thức, không phải mirror lạ.
+- Kiểm tra checksum **SHA-256** (file `.sha256` đi kèm trên trang release) để xác nhận file tải về không bị hỏng.
+
+### Kiểm tra SHA-256
+
+Trên macOS, chạy lệnh sau trong Terminal (thay tên file cho đúng):
+
+```bash
+shasum -a 256 Funput-*.pkg
+```
+
+So sánh kết quả với nội dung file `.sha256` trên trang release.
+
+## Cần trợ giúp thêm?
+
+- [Báo lỗi hoặc thảo luận trên GitHub](https://github.com/Funput/Funput/issues)
+- [Website Funput](https://funput.app)
