@@ -1,0 +1,116 @@
+/**
+ * Funput brand theme for Docusaurus (Infima).
+ * Palette aligned with logo gradients and landing-page/src/styles.css.
+ */
+
+:root {
+  /* Brand tokens (shared) */
+  --funput-orange-50: #fff7ed;
+  --funput-orange-100: #ffedd5;
+  --funput-orange-500: #f97316;
+  --funput-orange-600: #ea580c;
+  --funput-orange-700: #c2410c;
+  --funput-orange-logo: #ffa43f;
+
+  --funput-pink-500: #ec4899;
+  --funput-pink-logo: #f600a5;
+
+  --funput-purple-500: #a855f7;
+  --funput-purple-logo: #9f00ee;
+
+  --funput-blue-500: #1e72ff;
+  --funput-cyan-500: #38bdf8;
+  --funput-cyan-logo: #25d9f6;
+
+  --funput-dark-950: #09090b;
+  --funput-dark-900: #121214;
+  --funput-dark-800: #1a1a1e;
+  --funput-dark-700: #26262b;
+  --funput-dark-600: #3f3f46;
+
+  /* Light mode — warm orange primary from logo top ribbon */
+  --ifm-color-primary: var(--funput-orange-500);
+  --ifm-color-primary-dark: var(--funput-orange-600);
+  --ifm-color-primary-darker: var(--funput-orange-700);
+  --ifm-color-primary-darkest: #9a3412;
+  --ifm-color-primary-light: #fb923c;
+  --ifm-color-primary-lighter: #fdba74;
+  --ifm-color-primary-lightest: var(--funput-orange-100);
+
+  --ifm-font-family-base: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, sans-serif;
+  --ifm-heading-font-family: var(--ifm-font-family-base);
+  --ifm-code-font-size: 95%;
+  --ifm-link-color: var(--funput-orange-600);
+  --ifm-link-hover-color: var(--funput-orange-700);
+
+  --docusaurus-highlighted-code-line-bg: rgba(249, 115, 22, 0.12);
+}
+
+/* Dark mode — logo on black; brighter accents on zinc surfaces */
+[data-theme='dark'] {
+  --ifm-color-primary: var(--funput-orange-logo);
+  --ifm-color-primary-dark: var(--funput-orange-500);
+  --ifm-color-primary-darker: var(--funput-orange-600);
+  --ifm-color-primary-darkest: var(--funput-orange-700);
+  --ifm-color-primary-light: #ffb86a;
+  --ifm-color-primary-lighter: #ffc98a;
+  --ifm-color-primary-lightest: #ffe4c4;
+
+  --ifm-background-color: var(--funput-dark-950);
+  --ifm-background-surface-color: var(--funput-dark-900);
+  --ifm-navbar-background-color: var(--funput-dark-900);
+  --ifm-footer-background-color: var(--funput-dark-950);
+
+  --ifm-font-color-base: #f4f4f5;
+  --ifm-font-color-secondary: #a1a1aa;
+  --ifm-link-color: var(--funput-orange-logo);
+  --ifm-link-hover-color: #ffb86a;
+
+  --ifm-menu-color: #e4e4e7;
+  --ifm-menu-color-active: var(--funput-orange-logo);
+  --ifm-navbar-link-color: #e4e4e7;
+  --ifm-navbar-link-hover-color: var(--funput-orange-logo);
+
+  --ifm-color-emphasis-100: var(--funput-dark-800);
+  --ifm-color-emphasis-200: var(--funput-dark-700);
+  --ifm-color-emphasis-300: var(--funput-dark-600);
+
+  --ifm-toc-border-color: var(--funput-dark-700);
+  --ifm-hr-border-color: var(--funput-dark-700);
+  --ifm-table-border-color: var(--funput-dark-700);
+  --ifm-color-secondary-dark: var(--funput-dark-800);
+
+  --docusaurus-highlighted-code-line-bg: rgba(255, 164, 63, 0.15);
+}
+
+/* Text selection — matches landing page */
+::selection {
+  background-color: rgba(249, 115, 22, 0.3);
+  color: #ffffff;
+}
+
+[data-theme='dark'] ::selection {
+  background-color: rgba(255, 164, 63, 0.35);
+  color: #ffffff;
+}
+
+/* Hero banner gradient echoing logo spine (orange → purple → blue) */
+.hero--primary {
+  background: linear-gradient(
+    135deg,
+    var(--funput-orange-600) 0%,
+    var(--funput-purple-logo) 52%,
+    var(--funput-blue-500) 100%
+  );
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+[data-theme='dark'] .hero--primary {
+  background: linear-gradient(
+    135deg,
+    rgba(249, 115, 22, 0.92) 0%,
+    rgba(159, 0, 238, 0.88) 50%,
+    rgba(30, 114, 255, 0.9) 100%
+  );
+}
