@@ -5,12 +5,261 @@ sidebar_position: 4
 
 # Cài đặt trên Linux
 
-:::info Đang bổ sung
-Nội dung hướng dẫn cài đặt chi tiết cho Linux đang được soạn thảo. Trong lúc chờ, bạn có thể tải bản phát hành mới nhất từ GitHub.
+Funput trên Linux chạy qua **IBus** hoặc **Fcitx5** — đây là input method engine thật sự (preedit/commit), tích hợp với desktop environment, không phải ứng dụng portable.
+
+Hai gói riêng biệt:
+
+| Gói | Framework | Dùng khi |
+| --- | --------- | -------- |
+| `funput-ibus` | **IBus** | GNOME, Ubuntu mặc định |
+| `funput` | **Fcitx5** | KDE Plasma, hoặc cần per-app auto-switch |
+
+:::caution
+Không cài cả hai gói cho cùng một desktop session — hãy chọn đúng framework mà session đang dùng.
 :::
 
-## Tải xuống tạm thời
+## Chọn framework
 
-- [Bản phát hành (GitHub Releases)](https://github.com/Funput/Funput/releases)
+| Môi trường | Framework | Gói cài |
+| ---------- | --------- | ------- |
+| GNOME / Ubuntu mặc định | IBus | `funput-ibus` |
+| KDE Plasma / cần đầy đủ tính năng | Fcitx5 | `funput` |
 
-Các gói Linux thường gồm `.deb` (Debian/Ubuntu) và `.rpm` (Fedora/openSUSE), cho cả **IBus** và **Fcitx5**.
+:::tip
+Script `install.sh` tự chọn framework: KDE Plasma → Fcitx5, còn lại → IBus. Ép tay bằng `--ibus` hoặc `--fcitx5`.
+:::
+
+## Cách 1: Kho Funput `repo.funput.app` (khuyến nghị)
+
+[Kho phần mềm Funput](https://repo.funput.app) là kênh **khuyến nghị** — kho apt/dnf/zypper **có ký GPG**, tự cập nhật khi có bản phát hành mới. Bạn chỉ cần thêm kho **một lần**, sau đó cài và cập nhật như gói hệ thống bình thường.
+
+Trang hướng dẫn trực quan (có nút copy lệnh): [repo.funput.app](https://repo.funput.app)
+
+### Debian / Ubuntu (.deb)
+
+**Bước 1 — Thêm kho (làm một lần):**
+
+```bash
+sudo install -d /usr/share/keyrings
+curl -fsSL https://repo.funput.app/funput.asc | sudo tee /usr/share/keyrings/funput.asc >/dev/null
+echo "deb [signed-by=/usr/share/keyrings/funput.asc] https://repo.funput.app/deb ./" | sudo tee /etc/apt/sources.list.d/funput.list
+sudo apt update
+```
+
+**Bước 2 — Cài đặt:**
+
+```bash
+# IBus (GNOME / Ubuntu mặc định)
+sudo apt install funput-ibus
+
+# Fcitx5 (KDE / đầy đủ tính năng)
+sudo apt install funput
+```
+
+### Fedora (.rpm)
+
+**Bước 1 — Thêm kho (làm một lần):**
+
+```bash
+sudo dnf config-manager --add-repo https://repo.funput.app/funput.repo
+```
+
+**Bước 2 — Cài đặt:**
+
+```bash
+# IBus
+sudo dnf install funput-ibus
+
+# Fcitx5
+sudo dnf install funput
+```
+
+### openSUSE (.rpm)
+
+**Bước 1 — Thêm kho (làm một lần):**
+
+```bash
+sudo rpm --import https://repo.funput.app/funput.asc
+sudo zypper addrepo -gf https://repo.funput.app/rpm/ funput
+sudo zypper refresh
+```
+
+**Bước 2 — Cài đặt:**
+
+```bash
+# IBus
+sudo zypper install funput-ibus
+
+# Fcitx5
+sudo zypper install funput
+```
+
+:::info
+Kho chỉ phục vụ **bản mới nhất**. Nếu cần cài phiên bản cũ, dùng [GitHub Releases](https://github.com/Funput/Funput/releases).
+:::
+
+Sau khi cài xong, chuyển sang mục [Bật bộ gõ](#bật-bộ-gõ) bên dưới.
+
+## Cách 2: GitHub Releases (tải thủ công)
+
+Tải gói phù hợp từ [GitHub Releases](https://github.com/Funput/Funput/releases):
+
+| Định dạng | IBus | Fcitx5 |
+| --------- | ---- | ------ |
+| `.deb` (Debian/Ubuntu) | `funput-ibus_*_<arch>.deb` | `funput_*_<arch>.deb` |
+| `.rpm` (Fedora/openSUSE) | `funput-ibus-*.<arch>.rpm` | `funput-*.<arch>.rpm` |
+
+Kiến trúc: `.deb` dùng `amd64` / `arm64`; `.rpm` dùng `x86_64` / `aarch64`.
+
+**Cài gói đã tải:**
+
+```bash
+# Debian / Ubuntu
+sudo apt install ./funput-ibus_*_<arch>.deb
+# hoặc
+sudo apt install ./funput_*_<arch>.deb
+
+# Fedora
+sudo dnf install ./funput-ibus-*.<arch>.rpm
+# hoặc
+sudo dnf install ./funput-*.<arch>.rpm
+
+# openSUSE
+sudo zypper install ./funput-ibus-*.<arch>.rpm
+# hoặc
+sudo zypper install ./funput-*.<arch>.rpm
+```
+
+Mỗi bản phát hành kèm file **SHA-256** (`.sha256`) để kiểm tra tính toàn vẹn:
+
+```bash
+sha256sum -c funput-ibus_*.deb.sha256
+```
+
+:::caution
+Nếu `apt`/`dpkg` báo lỗi đọc file (`could not locate member control.tar`, `unexpected end of file`) — file `.deb` tải về bị **hỏng/cắt cụt**. Tải lại và đối chiếu SHA-256.
+:::
+
+## Cách 3: Script cài nhanh (`install.sh`)
+
+Một lệnh tự nhận distro + kiến trúc, tải gói từ GitHub Releases và cài bằng package manager bản địa:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/Funput/Funput/main/platforms/linux/install.sh | bash
+```
+
+Tùy chọn:
+
+```bash
+# Ép framework
+curl -fsSL .../install.sh | bash -s -- --ibus
+curl -fsSL .../install.sh | bash -s -- --fcitx5
+
+# Ghim phiên bản
+curl -fsSL .../install.sh | bash -s -- --version v1.2026.28
+```
+
+:::info
+Script tải từ **GitHub Releases**, không dùng `repo.funput.app`. **Không có cập nhật tự động** — chạy lại script để cập nhật.
+:::
+
+## Arch Linux (AUR)
+
+Arch không có gói trên GitHub Releases hay kho `repo.funput.app`. Cài qua AUR helper (ví dụ `yay`):
+
+```bash
+# IBus (GNOME)
+yay -S funput-ibus
+
+# Fcitx5 (KDE / đầy đủ tính năng)
+yay -S funput
+```
+
+## Bật bộ gõ
+
+### IBus (GNOME / Ubuntu)
+
+1. Nạp lại engine: `ibus restart` (hoặc đăng nhập lại).
+2. **Settings → Keyboard → Input Sources → +** → **Vietnamese** → **Funput**.
+3. Chuyển nguồn nhập: **`Super + Space`**.
+4. Bật/tắt tiếng Việt khi đang ở Funput: **`Ctrl + ` ` `**.
+
+### Fcitx5 (KDE)
+
+1. Mở `fcitx5-configtool` → **+** → thêm **Funput** (nhóm Vietnamese).
+2. Nếu Fcitx5 chưa chạy: đăng nhập lại, hoặc kiểm tra biến môi trường IM (X11: `GTK_IM_MODULE=fcitx`, `QT_IM_MODULE=fcitx`, `XMODIFIERS=@im=fcitx`).
+3. Bật/tắt tiếng Việt: **`Ctrl + ` ` `** hoặc icon Fcitx5 ở khay hệ thống.
+
+## Cấu hình sau cài
+
+- Mở app **Funput** trong menu ứng dụng để chọn **Telex** hoặc **VNI**, smart/eager restore và các tùy chọn khác.
+- Cài đặt lưu tại `~/.config/Funput/settings.json` — thay đổi có hiệu lực khi focus lại ô nhập liệu.
+
+## Cập nhật
+
+| Kênh | Cách cập nhật |
+| ---- | ------------- |
+| **[repo.funput.app](https://repo.funput.app)** | Qua package manager — **cập nhật tự động** |
+| GitHub Releases | Tải gói mới, cài đè thủ công |
+| `install.sh` | Chạy lại script |
+
+**repo.funput.app** là kênh duy nhất hỗ trợ cập nhật tự động qua apt/dnf/zypper (sau khi đã thêm kho).
+
+### Cập nhật qua kho Funput
+
+```bash
+# Debian / Ubuntu (IBus)
+sudo apt update && sudo apt upgrade funput-ibus
+
+# Debian / Ubuntu (Fcitx5)
+sudo apt update && sudo apt upgrade funput
+
+# Fedora (IBus)
+sudo dnf upgrade funput-ibus
+
+# Fedora (Fcitx5)
+sudo dnf upgrade funput
+
+# openSUSE (IBus)
+sudo zypper update funput-ibus
+
+# openSUSE (Fcitx5)
+sudo zypper update funput
+```
+
+:::tip
+Sau khi cập nhật, nếu bộ gõ không hoạt động bình thường: chạy `ibus restart` (IBus) hoặc đăng nhập lại.
+:::
+
+## Xử lý sự cố
+
+### Funput không xuất hiện trong Input Sources
+
+- **IBus:** chạy `ibus restart` hoặc đăng nhập lại.
+- Kiểm tra bạn đã cài đúng gói cho framework đang dùng (`funput-ibus` cho IBus, `funput` cho Fcitx5).
+- Mở app **Funput** từ menu ứng dụng — onboarding có thể hướng dẫn bước còn thiếu.
+
+### `apt` báo dependency not installable
+
+Thường do **sai kiến trúc** — ví dụ tải gói `amd64` trên máy `arm64` (hoặc ngược lại). Tải đúng gói cho kiến trúc máy bạn.
+
+### Gỡ kho Funput (nếu cần)
+
+```bash
+# Debian / Ubuntu
+sudo rm /etc/apt/sources.list.d/funput.list
+sudo apt update
+
+# Fedora
+sudo rm /etc/yum.repos.d/funput.repo
+# hoặc: sudo dnf config-manager --disable funput
+
+# openSUSE
+sudo zypper removerepo funput
+```
+
+## Cần trợ giúp thêm?
+
+- [Kho phần mềm Linux (repo.funput.app)](https://repo.funput.app)
+- [Báo lỗi hoặc thảo luận trên GitHub](https://github.com/Funput/Funput/issues)
+- [Website Funput](https://funput.app)

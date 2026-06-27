@@ -5,12 +5,145 @@ sidebar_position: 3
 
 # Install on Windows
 
-:::info Coming soon
-Detailed Windows installation instructions are being written. In the meantime, download the latest release from GitHub.
+On Windows, Funput is a **single portable `.exe` file** — it runs in the background in the **system tray** and works in every app. No MSI/installer is required (not available yet): double-click to run.
+
+Supports **Windows 10 & 11 (64-bit)**.
+
+## Download
+
+Get the latest release from [GitHub Releases](https://github.com/Funput/Funput/releases):
+
+| File | Description |
+| ---- | ----------- |
+| `Funput-<version>.exe` | Portable app, single file |
+| `Funput-<version>.exe.sha256` | SHA-256 checksum for integrity verification |
+
+**Verify SHA-256** (PowerShell):
+
+```powershell
+Get-FileHash .\Funput-*.exe -Algorithm SHA256
+```
+
+Compare the output with the contents of the `.sha256` file on the release page.
+
+## Install / first run
+
+1. Download `Funput-*.exe` from GitHub Releases.
+2. Double-click to run — the **FU** icon appears in the system tray (bottom-right of the screen).
+3. You can start typing Vietnamese immediately.
+
+:::tip
+Keep the file in a fixed location, e.g. `%LOCALAPPDATA%\Programs\Funput\` or `C:\Program Files\Funput\`, instead of leaving it only in Downloads — this avoids losing the file when cleaning downloads or updating manually.
 :::
 
-## Temporary download
+:::warning[SmartScreen]
 
-- [Releases (GitHub)](https://github.com/Funput/Funput/releases)
+Windows may show a **SmartScreen** warning the first time (Funput is not Authenticode-signed yet). If you downloaded from the official [GitHub Releases](https://github.com/Funput/Funput/releases):
 
-On Windows, Funput is distributed as a portable **`Funput-*.exe`** file.
+1. Click **More info**
+2. Click **Run anyway**
+
+:::
+
+When the app is running, continue to [Onboarding & getting started](#onboarding--getting-started) below.
+
+## Onboarding & getting started
+
+- **First launch:** Funput shows an **Onboarding** window for initial setup.
+- **No Input Source setup** needed (unlike macOS or Linux) — the app works immediately via a keyboard hook.
+- Default **shortcut** to toggle Vietnamese: **`Ctrl + ` ` `** (configurable in Settings).
+
+Quick test: Telex `tieesng vieejt` → `tiếng việt`, or VNI `xin chaof` → `xin chào`.
+
+## Using the system tray
+
+The **FU** icon in the system tray is Funput's control center:
+
+| Action | Function |
+| ------ | -------- |
+| **Left-click** | Toggle Vietnamese on/off (icon switches color ↔ mono) |
+| **Right-click** | Open context menu |
+
+The right-click menu includes:
+
+- Toggle VI/EN
+- Switch **Telex** / **VNI**
+- **Settings…** — open the Settings window
+- **Help**
+- **Check for updates…**
+- **Quit**
+
+## Configuration
+
+Open **Settings…** from the tray menu to configure:
+
+- Input method **Telex** or **VNI**
+- Toggle shortcut
+- Smart/eager restore
+- **Start with Windows** — Funput launches at sign-in (registry `HKCU\...\Run`)
+
+Settings are stored at:
+
+```
+%APPDATA%\Funput\settings.json
+```
+
+Changes apply immediately and persist across restarts.
+
+## Updates
+
+Windows has **no package repository** like Linux (`repo.funput.app`). Update through the **app** (similar to Sparkle on macOS) or download manually from GitHub.
+
+### In-app update (recommended)
+
+| Access | Action |
+| ------ | ------ |
+| **System tray** | Right-click FU icon → **Check for updates…** |
+| **Settings** | **Settings → About → Check for updates…** |
+
+When a new version is available:
+
+1. The app reads the `funput-windows.json` manifest from GitHub Releases
+2. Downloads the new `.exe`
+3. **Verifies the Ed25519 signature** (same public key as macOS)
+4. Replaces the running executable and relaunches — **no sign-out required**
+
+:::info
+Funput does **not** check for updates in the background — you must choose **Check for updates…** manually.
+:::
+
+### Manual update
+
+1. Download the new `Funput-<version>.exe` from [GitHub Releases](https://github.com/Funput/Funput/releases)
+2. Quit Funput (tray menu → **Quit**)
+3. Replace the old `.exe` with the new one
+4. Double-click to run again
+
+## Troubleshooting
+
+### SmartScreen blocks or warns
+
+See [Install / first run](#install--first-run). Only download from the official [GitHub Releases](https://github.com/Funput/Funput/releases).
+
+### Cannot type in apps running as Administrator
+
+Funput running at normal privilege **cannot hook** into elevated apps (Task Manager, some admin tools). To type in admin apps, Funput must also run as Administrator.
+
+### Funput does not start automatically on boot
+
+Enable **Start with Windows** in **Settings**, or add a shortcut to the Windows Startup folder.
+
+### FU icon not visible in the system tray
+
+- Check **hidden icons** (the ^ arrow on the taskbar) — Windows may hide new icons.
+- Run `Funput-*.exe` again.
+- Restart Windows if the app crashed silently.
+
+### Suspected corrupt `.exe`
+
+Verify SHA-256 (see [Download](#download)) and re-download if it does not match.
+
+## Need more help?
+
+- [Report issues or discuss on GitHub](https://github.com/Funput/Funput/issues)
+- [Funput website](https://funput.app)

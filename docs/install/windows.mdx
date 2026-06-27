@@ -5,12 +5,145 @@ sidebar_position: 3
 
 # Cài đặt trên Windows
 
-:::info Đang bổ sung
-Nội dung hướng dẫn cài đặt chi tiết cho Windows đang được soạn thảo. Trong lúc chờ, bạn có thể tải bản phát hành mới nhất từ GitHub.
+Funput trên Windows là app **portable một file `.exe`** — chạy nền ở **khay hệ thống (System Tray)**, gõ được ngay trên mọi ứng dụng. Không cần cài MSI/installer (chưa có): double-click là chạy.
+
+Hỗ trợ **Windows 10 & 11 (64-bit)**.
+
+## Tải xuống
+
+Tải bản phát hành mới nhất từ [GitHub Releases](https://github.com/Funput/Funput/releases):
+
+| File | Mô tả |
+| ---- | ----- |
+| `Funput-<version>.exe` | App portable, một file duy nhất |
+| `Funput-<version>.exe.sha256` | Checksum SHA-256 để kiểm tra tính toàn vẹn |
+
+**Kiểm tra SHA-256** (PowerShell):
+
+```powershell
+Get-FileHash .\Funput-*.exe -Algorithm SHA256
+```
+
+So sánh kết quả với nội dung file `.sha256` trên trang release.
+
+## Cài đặt / chạy lần đầu
+
+1. Tải file `Funput-*.exe` từ GitHub Releases.
+2. Double-click để chạy — icon **FU** xuất hiện ở khay hệ thống (góc dưới phải màn hình).
+3. Bạn có thể gõ tiếng Việt ngay sau khi app chạy.
+
+:::tip
+Nên đặt file ở vị trí cố định, ví dụ `%LOCALAPPDATA%\Programs\Funput\` hoặc `C:\Program Files\Funput\`, thay vì chỉ để trong thư mục Downloads — tránh mất file khi dọn download hoặc cập nhật thủ công.
 :::
 
-## Tải xuống tạm thời
+:::warning[SmartScreen]
 
-- [Bản phát hành (GitHub Releases)](https://github.com/Funput/Funput/releases)
+Windows có thể hiện cảnh báo **SmartScreen** lần đầu (Funput chưa ký Authenticode). Nếu bạn tải từ [GitHub Releases](https://github.com/Funput/Funput/releases) chính thức:
 
-Trên Windows, Funput phát hành dưới dạng file **`Funput-*.exe`** portable.
+1. Chọn **More info** (Thông tin thêm)
+2. Chọn **Run anyway** (Vẫn chạy)
+
+:::
+
+Sau khi chạy, chuyển sang mục [Onboarding & bắt đầu gõ](#onboarding--bắt-đầu-gõ) bên dưới.
+
+## Onboarding & bắt đầu gõ
+
+- **Lần đầu mở:** Funput hiển thị cửa sổ **Onboarding** hướng dẫn thiết lập ban đầu.
+- **Không cần thêm Input Source** như trên macOS hay Linux — app hoạt động ngay qua keyboard hook.
+- **Phím tắt** bật/tắt tiếng Việt mặc định: **`Ctrl + ` ` `** (có thể đổi trong Cài đặt).
+
+Thử gõ nhanh: Telex `tieesng vieejt` → `tiếng việt`, hoặc VNI `xin chaof` → `xin chào`.
+
+## Dùng System Tray
+
+Icon **FU** trên khay hệ thống là trung tâm điều khiển Funput:
+
+| Thao tác | Chức năng |
+| -------- | --------- |
+| **Click trái** | Bật/tắt "Tiếng Việt" (icon đổi màu ↔ mono) |
+| **Click phải** | Mở menu ngữ cảnh |
+
+Menu click phải gồm:
+
+- Bật/tắt VI/EN
+- Chuyển **Telex** / **VNI**
+- **Cài đặt…** — mở cửa sổ Settings
+- **Hướng dẫn**
+- **Kiểm tra cập nhật…**
+- **Thoát**
+
+## Cấu hình
+
+Mở **Cài đặt…** từ menu tray để chỉnh:
+
+- Kiểu gõ **Telex** hoặc **VNI**
+- Phím tắt bật/tắt tiếng Việt
+- Smart/eager restore
+- **Khởi động cùng Windows** — Funput tự chạy khi đăng nhập (registry `HKCU\...\Run`)
+
+Cài đặt lưu tại:
+
+```
+%APPDATA%\Funput\settings.json
+```
+
+Thay đổi có hiệu lực ngay và được giữ qua các lần khởi động lại.
+
+## Cập nhật
+
+Windows **không có** kho package như Linux (`repo.funput.app`). Cập nhật qua **app** (tương tự Sparkle trên macOS) hoặc tải thủ công từ GitHub.
+
+### Cập nhật trong app (khuyến nghị)
+
+| Cách truy cập | Thao tác |
+| ------------- | -------- |
+| **System Tray** | Click phải icon FU → **Kiểm tra cập nhật…** |
+| **Cài đặt** | **Cài đặt → Giới thiệu → Kiểm tra cập nhật…** |
+
+Quy trình khi có bản mới:
+
+1. App đọc manifest `funput-windows.json` từ GitHub Releases
+2. Tải file `.exe` mới
+3. **Xác minh chữ ký Ed25519** (cùng public key với bản macOS)
+4. Thay thế exe đang chạy và khởi động lại — **không cần đăng xuất**
+
+:::info
+Funput **không tự kiểm tra cập nhật nền** — bạn cần chủ động chọn **Kiểm tra cập nhật…**.
+:::
+
+### Cập nhật thủ công
+
+1. Tải `Funput-<version>.exe` mới từ [GitHub Releases](https://github.com/Funput/Funput/releases)
+2. Thoát Funput (menu tray → **Thoát**)
+3. Thay file `.exe` cũ bằng bản mới
+4. Double-click chạy lại
+
+## Xử lý sự cố
+
+### SmartScreen chặn hoặc cảnh báo
+
+Xem mục [Cài đặt / chạy lần đầu](#cài-đặt--chạy-lần-đầu). Chỉ tải từ [GitHub Releases](https://github.com/Funput/Funput/releases) chính thức.
+
+### Không gõ được trong app chạy quyền Admin
+
+Funput chạy ở quyền thường **không thể hook** vào app elevated (Task Manager, một số công cụ admin). Để gõ trong app Admin, Funput cũng cần chạy với quyền Administrator.
+
+### Funput không tự khởi động khi bật máy
+
+Bật **Khởi động cùng Windows** trong **Cài đặt**, hoặc tạo shortcut trong thư mục Startup của Windows.
+
+### Không thấy icon FU trên khay hệ thống
+
+- Kiểm tra vùng **hidden icons** (mũi tên ^ trên taskbar) — Windows có thể ẩn icon mới.
+- Chạy lại `Funput-*.exe`.
+- Khởi động lại Windows nếu app bị crash im lặng.
+
+### File `.exe` nghi bị hỏng
+
+Đối chiếu SHA-256 (xem mục [Tải xuống](#tải-xuống)) và tải lại nếu không khớp.
+
+## Cần trợ giúp thêm?
+
+- [Báo lỗi hoặc thảo luận trên GitHub](https://github.com/Funput/Funput/issues)
+- [Website Funput](https://funput.app)

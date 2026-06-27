@@ -5,12 +5,261 @@ sidebar_position: 4
 
 # Install on Linux
 
-:::info Coming soon
-Detailed Linux installation instructions are being written. In the meantime, download the latest release from GitHub.
+On Linux, Funput runs through **IBus** or **Fcitx5** — a real input method engine (preedit/commit) integrated with your desktop environment, not a portable app.
+
+Two separate packages:
+
+| Package | Framework | Use when |
+| ------- | --------- | -------- |
+| `funput-ibus` | **IBus** | GNOME, default Ubuntu |
+| `funput` | **Fcitx5** | KDE Plasma, or you need per-app auto-switch |
+
+:::caution
+Do not install both packages for the same desktop session — choose the framework your session actually uses.
 :::
 
-## Temporary download
+## Choose a framework
 
-- [Releases (GitHub)](https://github.com/Funput/Funput/releases)
+| Environment | Framework | Package |
+| ----------- | --------- | ------- |
+| GNOME / default Ubuntu | IBus | `funput-ibus` |
+| KDE Plasma / full feature set | Fcitx5 | `funput` |
 
-Linux packages usually include `.deb` (Debian/Ubuntu) and `.rpm` (Fedora/openSUSE), for both **IBus** and **Fcitx5**.
+:::tip
+The `install.sh` script auto-selects a framework: KDE Plasma → Fcitx5, otherwise → IBus. Override with `--ibus` or `--fcitx5`.
+:::
+
+## Option 1: Funput repository `repo.funput.app` (recommended)
+
+The [Funput package repository](https://repo.funput.app) is the **recommended** channel — a GPG-signed apt/dnf/zypper repo that updates when new releases ship. Add the repository **once**, then install and upgrade like any system package.
+
+Visual guide with copy buttons: [repo.funput.app](https://repo.funput.app)
+
+### Debian / Ubuntu (.deb)
+
+**Step 1 — Add the repository (one time):**
+
+```bash
+sudo install -d /usr/share/keyrings
+curl -fsSL https://repo.funput.app/funput.asc | sudo tee /usr/share/keyrings/funput.asc >/dev/null
+echo "deb [signed-by=/usr/share/keyrings/funput.asc] https://repo.funput.app/deb ./" | sudo tee /etc/apt/sources.list.d/funput.list
+sudo apt update
+```
+
+**Step 2 — Install:**
+
+```bash
+# IBus (GNOME / default Ubuntu)
+sudo apt install funput-ibus
+
+# Fcitx5 (KDE / full features)
+sudo apt install funput
+```
+
+### Fedora (.rpm)
+
+**Step 1 — Add the repository (one time):**
+
+```bash
+sudo dnf config-manager --add-repo https://repo.funput.app/funput.repo
+```
+
+**Step 2 — Install:**
+
+```bash
+# IBus
+sudo dnf install funput-ibus
+
+# Fcitx5
+sudo dnf install funput
+```
+
+### openSUSE (.rpm)
+
+**Step 1 — Add the repository (one time):**
+
+```bash
+sudo rpm --import https://repo.funput.app/funput.asc
+sudo zypper addrepo -gf https://repo.funput.app/rpm/ funput
+sudo zypper refresh
+```
+
+**Step 2 — Install:**
+
+```bash
+# IBus
+sudo zypper install funput-ibus
+
+# Fcitx5
+sudo zypper install funput
+```
+
+:::info
+The repository only serves the **latest version**. To install an older release, use [GitHub Releases](https://github.com/Funput/Funput/releases).
+:::
+
+When installation finishes, continue to [Enable the input method](#enable-the-input-method) below.
+
+## Option 2: GitHub Releases (manual download)
+
+Download the matching package from [GitHub Releases](https://github.com/Funput/Funput/releases):
+
+| Format | IBus | Fcitx5 |
+| ------ | ---- | ------ |
+| `.deb` (Debian/Ubuntu) | `funput-ibus_*_<arch>.deb` | `funput_*_<arch>.deb` |
+| `.rpm` (Fedora/openSUSE) | `funput-ibus-*.<arch>.rpm` | `funput-*.<arch>.rpm` |
+
+Architectures: `.deb` uses `amd64` / `arm64`; `.rpm` uses `x86_64` / `aarch64`.
+
+**Install the downloaded package:**
+
+```bash
+# Debian / Ubuntu
+sudo apt install ./funput-ibus_*_<arch>.deb
+# or
+sudo apt install ./funput_*_<arch>.deb
+
+# Fedora
+sudo dnf install ./funput-ibus-*.<arch>.rpm
+# or
+sudo dnf install ./funput-*.<arch>.rpm
+
+# openSUSE
+sudo zypper install ./funput-ibus-*.<arch>.rpm
+# or
+sudo zypper install ./funput-*.<arch>.rpm
+```
+
+Each release includes a **SHA-256** checksum file (`.sha256`):
+
+```bash
+sha256sum -c funput-ibus_*.deb.sha256
+```
+
+:::caution
+If `apt`/`dpkg` reports read errors (`could not locate member control.tar`, `unexpected end of file`) — the `.deb` download is **corrupt or truncated**. Re-download and verify SHA-256.
+:::
+
+## Option 3: Quick install script (`install.sh`)
+
+One command detects your distro and architecture, downloads from GitHub Releases, and installs with the native package manager:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/Funput/Funput/main/platforms/linux/install.sh | bash
+```
+
+Options:
+
+```bash
+# Force framework
+curl -fsSL .../install.sh | bash -s -- --ibus
+curl -fsSL .../install.sh | bash -s -- --fcitx5
+
+# Pin version
+curl -fsSL .../install.sh | bash -s -- --version v1.2026.28
+```
+
+:::info
+The script downloads from **GitHub Releases**, not `repo.funput.app`. There is **no automatic update** — run the script again to upgrade.
+:::
+
+## Arch Linux (AUR)
+
+Arch has no package on GitHub Releases or `repo.funput.app`. Install via an AUR helper (e.g. `yay`):
+
+```bash
+# IBus (GNOME)
+yay -S funput-ibus
+
+# Fcitx5 (KDE / full features)
+yay -S funput
+```
+
+## Enable the input method
+
+### IBus (GNOME / Ubuntu)
+
+1. Reload engines: `ibus restart` (or log out and back in).
+2. **Settings → Keyboard → Input Sources → +** → **Vietnamese** → **Funput**.
+3. Switch input sources: **`Super + Space`**.
+4. Toggle Vietnamese on/off while Funput is active: **`Ctrl + ` ` `**.
+
+### Fcitx5 (KDE)
+
+1. Open `fcitx5-configtool` → **+** → add **Funput** (Vietnamese group).
+2. If Fcitx5 is not running: log out and back in, or check IM environment variables (X11: `GTK_IM_MODULE=fcitx`, `QT_IM_MODULE=fcitx`, `XMODIFIERS=@im=fcitx`).
+3. Toggle Vietnamese: **`Ctrl + ` ` `** or the Fcitx5 tray icon.
+
+## After installation
+
+- Open the **Funput** app from the application menu to choose **Telex** or **VNI**, smart/eager restore, and other options.
+- Settings are stored in `~/.config/Funput/settings.json` — changes apply when you focus a text field again.
+
+## Updates
+
+| Channel | How to update |
+| ------- | ------------- |
+| **[repo.funput.app](https://repo.funput.app)** | Via package manager — **automatic updates** |
+| GitHub Releases | Download new package, install over existing |
+| `install.sh` | Run the script again |
+
+**repo.funput.app** is the only channel that supports automatic updates through apt/dnf/zypper (after adding the repository).
+
+### Update via the Funput repository
+
+```bash
+# Debian / Ubuntu (IBus)
+sudo apt update && sudo apt upgrade funput-ibus
+
+# Debian / Ubuntu (Fcitx5)
+sudo apt update && sudo apt upgrade funput
+
+# Fedora (IBus)
+sudo dnf upgrade funput-ibus
+
+# Fedora (Fcitx5)
+sudo dnf upgrade funput
+
+# openSUSE (IBus)
+sudo zypper update funput-ibus
+
+# openSUSE (Fcitx5)
+sudo zypper update funput
+```
+
+:::tip
+After updating, if the input method misbehaves: run `ibus restart` (IBus) or log out and back in.
+:::
+
+## Troubleshooting
+
+### Funput does not appear in Input Sources
+
+- **IBus:** run `ibus restart` or log out and back in.
+- Confirm you installed the correct package for your framework (`funput-ibus` for IBus, `funput` for Fcitx5).
+- Open the **Funput** app from the application menu — onboarding may guide you through any missing step.
+
+### `apt` reports dependency not installable
+
+Usually a **wrong architecture** — e.g. an `amd64` package on an `arm64` machine (or vice versa). Download the package matching your system.
+
+### Remove the Funput repository (if needed)
+
+```bash
+# Debian / Ubuntu
+sudo rm /etc/apt/sources.list.d/funput.list
+sudo apt update
+
+# Fedora
+sudo rm /etc/yum.repos.d/funput.repo
+# or: sudo dnf config-manager --disable funput
+
+# openSUSE
+sudo zypper removerepo funput
+```
+
+## Need more help?
+
+- [Linux package repository (repo.funput.app)](https://repo.funput.app)
+- [Report issues or discuss on GitHub](https://github.com/Funput/Funput/issues)
+- [Funput website](https://funput.app)
