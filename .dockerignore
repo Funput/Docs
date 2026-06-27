@@ -1,0 +1,13 @@
+node_modules
+build
+.docusaurus
+.cache-loader
+.git
+.gitignore
+Dockerfile
+.dockerignore
+README.md
+.DS_Store
+.env*
+npm-debug.log*
+pnpm-debug.log*
