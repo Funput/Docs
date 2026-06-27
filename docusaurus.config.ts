@@ -3,6 +3,7 @@ import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
 const GITHUB_URL = 'https://github.com/Funput/Funput';
+const FACEBOOK_URL = 'https://www.facebook.com/FunputIME';
 const DOCS_EDIT_BASE = `${GITHUB_URL}/tree/main/Docs`;
 
 const config: Config = {
@@ -72,17 +73,7 @@ const config: Config = {
           sidebarPath: './sidebars.ts',
           editUrl: DOCS_EDIT_BASE,
         },
-        blog: {
-          showReadingTime: true,
-          feedOptions: {
-            type: ['rss', 'atom'],
-            xslt: true,
-          },
-          editUrl: DOCS_EDIT_BASE,
-          onInlineTags: 'warn',
-          onInlineAuthors: 'warn',
-          onUntruncatedBlogPosts: 'warn',
-        },
+        blog: false,
         theme: {
           customCss: './src/css/custom.css',
         },
@@ -120,7 +111,6 @@ const config: Config = {
           position: 'left',
           label: 'Tài liệu',
         },
-        {to: '/blog', label: 'Blog', position: 'left'},
         {
           href: 'https://funput.app',
           label: 'Website',
@@ -138,7 +128,6 @@ const config: Config = {
       ],
     },
     footer: {
-      style: 'dark',
       links: [
         {
           title: 'Tài liệu',
@@ -164,15 +153,15 @@ const config: Config = {
               label: 'Website',
               href: 'https://funput.app',
             },
+            {
+              label: 'Facebook',
+              href: FACEBOOK_URL,
+            },
           ],
         },
         {
           title: 'Khác',
           items: [
-            {
-              label: 'Blog',
-              to: '/blog',
-            },
             {
               label: 'Giấy phép MIT',
               href: `${GITHUB_URL}/blob/main/LICENSE`,
@@ -180,7 +169,7 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `© ${new Date().getFullYear()} Funput. Xây dựng với Docusaurus.`,
+      copyright: `© ${new Date().getFullYear()} Funput`,
     },
     prism: {
       theme: prismThemes.github,

@@ -44,6 +44,14 @@
   --ifm-link-color: var(--funput-orange-600);
   --ifm-link-hover-color: var(--funput-orange-700);
 
+  --ifm-footer-background-color: #fafafa;
+  --ifm-footer-color: #52525b;
+  --ifm-footer-title-color: #18181b;
+  --ifm-footer-link-color: #3f3f46;
+  --ifm-footer-link-hover-color: var(--funput-orange-600);
+
+  --ifm-toc-border-color: #e4e4e7;
+
   --docusaurus-highlighted-code-line-bg: rgba(249, 115, 22, 0.12);
 }
 
@@ -60,7 +68,11 @@
   --ifm-background-color: var(--funput-dark-950);
   --ifm-background-surface-color: var(--funput-dark-900);
   --ifm-navbar-background-color: var(--funput-dark-900);
-  --ifm-footer-background-color: var(--funput-dark-950);
+  --ifm-footer-background-color: var(--funput-dark-900);
+  --ifm-footer-color: #a1a1aa;
+  --ifm-footer-title-color: #f4f4f5;
+  --ifm-footer-link-color: #d4d4d8;
+  --ifm-footer-link-hover-color: var(--funput-orange-logo);
 
   --ifm-font-color-base: #f4f4f5;
   --ifm-font-color-secondary: #a1a1aa;
@@ -97,6 +109,7 @@
 
 /* Hero banner gradient echoing logo spine (orange → purple → blue) */
 .hero--primary {
+  --ifm-hero-text-color: #ffffff;
   background: linear-gradient(
     135deg,
     var(--funput-orange-600) 0%,
@@ -104,13 +117,42 @@
     var(--funput-blue-500) 100%
   );
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--ifm-hero-text-color);
+}
+
+.hero--primary .hero__title,
+.hero--primary .hero__subtitle {
+  color: var(--ifm-hero-text-color);
+}
+
+.hero--primary .hero__subtitle {
+  opacity: 0.92;
 }
 
 [data-theme='dark'] .hero--primary {
+  --ifm-hero-text-color: #ffffff;
   background: linear-gradient(
     135deg,
     rgba(249, 115, 22, 0.92) 0%,
     rgba(159, 0, 238, 0.88) 50%,
     rgba(30, 114, 255, 0.9) 100%
   );
+}
+
+[data-theme='dark'] .hero--primary .hero__subtitle {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Footer — theme-aware surface matching navbar/docs */
+.footer {
+  border-top: 1px solid var(--ifm-toc-border-color);
+}
+
+.footer__title {
+  font-weight: 600;
+}
+
+.footer__copyright {
+  font-size: 0.875rem;
+  opacity: 0.85;
 }
