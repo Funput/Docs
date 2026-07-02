@@ -1,0 +1,44 @@
+---
+title: Installation overview
+sidebar_position: 1
+---
+
+# Installing Funput Term
+
+Funput Term is distributed via **Homebrew** — the same command on macOS and Linux:
+
+```bash
+brew tap funput/tap
+brew install funput
+```
+
+This installs the **`funput`** binary; the terminal tool lives under the `funput term`
+subcommand.
+
+| Platform | Guide | Install |
+| -------- | ----- | ------- |
+| macOS (Apple Silicon / Intel) | [Install on macOS](./macos) | Homebrew |
+| Linux (x86_64 / arm64) | [Install on Linux](./linux) | Homebrew (Linuxbrew) |
+
+## Bottle or build from source?
+
+`brew install funput` uses a **bottle** (prebuilt binary) when one exists for your platform —
+**instant, no compiler**. If your platform has no bottle, Homebrew **builds from source
+automatically** (needs the Rust toolchain). Bottles currently exist for **macOS Apple Silicon**
+and **Linux x86_64**; other platforms build from source.
+
+:::info
+
+Homebrew installs are **not blocked by Gatekeeper** on macOS, and require no system permissions.
+
+:::
+
+## Update & uninstall
+
+```bash
+brew update && brew upgrade funput   # update to the latest release
+brew uninstall funput                # remove
+```
+
+Homebrew does **not** auto-update in the background: run `brew upgrade` when you want a newer
+release.

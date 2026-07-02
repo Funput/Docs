@@ -1,0 +1,64 @@
+---
+title: macOS
+sidebar_position: 2
+---
+
+# Install Funput Term on macOS
+
+Funput Term installs via **Homebrew**, on both **Apple Silicon** (M-series) and **Intel**.
+
+## Prerequisite
+
+You need [Homebrew](https://brew.sh). If you don't have it yet:
+
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+## Install
+
+```bash
+brew tap funput/tap
+brew install funput
+```
+
+- **Apple Silicon** → installs a prebuilt **bottle** (instant, a few hundred KB download).
+- **Intel** → no bottle yet, so Homebrew **builds from source** (pulls the Rust toolchain; the
+  first install takes longer, after which `brew autoremove` can reclaim the toolchain).
+
+:::info
+
+Homebrew installs are not blocked by Gatekeeper — no signing/notarization and no system
+permissions required.
+
+:::
+
+## Verify
+
+```bash
+funput --version
+funput term -- $SHELL
+```
+
+Inside the `funput term -- $SHELL` session, try typing `Tieesng Vieejt` (Telex) → you get
+`Tiếng Việt`. Press `Ctrl-\` to toggle Vietnamese; the window title switches between
+`Funput · VI · Telex` and `Funput · EN`.
+
+## Always-on in your shell
+
+Add an alias so a command always runs through Funput Term:
+
+```bash
+funput term install --alias claude --write
+```
+
+The integration snippet is written to your shell rc file (zsh/bash/fish auto-detected). Open a
+new shell and `claude` runs through `funput term -- claude`. Drop `--write` to only preview the
+snippet.
+
+## Update & uninstall
+
+```bash
+brew update && brew upgrade funput
+brew uninstall funput
+```

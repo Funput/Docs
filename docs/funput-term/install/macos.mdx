@@ -1,0 +1,61 @@
+---
+title: macOS
+sidebar_position: 2
+---
+
+# Cài Funput Term trên macOS
+
+Funput Term cài qua **Homebrew**, hỗ trợ cả **Apple Silicon** (M-series) và **Intel**.
+
+## Điều kiện
+
+Cần có [Homebrew](https://brew.sh). Nếu chưa có:
+
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+## Cài đặt
+
+```bash
+brew tap funput/tap
+brew install funput
+```
+
+- **Apple Silicon** → cài **bottle** dựng sẵn (tức thì, khoảng vài trăm KB tải về).
+- **Intel** → hiện chưa có bottle, Homebrew tự **biên dịch từ nguồn** (kéo toolchain Rust; lần
+  cài đầu lâu hơn, sau đó có thể `brew autoremove` để dọn toolchain).
+
+:::info
+
+Cài qua Homebrew không bị Gatekeeper chặn — không cần ký/notarize, không cần cấp quyền hệ thống.
+
+:::
+
+## Kiểm tra
+
+```bash
+funput --version
+funput term -- $SHELL
+```
+
+Trong phiên `funput term -- $SHELL`, gõ thử `Tieesng Vieejt` (Telex) → ra `Tiếng Việt`. Nhấn
+`Ctrl-\` để bật/tắt tiếng Việt; tiêu đề cửa sổ đổi giữa `Funput · VI · Telex` và `Funput · EN`.
+
+## Luôn bật trong shell
+
+Thêm alias để một lệnh luôn chạy qua Funput Term:
+
+```bash
+funput term install --alias claude --write
+```
+
+Đoạn tích hợp được ghi vào file rc của shell (zsh/bash/fish tự nhận diện). Mở shell mới, `claude`
+sẽ tự chạy qua `funput term -- claude`. Bỏ `--write` để chỉ xem trước đoạn cấu hình.
+
+## Cập nhật & gỡ
+
+```bash
+brew update && brew upgrade funput
+brew uninstall funput
+```

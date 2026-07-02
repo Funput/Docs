@@ -1,0 +1,103 @@
+---
+title: Funput Term
+sidebar_position: 1
+---
+
+# Funput Term
+
+**Funput Term** lets you type Vietnamese **right inside terminal apps** — it wraps the program
+you run in a transparent PTY layer and turns ASCII keystrokes into Vietnamese before they reach
+the child process.
+
+It is **not an IME**: no system hooks, no permissions, nothing running in the background. It
+works in **any terminal emulator** and only affects the program you wrap.
+
+```bash
+funput term -- $SHELL      # wrap your whole shell
+funput term -- claude      # or a single command
+```
+
+`funput term` is a subcommand of the umbrella **`funput`** binary (installed via
+[Homebrew](./install/)).
+
+## Why Funput Term?
+
+- **Type Vietnamese where an IME can't.** Many TUIs and terminal apps (vim, REPLs, CLI tools…)
+  don't cooperate well with a system IME. Funput Term works at the byte-stream layer, so it
+  works regardless of the app.
+- **No permissions, no system install.** No Accessibility grant, no system input method — it's
+  just a program you run.
+- **Same typing behavior as the Funput IME.** It uses the **same engine** as the Funput input
+  method, so tone placement, English restore, and more stay consistent.
+
+## Features
+
+- **Telex & VNI** — the same core as the Funput IME.
+- **Smart English restore**, **spell check**, **auto-capitalization**, and **text expansion**
+  (gõ tắt) — inherited from the shared engine.
+- **Toggle Vietnamese** on/off with `Ctrl-\`.
+- **Switch Telex ↔ VNI live** with `Ctrl-^`.
+- **Visual status indicators:** the window title shows `Funput · VI · Telex` (VI/EN and the
+  active method), plus a **cursor color cue** while composing Vietnamese.
+- **Shares configuration with the Funput IME** — reads the same `settings.json`.
+
+:::info[Not an IME — don't run both]
+
+Funput Term and your system IME (macOS IMKit, fcitx5/ibus on Linux) compose Vietnamese
+**independently**. Don't enable both at once: the system IME composes Vietnamese **before**
+keystrokes reach the terminal, which makes `Ctrl-\` appear to "not turn off". Set the system IME
+to English while using Funput Term.
+
+:::
+
+## Configuration
+
+Funput Term resolves configuration in this order: **CLI flag > environment variable >
+`settings.json` file > built-in default**.
+
+The **config file** is shared with the Funput IME at `~/.config/Funput/settings.json` (override
+with `FUNPUT_CONFIG`). Fields that apply: `method`, `toneStyle`, `enabled`, `smartRestore`,
+`eagerRestore`, `spellCheck`, `autoCapitalize`, `shortcuts`.
+
+**Environment variables** for quick overrides:
+
+| Variable | Meaning |
+| -------- | ------- |
+| `FUNPUT_METHOD` | `telex` or `vni` |
+| `FUNPUT_ENABLED` | Start in VI mode (`true`) or EN (`false`) |
+| `FUNPUT_TOGGLE` | Toggle key, e.g. `ctrl-\`, `ctrl-]`, `ctrl-space` |
+| `FUNPUT_CYCLE_METHOD` | Key to switch Telex↔VNI, or `off` to disable |
+| `FUNPUT_CURSOR_COLOR_VI` | Cursor color while composing Vietnamese |
+| `FUNPUT_CONFIG` | Path to a different `settings.json` |
+
+```bash
+# Example: wrap the shell, force Telex, start in Vietnamese mode
+FUNPUT_METHOD=telex FUNPUT_ENABLED=true funput term -- $SHELL
+```
+
+You can also set the method directly with a flag:
+
+```bash
+funput term --method telex -- claude
+```
+
+## Always-on in your shell
+
+To avoid typing `funput term --` every time, add an alias to your shell:
+
+```bash
+# Print the integration snippet (safe to inspect)
+funput term install --alias claude
+
+# Write it straight into your shell rc file (zsh/bash/fish auto-detected)
+funput term install --alias claude --write
+```
+
+Then `claude` automatically runs through `funput term -- claude`. See the
+[Installation](./install/) section for more.
+
+## Installation
+
+- [Overview](./install/) — install via Homebrew on macOS and Linux
+- [Install on macOS](./install/macos)
+- [Install on Linux](./install/linux)

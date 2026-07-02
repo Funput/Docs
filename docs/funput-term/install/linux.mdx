@@ -1,0 +1,68 @@
+---
+title: Linux
+sidebar_position: 3
+---
+
+# Cài Funput Term trên Linux
+
+Trên Linux, Funput Term cài qua **Homebrew (Linuxbrew)** — cùng lệnh như macOS.
+
+## Điều kiện
+
+Cần có [Homebrew trên Linux](https://docs.brew.sh/Homebrew-on-Linux). Nếu chưa có:
+
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+Nhớ thêm `brew` vào PATH theo hướng dẫn hiện ra cuối bước cài (dòng `eval "$(...brew shellenv)"`).
+
+## Cài đặt
+
+```bash
+brew tap funput/tap
+brew install funput
+```
+
+- **x86_64** → cài **bottle** dựng sẵn (tức thì).
+- **arm64 (aarch64)** → hiện chưa có bottle, Homebrew tự **biên dịch từ nguồn** (kéo toolchain
+  Rust; lần đầu lâu hơn).
+
+:::caution[Đừng chạy chung với IME hệ thống]
+
+Funput Term và IME hệ thống (**fcitx5** / **ibus**) soạn tiếng Việt **độc lập**. Nếu bật cả hai,
+IME hệ thống bỏ dấu **trước** khi phím tới terminal, khiến `Ctrl-\` có vẻ "không tắt được tiếng
+Việt" — dù Funput Term vẫn hoạt động đúng (tiêu đề/con trỏ vẫn đổi).
+
+Khi dùng Funput Term, hãy chuyển IME hệ thống về **tiếng Anh** (hoặc tắt), và đừng bật đồng thời.
+
+:::
+
+## Kiểm tra
+
+```bash
+funput --version
+funput term -- "$SHELL"
+```
+
+Gõ thử `Tieesng Vieejt` (Telex) → ra `Tiếng Việt`. `Ctrl-\` bật/tắt tiếng Việt; `Ctrl-^` đổi
+Telex ↔ VNI.
+
+## Cấu hình dùng chung
+
+Funput Term đọc `~/.config/Funput/settings.json` — **cùng file** với IME Funput trên Linux, nên
+phương thức gõ, gõ tắt… được chia sẻ. Xem [trang giới thiệu](../intro) để biết các biến môi
+trường ghi đè.
+
+## Luôn bật trong shell
+
+```bash
+funput term install --alias claude --write
+```
+
+## Cập nhật & gỡ
+
+```bash
+brew update && brew upgrade funput
+brew uninstall funput
+```

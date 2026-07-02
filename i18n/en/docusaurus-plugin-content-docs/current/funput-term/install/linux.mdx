@@ -1,0 +1,71 @@
+---
+title: Linux
+sidebar_position: 3
+---
+
+# Install Funput Term on Linux
+
+On Linux, Funput Term installs via **Homebrew (Linuxbrew)** — the same command as macOS.
+
+## Prerequisite
+
+You need [Homebrew on Linux](https://docs.brew.sh/Homebrew-on-Linux). If you don't have it yet:
+
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+Add `brew` to your PATH as shown at the end of the install (the `eval "$(...brew shellenv)"`
+line).
+
+## Install
+
+```bash
+brew tap funput/tap
+brew install funput
+```
+
+- **x86_64** → installs a prebuilt **bottle** (instant).
+- **arm64 (aarch64)** → no bottle yet, so Homebrew **builds from source** (pulls the Rust
+  toolchain; the first install takes longer).
+
+:::caution[Don't run it alongside your system IME]
+
+Funput Term and your system IME (**fcitx5** / **ibus**) compose Vietnamese **independently**. If
+both are on, the system IME adds diacritics **before** keystrokes reach the terminal, making
+`Ctrl-\` appear to "not turn Vietnamese off" — even though Funput Term is working correctly (its
+title/cursor indicators still flip).
+
+When using Funput Term, switch your system IME to **English** (or turn it off), and don't run
+both at once.
+
+:::
+
+## Verify
+
+```bash
+funput --version
+funput term -- "$SHELL"
+```
+
+Try typing `Tieesng Vieejt` (Telex) → you get `Tiếng Việt`. `Ctrl-\` toggles Vietnamese;
+`Ctrl-^` switches Telex ↔ VNI.
+
+## Shared configuration
+
+Funput Term reads `~/.config/Funput/settings.json` — the **same file** as the Funput IME on
+Linux, so the input method, text expansions, and more are shared. See the
+[introduction](../intro) for the environment variables that override it.
+
+## Always-on in your shell
+
+```bash
+funput term install --alias claude --write
+```
+
+## Update & uninstall
+
+```bash
+brew update && brew upgrade funput
+brew uninstall funput
+```

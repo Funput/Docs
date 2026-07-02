@@ -1,0 +1,101 @@
+---
+title: Funput Term
+sidebar_position: 1
+---
+
+# Funput Term
+
+**Funput Term** cho phép bạn gõ tiếng Việt **ngay trong ứng dụng terminal** — bằng cách bọc
+chương trình bạn chạy qua một lớp PTY trong suốt, rồi biến các phím ASCII thành tiếng Việt
+trước khi chúng tới chương trình con.
+
+Đây **không phải một IME**: không cần hook hệ thống, không xin quyền, không chạy nền. Nó chạy
+trong **mọi terminal emulator** và chỉ hoạt động với đúng chương trình bạn bọc.
+
+```bash
+funput term -- $SHELL      # bọc cả shell của bạn
+funput term -- claude      # hoặc chỉ một lệnh cụ thể
+```
+
+`funput term` là một lệnh con của binary thương hiệu **`funput`** (cài qua [Homebrew](./install/)).
+
+## Vì sao dùng Funput Term?
+
+- **Gõ tiếng Việt ở nơi IME chịu thua.** Nhiều TUI và ứng dụng terminal (vim, REPL, công cụ
+  CLI…) không phối hợp tốt với IME hệ thống. Funput Term xử lý ở tầng luồng byte nên hoạt động
+  bất kể ứng dụng.
+- **Không quyền, không cài đặt hệ thống.** Không cần cấp quyền Accessibility hay cài input
+  method vào hệ thống — chỉ là một chương trình bạn chạy.
+- **Hành vi gõ y hệt IME Funput.** Dùng **chung engine** với bộ gõ Funput, nên cách bỏ dấu,
+  khôi phục tiếng Anh… đều nhất quán.
+
+## Tính năng
+
+- **Telex & VNI** — cùng lõi xử lý với IME Funput.
+- **Khôi phục tiếng Anh thông minh** (smart restore), **kiểm tra chính tả**, **tự động viết
+  hoa đầu câu**, và **gõ tắt** (text expansion) — kế thừa từ engine chung.
+- **Bật/tắt tiếng Việt** bằng `Ctrl-\`.
+- **Đổi Telex ↔ VNI ngay lúc gõ** bằng `Ctrl-^`.
+- **Chỉ báo trạng thái trực quan:** tiêu đề cửa sổ hiển thị `Funput · VI · Telex` (VI/EN và
+  phương thức hiện tại), kèm **đổi màu con trỏ** khi đang gõ tiếng Việt.
+- **Dùng chung cấu hình với IME Funput** — đọc cùng file `settings.json`.
+
+:::info[Không phải IME — đừng chạy chung]
+
+Funput Term và IME hệ thống (macOS IMKit, fcitx5/ibus trên Linux) xử lý tiếng Việt **độc lập**.
+Đừng bật cả hai cùng lúc: IME hệ thống soạn tiếng Việt **trước** khi phím tới terminal, khiến
+`Ctrl-\` có vẻ "không tắt được". Hãy đặt IME hệ thống về tiếng Anh khi dùng Funput Term.
+
+:::
+
+## Cấu hình
+
+Funput Term đọc cấu hình theo thứ tự ưu tiên: **cờ dòng lệnh > biến môi trường > file
+`settings.json` > mặc định**.
+
+**File cấu hình** dùng chung với IME Funput tại `~/.config/Funput/settings.json` (đặt lại bằng
+`FUNPUT_CONFIG`). Các trường có tác dụng: `method`, `toneStyle`, `enabled`, `smartRestore`,
+`eagerRestore`, `spellCheck`, `autoCapitalize`, `shortcuts`.
+
+**Biến môi trường** để ghi đè nhanh:
+
+| Biến | Ý nghĩa |
+| ---- | ------- |
+| `FUNPUT_METHOD` | `telex` hoặc `vni` |
+| `FUNPUT_ENABLED` | Bắt đầu ở chế độ VI (`true`) hay EN (`false`) |
+| `FUNPUT_TOGGLE` | Phím bật/tắt, vd `ctrl-\`, `ctrl-]`, `ctrl-space` |
+| `FUNPUT_CYCLE_METHOD` | Phím đổi Telex↔VNI, hoặc `off` để tắt |
+| `FUNPUT_CURSOR_COLOR_VI` | Màu con trỏ khi đang gõ tiếng Việt |
+| `FUNPUT_CONFIG` | Đường dẫn file `settings.json` khác |
+
+```bash
+# Ví dụ: bọc shell, ép dùng Telex, bắt đầu ở chế độ tiếng Việt
+FUNPUT_METHOD=telex FUNPUT_ENABLED=true funput term -- $SHELL
+```
+
+Bạn cũng có thể chỉ định phương thức trực tiếp bằng cờ:
+
+```bash
+funput term --method telex -- claude
+```
+
+## Luôn bật trong shell
+
+Để không phải gõ `funput term --` mỗi lần, thêm alias vào shell của bạn:
+
+```bash
+# In ra đoạn tích hợp (an toàn để xem trước)
+funput term install --alias claude
+
+# Ghi thẳng vào file rc của shell (zsh/bash/fish tự nhận diện)
+funput term install --alias claude --write
+```
+
+Sau đó `claude` sẽ tự chạy qua `funput term -- claude`. Xem thêm ở phần
+[Cài đặt](./install/).
+
+## Cài đặt
+
+- [Tổng quan](./install/) — cài qua Homebrew trên macOS và Linux
+- [Cài đặt trên macOS](./install/macos)
+- [Cài đặt trên Linux](./install/linux)

@@ -1,0 +1,42 @@
+---
+title: Tổng quan cài đặt
+sidebar_position: 1
+---
+
+# Cài đặt Funput Term
+
+Funput Term được phân phối qua **Homebrew** — cùng một lệnh cho cả macOS và Linux:
+
+```bash
+brew tap funput/tap
+brew install funput
+```
+
+Lệnh này cài binary **`funput`**; công cụ terminal nằm ở lệnh con `funput term`.
+
+| Nền tảng | Hướng dẫn | Cài đặt |
+| -------- | --------- | ------- |
+| macOS (Apple Silicon / Intel) | [Cài đặt trên macOS](./macos) | Homebrew |
+| Linux (x86_64 / arm64) | [Cài đặt trên Linux](./linux) | Homebrew (Linuxbrew) |
+
+## Bottle hay build từ nguồn?
+
+`brew install funput` sẽ dùng **bottle** (nhị phân dựng sẵn) khi có sẵn cho nền tảng của bạn —
+cài **tức thì, không cần biên dịch**. Nếu nền tảng của bạn chưa có bottle, Homebrew **tự động
+biên dịch từ nguồn** (cần toolchain Rust). Hiện có bottle cho **macOS Apple Silicon** và
+**Linux x86_64**; các nền tảng khác build từ nguồn.
+
+:::info
+
+Cài qua Homebrew **không bị Gatekeeper chặn** trên macOS, và không cần cấp quyền hệ thống nào.
+
+:::
+
+## Cập nhật & gỡ
+
+```bash
+brew update && brew upgrade funput   # cập nhật lên bản mới nhất
+brew uninstall funput                # gỡ
+```
+
+Homebrew **không tự cập nhật nền**: chạy `brew upgrade` khi bạn muốn lên bản mới.

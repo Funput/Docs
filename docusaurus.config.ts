@@ -112,6 +112,12 @@ const config: Config = {
           label: 'Tài liệu',
         },
         {
+          type: 'docSidebar',
+          sidebarId: 'funputTermSidebar',
+          position: 'left',
+          label: 'Funput Term',
+        },
+        {
           href: 'https://funput.app',
           label: 'Website',
           position: 'right',
