@@ -11,6 +11,14 @@
     "message": "Docs",
     "description": "Navbar item with label Tài liệu"
   },
+  "item.label.Bộ gõ Funput": {
+    "message": "Funput IME",
+    "description": "Navbar item with label Bộ gõ Funput"
+  },
+  "item.label.Funput Terminal": {
+    "message": "Funput Terminal",
+    "description": "Navbar item with label Funput Terminal"
+  },
   "item.label.Website": {
     "message": "Website",
     "description": "Navbar item with label Website"

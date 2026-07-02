@@ -106,16 +106,21 @@ const config: Config = {
       },
       items: [
         {
-          type: 'docSidebar',
-          sidebarId: 'tutorialSidebar',
-          position: 'left',
+          type: 'dropdown',
           label: 'Tài liệu',
-        },
-        {
-          type: 'docSidebar',
-          sidebarId: 'funputTermSidebar',
           position: 'left',
-          label: 'Funput Term',
+          items: [
+            {
+              type: 'docSidebar',
+              sidebarId: 'tutorialSidebar',
+              label: 'Bộ gõ Funput',
+            },
+            {
+              type: 'docSidebar',
+              sidebarId: 'funputTermSidebar',
+              label: 'Funput Terminal',
+            },
+          ],
         },
         {
           href: 'https://funput.app',
