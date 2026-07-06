@@ -1,0 +1,70 @@
+---
+title: Windows
+sidebar_position: 4
+---
+
+# Cài Funput Term trên Windows
+
+Funput Term cài qua **[Scoop](https://scoop.sh)** — trình quản lý gói per-user, **không cần quyền
+admin**, hợp với triết lý "không quyền hệ thống" của Funput Term. Hỗ trợ **x86_64 (64-bit)**.
+
+:::note
+
+Đây là kênh cho **Funput Term** (công cụ terminal). IME hệ thống trên Windows cài riêng bằng file
+`Funput-*.exe` ở [trang tải về](https://github.com/Funput/Funput/releases/latest).
+
+:::
+
+## Điều kiện
+
+Scoop **không có sẵn** trong Windows nên phải cài trước (kèm `git` để dùng bucket của bên thứ ba) —
+đều **không cần admin**:
+
+```powershell
+# Cho phép chạy script cài (nếu policy đang chặn)
+Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
+irm get.scoop.sh | iex
+scoop install git
+```
+
+## Cài đặt
+
+```powershell
+scoop bucket add funput https://github.com/Funput/scoop-funput
+scoop install funput
+```
+
+Scoop tạo shim `funput` trong PATH, dùng được từ PowerShell, cmd hay Windows Terminal.
+
+## Kiểm tra
+
+```powershell
+funput --version
+funput term -- powershell
+```
+
+Trong phiên `funput term`, gõ thử `Tieesng Vieejt` (Telex) → ra `Tiếng Việt`. Nhấn `Ctrl-\` để
+bật/tắt tiếng Việt; tiêu đề cửa sổ đổi giữa `Funput · VI · Telex` và `Funput · EN`.
+
+:::caution
+
+Hỗ trợ **ConPTY** cho Windows đang hoàn thiện (phase TT6). Binary cài và chạy được, nhưng phần soạn
+thảo tương tác có thể chưa trơn tru cho tới khi TT6 xong.
+
+:::
+
+## Luôn bật trong shell
+
+```powershell
+funput term install --alias claude --write
+```
+
+Đoạn tích hợp được ghi vào profile của shell. Mở shell mới, `claude` sẽ tự chạy qua
+`funput term -- claude`. Bỏ `--write` để chỉ xem trước.
+
+## Cập nhật & gỡ
+
+```powershell
+scoop update funput
+scoop uninstall funput
+```
