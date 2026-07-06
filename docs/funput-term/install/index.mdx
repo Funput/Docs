@@ -5,7 +5,8 @@ sidebar_position: 1
 
 # Cài đặt Funput Term
 
-Funput Term được phân phối qua **Homebrew** — cùng một lệnh cho cả macOS và Linux:
+Funput Term được phân phối qua **Homebrew** (macOS/Linux) và **Scoop** (Windows). Bản macOS/Linux
+dùng cùng một lệnh:
 
 ```bash
 brew tap funput/tap
@@ -18,6 +19,7 @@ Lệnh này cài binary **`funput`**; công cụ terminal nằm ở lệnh con `
 | -------- | --------- | ------- |
 | macOS (Apple Silicon / Intel) | [Cài đặt trên macOS](./macos) | Homebrew |
 | Linux (x86_64 / arm64) | [Cài đặt trên Linux](./linux) | Homebrew (Linuxbrew) |
+| Windows (x86_64) | [Cài đặt trên Windows](./windows) | Scoop |
 
 ## Bottle hay build từ nguồn?
 
@@ -39,4 +41,5 @@ brew update && brew upgrade funput   # cập nhật lên bản mới nhất
 brew uninstall funput                # gỡ
 ```
 
-Homebrew **không tự cập nhật nền**: chạy `brew upgrade` khi bạn muốn lên bản mới.
+Homebrew **không tự cập nhật nền**: chạy `brew upgrade` khi bạn muốn lên bản mới. Trên Windows
+(Scoop) tương ứng là `scoop update funput` — xem [trang Windows](./windows).
