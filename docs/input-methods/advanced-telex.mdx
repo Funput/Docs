@@ -1,0 +1,89 @@
+---
+title: Telex nâng cao
+sidebar_position: 1
+description: Đặc tả V5 cho mode Full Telex có thể chọn riêng trong Funput.
+---
+
+# Telex nâng cao
+
+:::info[Trạng thái]
+
+Đây là đặc tả cho **V5**, chưa phải tính năng đã phát hành.
+
+:::
+
+**Telex nâng cao** là một mode có thể chọn riêng. Mode này kế thừa toàn bộ hành vi của
+Telex hiện tại và bổ sung các phím tắt Full Telex phổ biến. Telex hiện tại không đổi.
+
+## Phạm vi V5
+
+| Phím | Kết quả trong Telex nâng cao |
+| --- | --- |
+| `[` | `ư` |
+| `]` | `ơ` |
+| `w` ở đầu từ hoặc đứng độc lập | `ư` |
+
+Các nguyên âm được tạo bằng cú pháp trên tiếp tục nhận dấu thanh và tham gia vào các
+quy tắc Telex hiện có như nguyên âm được tạo theo cách thông thường.
+
+```text
+t[       → tư
+m]       → mơ
+tr[]ngf  → trường
+ng[]if   → người
+w        → ư
+wf       → ừ
+wngf     → ừng
+```
+
+Các ánh xạ `[` → `ư`, `]` → `ơ` và `w` độc lập → `ư` tương thích với bảng Full Telex
+trong [hướng dẫn UniKey](https://www.unikey.org/support/ukmanual.html). Funput dùng tên
+“Telex nâng cao” để phân biệt mode này với Telex mặc định an toàn hơn.
+
+## Hành vi được kế thừa
+
+Telex nâng cao phải dùng chung implementation với Telex và kế thừa:
+
+- Free-position `aa`, `ee`, `oo` và hội tụ dấu thanh.
+- Deferred/free-order `w` sau onset và chuẩn hóa `ươ`, `ưa`, `ưu`.
+- Hội tụ một deferred `w` với modifier `d`.
+- Kiểu đặt dấu Traditional và Modern.
+- Spell check, smart/eager restore, Vietnamese-first và Flip.
+- Raw keys, diff tối thiểu và semantics revert hiện tại.
+
+Flip phải khôi phục chính xác chuỗi phím gốc khi người dùng muốn giữ Latin hoặc ký tự
+`[`/`]`. Lựa chọn Latin sau Flip tiếp tục được giữ qua word boundary như Telex hiện tại.
+
+## Phân biệt với Telex hiện tại
+
+| Tình huống | Telex | Telex nâng cao |
+| --- | --- | --- |
+| `[` và `]` | Ký tự literal | Tạo `ư` và `ơ` |
+| `w` đầu từ/độc lập | Literal | Tạo `ư` |
+| Các quy tắc V1–V3 | Có | Có |
+
+Mode Telex hiện tại phải giữ nguyên để tránh collision khi nhập tiếng Anh hoặc mã nguồn.
+Người dùng chủ động chọn Telex nâng cao sẽ chấp nhận phạm vi biến đổi rộng hơn và dùng
+Flip làm escape chính thức.
+
+## Ngoài phạm vi
+
+V5 không bao gồm deferred tone, hoán vị modifier tùy ý, dictionary, prediction,
+autocorrect hoặc thay đổi behavior mặc định của Telex. Ánh xạ `{` → `Ư` và `}` → `Ơ`
+cần một quyết định sản phẩm riêng trước khi được thêm vào đặc tả.
+
+## Hợp đồng kiến trúc
+
+- `funput-core` là nguồn sự thật duy nhất cho mapping, validation và transform.
+- `funput-engine` tiếp tục quản lý session, raw keys, Flip, restore và diff; không nhân
+  đôi quy tắc Full Telex.
+- FFI/JNI phải biểu diễn được mode mới bằng một giá trị ổn định và giữ tương thích với
+  các giá trị Telex/VNI hiện có.
+- Mỗi platform chỉ chịu trách nhiệm hiển thị lựa chọn, lưu/đọc cấu hình và truyền mode
+  xuống engine.
+- CLI, import/export cấu hình và migration phải dùng một identifier ổn định, đề xuất
+  `advanced-telex`; cấu hình cũ không có giá trị này vẫn giữ nguyên behavior.
+
+Vì vậy behavior chỉ được implement một lần trong Rust core, nhưng mode mới vẫn cần wiring
+qua engine boundary, FFI/JNI và UI/settings của từng platform trước khi người dùng có thể
+chọn nó.

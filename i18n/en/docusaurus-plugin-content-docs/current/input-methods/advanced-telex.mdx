@@ -1,0 +1,89 @@
+---
+title: Advanced Telex
+sidebar_position: 1
+description: V5 specification for Funput's selectable Full Telex mode.
+---
+
+# Advanced Telex
+
+:::info[Status]
+
+This is the **V5 specification**, not a released feature.
+
+:::
+
+**Advanced Telex** is a separately selectable mode. It inherits all behavior from the
+current Telex mode and adds common Full Telex shortcuts. The current Telex mode remains
+unchanged.
+
+## V5 scope
+
+| Key | Result in Advanced Telex |
+| --- | --- |
+| `[` | `ư` |
+| `]` | `ơ` |
+| Word-initial or standalone `w` | `ư` |
+
+Vowels created by these shortcuts accept tone marks and participate in all existing
+Telex rules just like vowels created through canonical sequences.
+
+```text
+t[       → tư
+m]       → mơ
+tr[]ngf  → trường
+ng[]if   → người
+w        → ư
+wf       → ừ
+wngf     → ừng
+```
+
+The `[` → `ư`, `]` → `ơ`, and standalone `w` → `ư` mappings match the Full Telex table
+in the [UniKey manual](https://www.unikey.org/support/ukmanual.html). Funput calls this
+mode “Advanced Telex” to distinguish it from the safer default Telex mode.
+
+## Inherited behavior
+
+Advanced Telex must share the Telex implementation and inherit:
+
+- Free-position `aa`, `ee`, and `oo` with tone convergence.
+- Deferred/free-order `w` after an onset and `ươ`/`ưa`/`ưu` normalization.
+- Convergence of one deferred `w` with a `d` modifier.
+- Traditional and Modern tone placement.
+- Spell check, smart/eager restore, Vietnamese-first behavior, and Flip.
+- Existing raw-key, minimal-diff, and revert semantics.
+
+Flip must restore the exact raw sequence when the user wants Latin or literal `[`/`]`.
+The Latin choice remains sticky across a word boundary as it does in current Telex.
+
+## Difference from current Telex
+
+| Situation | Telex | Advanced Telex |
+| --- | --- | --- |
+| `[` and `]` | Literal characters | Produce `ư` and `ơ` |
+| Initial/standalone `w` | Literal | Produces `ư` |
+| V1–V3 rules | Included | Included |
+
+Current Telex must remain unchanged to avoid collisions in English and source code.
+Users who select Advanced Telex accept the broader transform surface and use Flip as the
+official escape.
+
+## Out of scope
+
+V5 does not include deferred tones, arbitrary modifier permutations, a dictionary,
+prediction, autocorrect, or changes to default Telex behavior. Mapping `{` → `Ư` and
+`}` → `Ơ` requires a separate product decision before entering the specification.
+
+## Architecture contract
+
+- `funput-core` is the single source of truth for mappings, validation, and transforms.
+- `funput-engine` continues to own sessions, raw keys, Flip, restore, and diffs; it must
+  not duplicate Full Telex rules.
+- FFI/JNI must represent the new mode with a stable value while preserving existing
+  Telex/VNI values.
+- Each platform only exposes the choice, persists/loads it, and passes it to the engine.
+- CLI and configuration import/export should use a stable identifier, proposed as
+  `advanced-telex`; old configurations retain their existing behavior.
+
+The behavior is therefore implemented once in the Rust core, but the new mode still
+requires engine-boundary, FFI/JNI, and platform UI/settings wiring before users can
+select it.

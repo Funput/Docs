@@ -1,0 +1,120 @@
+---
+title: Hướng dẫn gõ tiếng Việt
+sidebar_position: 3
+description: Bảng phím và ví dụ gõ tiếng Việt bằng VNI và Telex trong Funput.
+---
+
+# Hướng dẫn gõ tiếng Việt
+
+Funput hỗ trợ hai kiểu gõ tiếng Việt phổ biến: **VNI** và **Telex**. Để chọn kiểu gõ, mở **Funput → Cài đặt → Bàn phím → Kiểu gõ**.
+
+## Gõ kiểu VNI
+
+VNI dùng các phím số để tạo chữ cái tiếng Việt và dấu thanh. Khi chọn VNI, Funput luôn hiển thị hàng phím số.
+
+### Bảng phím VNI
+
+| Phím | Chức năng | Ví dụ |
+| --- | --- | --- |
+| `1` | Dấu sắc | `a1` → `á` |
+| `2` | Dấu huyền | `a2` → `à` |
+| `3` | Dấu hỏi | `a3` → `ả` |
+| `4` | Dấu ngã | `a4` → `ã` |
+| `5` | Dấu nặng | `a5` → `ạ` |
+| `6` | Dấu mũ: â, ê, ô | `a6` → `â`, `e6` → `ê`, `o6` → `ô` |
+| `7` | Dấu móc: ơ, ư | `o7` → `ơ`, `u7` → `ư` |
+| `8` | Dấu trăng: ă | `a8` → `ă` |
+| `9` | Chữ đ | `d9` → `đ` |
+| `0` | Xóa dấu thanh | `á0` → `a` |
+
+### Ví dụ VNI
+
+| Gõ | Kết quả |
+| --- | --- |
+| `To6i` | Tôi |
+| `tie61ng` | tiếng |
+| `Vie65t` | Việt |
+| `d9u7o7ng2` | đường |
+| `ngu7o7i2` | người |
+
+Ví dụ câu hoàn chỉnh:
+
+```text
+To6i ye6u tie61ng Vie65t.
+→ Tôi yêu tiếng Việt.
+```
+
+<div className="text--center">
+  <img
+    src="/img/funput-vni.png"
+    alt="Bàn phím Funput ở chế độ VNI với hàng phím số"
+    style={{width: '360px', maxWidth: '100%', height: 'auto'}}
+  />
+  <p><em>Bàn phím Funput ở chế độ VNI luôn hiển thị hàng phím số.</em></p>
+</div>
+
+## Gõ kiểu Telex
+
+Telex dùng các chữ cái để tạo dấu nên không bắt buộc có hàng phím số. Bạn có thể bật hàng số riêng tại **Cài đặt → Bàn phím → Hàng phím số**.
+
+### Bảng dấu thanh Telex
+
+| Phím | Dấu | Ví dụ |
+| --- | --- | --- |
+| `s` | Sắc | `as` → `á` |
+| `f` | Huyền | `af` → `à` |
+| `r` | Hỏi | `ar` → `ả` |
+| `x` | Ngã | `ax` → `ã` |
+| `j` | Nặng | `aj` → `ạ` |
+| `z` | Xóa dấu thanh | `asz` → `a` |
+
+### Bảng chữ cái Telex
+
+| Gõ | Kết quả |
+| --- | --- |
+| `aa` | â |
+| `aw` | ă |
+| `ee` | ê |
+| `oo` | ô |
+| `ow` | ơ |
+| `uw` | ư |
+| `dd` | đ |
+
+### Ví dụ Telex
+
+| Gõ | Kết quả |
+| --- | --- |
+| `Tooi` | Tôi |
+| `tieengs` | tiếng |
+| `Vieetj` | Việt |
+| `dduwowngf` | đường |
+| `nguwowif` | người |
+
+Ví dụ câu hoàn chỉnh:
+
+```text
+Tooi yeeu tieengs Vieetj.
+→ Tôi yêu tiếng Việt.
+```
+
+<div className="text--center">
+  <img
+    src="/img/funput-telex.png"
+    alt="Bàn phím Funput ở chế độ Telex với gợi ý trên các phím"
+    style={{width: '360px', maxWidth: '100%', height: 'auto'}}
+  />
+  <p><em>Bàn phím Funput ở chế độ Telex với gợi ý dấu trên các phím liên quan.</em></p>
+</div>
+
+## Chuyển nhanh sang tiếng Anh
+
+Khi đang dùng bố cục tiếng Việt trong ô văn bản thông thường, vuốt ngang trên **phím cách** để chuyển giữa **Tiếng Việt** và **English**. Tính năng này hữu ích khi cần nhập tên riêng, địa chỉ hoặc đoạn văn tiếng Anh mà không muốn các phím VNI/Telex biến đổi ký tự.
+
+## Kiểu đặt dấu
+
+Trong **Funput → Cài đặt → Bàn phím → Kiểu đặt dấu**, bạn có thể chọn:
+
+- **Truyền thống:** ví dụ `hoà`.
+- **Hiện đại:** ví dụ `hòa`.
+
+Lựa chọn này chỉ thay đổi vị trí dấu trong một số vần; bảng phím VNI và Telex vẫn giữ nguyên.

@@ -6,5 +6,9 @@
   "sidebar.tutorialSidebar.category.Cài đặt": {
     "message": "Installation",
     "description": "The label for category 'Cài đặt' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.Tổng quan cài đặt": {
+    "message": "Installation overview",
+    "description": "The label for category 'Tổng quan cài đặt' in sidebar 'tutorialSidebar'"
   }
 }
