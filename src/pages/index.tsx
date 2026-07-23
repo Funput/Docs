@@ -19,7 +19,7 @@ function HomepageHeader() {
         </Heading>
         <p className="hero__subtitle">
           <Translate id="homepage.tagline">
-            Bộ gõ tiếng Việt cho macOS, Windows & Linux
+            Bộ gõ tiếng Việt cho iOS, Android, macOS, Windows và Linux
           </Translate>
         </p>
         <div className={styles.buttons}>
@@ -47,7 +47,7 @@ export default function Home(): ReactNode {
       description={translate({
         id: 'homepage.description',
         message:
-          'Tài liệu Funput — bộ gõ tiếng Việt mã nguồn mở cho macOS, Windows và Linux.',
+          'Tài liệu Funput — bộ gõ tiếng Việt mã nguồn mở, nhẹ và tập trung vào quyền riêng tư. Gõ Telex hoặc VNI trên iOS, Android, macOS, Windows và Linux.',
       })}>
       <HomepageHeader />
       <main>

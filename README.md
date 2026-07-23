@@ -1,8 +1,10 @@
 # Funput Docs
 
-Official documentation site for [Funput](https://funput.app) — an open-source Vietnamese input method for **macOS**, **Windows**, and **Linux**.
+Official documentation site for [Funput](https://funput.app) — an open-source Vietnamese input method for **iOS**, **Android**, **macOS**, **Windows**, and **Linux**.
 
 **Live site:** [docs.funput.app](https://docs.funput.app)
+
+**App Store:** [Funput for iOS](https://apps.apple.com/vn/app/id6788829996)
 
 Built with [Docusaurus 3](https://docusaurus.io/). Default locale is **Vietnamese** (`vi`); **English** (`en`) is available via the locale switcher.
 

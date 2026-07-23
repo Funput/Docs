@@ -16,7 +16,7 @@ const FeatureList: FeatureItem[] = [
     icon: '🖥️',
     description: (
       <Translate id="homepage.feature.platform.description">
-        Trải nghiệm gõ tiếng Việt thống nhất trên macOS, Windows và Linux.
+        Gõ tiếng Việt thống nhất trên iOS, Android, macOS, Windows và Linux.
       </Translate>
     ),
   },

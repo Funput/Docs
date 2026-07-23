@@ -19,6 +19,14 @@
     "message": "GitHub",
     "description": "The label of footer link with label=GitHub linking to https://github.com/Funput/Funput"
   },
+  "link.item.label.App Store": {
+    "message": "App Store",
+    "description": "The label of footer link with label=App Store linking to the Funput iOS app"
+  },
+  "link.item.label.Google Play": {
+    "message": "Google Play",
+    "description": "The label of footer link with label=Google Play linking to the Funput Android app"
+  },
   "link.item.label.Bản phát hành": {
     "message": "Releases",
     "description": "The label of footer link with label=Bản phát hành linking to https://github.com/Funput/Funput/releases"

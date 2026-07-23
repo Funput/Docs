@@ -1,6 +1,6 @@
 {
   "homepage.tagline": {
-    "message": "Vietnamese IME for macOS, Windows & Linux"
+    "message": "Vietnamese IME for iOS, Android, macOS, Windows, and Linux"
   },
   "homepage.getStarted": {
     "message": "Get Started"
@@ -9,13 +9,13 @@
     "message": "Download"
   },
   "homepage.description": {
-    "message": "Documentation for Funput — a modern, open-source Vietnamese input method for macOS, Windows, and Linux."
+    "message": "Funput docs — an open-source Vietnamese input method that is lightweight and privacy-focused. Type with Telex or VNI on iOS, Android, macOS, Windows, and Linux."
   },
   "homepage.feature.platform.title": {
     "message": "Cross-platform"
   },
   "homepage.feature.platform.description": {
-    "message": "One consistent Vietnamese typing experience across macOS, Windows, and Linux."
+    "message": "One consistent Vietnamese typing experience on iOS, Android, macOS, Windows, and Linux."
   },
   "homepage.feature.input.title": {
     "message": "Telex & VNI"
