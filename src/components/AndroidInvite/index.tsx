@@ -49,7 +49,7 @@ export default function AndroidInvite({
         <p className={styles.statusText}>
           <Translate id="android.status.text">
             Funput trên Android đang ở giai đoạn kiểm thử khép kín trên Google
-            Play. Bạn cần lời mời để tham gia dùng thử.
+            Play. Gửi email để tham gia hỗ trợ kiểm thử Funput.
           </Translate>
         </p>
       </div>
@@ -109,12 +109,12 @@ export default function AndroidInvite({
       <div className={styles.cta}>
         <div className={styles.ctaAccent} aria-hidden="true" />
         <h2 className={styles.ctaTitle}>
-          <Translate id="android.cta.title">Mời dùng thử Funput Android</Translate>
+          <Translate id="android.cta.title">Tham gia kiểm thử Funput Android</Translate>
         </h2>
         <p className={styles.ctaBody}>
           <Translate id="android.cta.body">
-            Gửi email cho chúng tôi để nhận lời mời kiểm thử. Hãy ghi kèm địa chỉ
-            Google Play (Gmail) bạn dùng trên thiết bị Android.
+            Gửi email và kèm địa chỉ Google Play (Gmail) trên máy Android của bạn
+            — chúng tôi sẽ thêm bạn vào nhóm kiểm thử.
           </Translate>
         </p>
         <div className={styles.ctaActions}>

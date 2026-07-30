@@ -15,7 +15,7 @@
     "message": "Closed testing"
   },
   "android.status.text": {
-    "message": "Funput on Android is in closed testing on Google Play. You need an invite to try it."
+    "message": "Funput on Android is in closed testing on Google Play. Email us if you'd like to join."
   },
   "android.feature.input.title": {
     "message": "Telex & VNI"
@@ -36,10 +36,10 @@
     "message": "Free under MIT, privacy-first — we do not sell what you type."
   },
   "android.cta.title": {
-    "message": "Request a Funput Android trial"
+    "message": "Join Funput Android closed testing"
   },
   "android.cta.body": {
-    "message": "Email us to receive a closed-testing invite. Include the Google Play (Gmail) address you use on your Android device."
+    "message": "Send us an email with the Google Play (Gmail) address on your Android device — we'll add you to the tester group."
   },
   "android.cta.button": {
     "message": "Send signup email"
