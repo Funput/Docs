@@ -26,6 +26,12 @@ const config: Config = {
 
   onBrokenLinks: 'throw',
 
+  // Consumed by the swizzled footer layout (src/theme/Footer/Layout).
+  customFields: {
+    githubUrl: GITHUB_URL,
+    facebookUrl: FACEBOOK_URL,
+  },
+
   headTags: [
     {
       tagName: 'link',
@@ -143,6 +149,13 @@ const config: Config = {
       ],
     },
     footer: {
+      logo: {
+        alt: 'Funput',
+        src: 'img/logo.svg',
+        href: 'https://funput.app',
+        width: 36,
+        height: 36,
+      },
       links: [
         {
           title: 'Tài liệu',
@@ -151,15 +164,23 @@ const config: Config = {
               label: 'Bắt đầu',
               to: '/docs/intro',
             },
+            {
+              label: 'Cài đặt',
+              to: '/docs/install',
+            },
+            {
+              label: 'Gõ tiếng Việt',
+              to: '/docs/input-methods/vietnamese',
+            },
+            {
+              label: 'Funput Term',
+              to: '/docs/funput-term/intro',
+            },
           ],
         },
         {
-          title: 'Dự án',
+          title: 'Tải xuống',
           items: [
-            {
-              label: 'GitHub',
-              href: GITHUB_URL,
-            },
             {
               label: 'App Store',
               href: APP_STORE_URL,
@@ -176,23 +197,27 @@ const config: Config = {
               label: 'Website',
               href: 'https://funput.app',
             },
+          ],
+        },
+        {
+          title: 'Cộng đồng',
+          items: [
+            {
+              label: 'GitHub',
+              href: GITHUB_URL,
+            },
+            {
+              label: 'Báo lỗi',
+              href: `${GITHUB_URL}/issues`,
+            },
             {
               label: 'Facebook',
               href: FACEBOOK_URL,
             },
           ],
         },
-        {
-          title: 'Khác',
-          items: [
-            {
-              label: 'Giấy phép MIT',
-              href: `${GITHUB_URL}/blob/main/LICENSE`,
-            },
-          ],
-        },
       ],
-      copyright: `© ${new Date().getFullYear()} Funput`,
+      copyright: `© ${new Date().getFullYear()} Funput · <a href="${GITHUB_URL}/blob/main/LICENSE">Giấy phép MIT</a>`,
     },
     prism: {
       theme: prismThemes.github,

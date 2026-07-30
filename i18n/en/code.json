@@ -8,6 +8,9 @@
   "homepage.download": {
     "message": "Download"
   },
+  "footer.tagline": {
+    "message": "An open-source Vietnamese input method — lightweight and privacy-respecting."
+  },
   "homepage.description": {
     "message": "Funput docs — an open-source Vietnamese input method that is lightweight and privacy-focused. Type with Telex or VNI on iOS, Android, macOS, Windows, and Linux."
   },

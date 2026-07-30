@@ -146,13 +146,52 @@
 /* Footer — theme-aware surface matching navbar/docs */
 .footer {
   border-top: 1px solid var(--ifm-toc-border-color);
+  position: relative;
+}
+
+/* Brand hairline echoing the hero gradient (orange → purple → blue) */
+.footer::before {
+  content: '';
+  position: absolute;
+  inset: -1px 0 auto 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    var(--funput-orange-500) 0%,
+    var(--funput-purple-logo) 52%,
+    var(--funput-blue-500) 100%
+  );
+  opacity: 0.9;
 }
 
 .footer__title {
+  font-size: 0.75rem;
   font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 0.875rem;
+}
+
+.footer__item {
+  padding: 0.25rem 0;
+}
+
+.footer__link-item {
+  font-size: 0.9375rem;
+  transition: color 150ms ease;
 }
 
 .footer__copyright {
   font-size: 0.875rem;
   opacity: 0.85;
+}
+
+.footer__copyright a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.footer__copyright a:hover {
+  color: var(--ifm-footer-link-hover-color);
 }

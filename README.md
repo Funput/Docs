@@ -61,6 +61,7 @@ Docs/
 ├── docs/              # Vietnamese source (default locale)
 ├── i18n/en/           # English translations
 ├── src/               # React pages & components (homepage)
+│   └── theme/         # Swizzled theme components (footer layout)
 ├── static/            # Images, favicon, etc.
 ├── docusaurus.config.ts
 ├── sidebars.ts

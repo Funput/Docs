@@ -3,21 +3,29 @@
     "message": "Docs",
     "description": "The title of the footer links column with title=Tài liệu in the footer"
   },
-  "link.title.Dự án": {
-    "message": "Project",
-    "description": "The title of the footer links column with title=Dự án in the footer"
+  "link.title.Tải xuống": {
+    "message": "Download",
+    "description": "The title of the footer links column with title=Tải xuống in the footer"
   },
-  "link.title.Khác": {
-    "message": "More",
-    "description": "The title of the footer links column with title=Khác in the footer"
+  "link.title.Cộng đồng": {
+    "message": "Community",
+    "description": "The title of the footer links column with title=Cộng đồng in the footer"
   },
   "link.item.label.Bắt đầu": {
     "message": "Getting Started",
     "description": "The label of footer link with label=Bắt đầu linking to /docs/intro"
   },
-  "link.item.label.GitHub": {
-    "message": "GitHub",
-    "description": "The label of footer link with label=GitHub linking to https://github.com/Funput/Funput"
+  "link.item.label.Cài đặt": {
+    "message": "Installation",
+    "description": "The label of footer link with label=Cài đặt linking to /docs/install"
+  },
+  "link.item.label.Gõ tiếng Việt": {
+    "message": "Vietnamese Typing",
+    "description": "The label of footer link with label=Gõ tiếng Việt linking to /docs/input-methods/vietnamese"
+  },
+  "link.item.label.Funput Term": {
+    "message": "Funput Term",
+    "description": "The label of footer link with label=Funput Term linking to /docs/funput-term/intro"
   },
   "link.item.label.App Store": {
     "message": "App Store",
@@ -35,16 +43,20 @@
     "message": "Website",
     "description": "The label of footer link with label=Website linking to https://funput.app"
   },
+  "link.item.label.GitHub": {
+    "message": "GitHub",
+    "description": "The label of footer link with label=GitHub linking to https://github.com/Funput/Funput"
+  },
+  "link.item.label.Báo lỗi": {
+    "message": "Report an Issue",
+    "description": "The label of footer link with label=Báo lỗi linking to https://github.com/Funput/Funput/issues"
+  },
   "link.item.label.Facebook": {
     "message": "Facebook",
     "description": "The label of footer link with label=Facebook linking to https://www.facebook.com/FunputIME"
   },
-  "link.item.label.Giấy phép MIT": {
-    "message": "License (MIT)",
-    "description": "The label of footer link with label=Giấy phép MIT linking to https://github.com/Funput/Funput/blob/main/LICENSE"
-  },
   "copyright": {
-    "message": "© 2026 Funput",
+    "message": "© 2026 Funput · <a href=\"https://github.com/Funput/Funput/blob/main/LICENSE\">MIT License</a>",
     "description": "The footer copyright"
   }
 }
