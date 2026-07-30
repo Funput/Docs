@@ -11,6 +11,51 @@
   "footer.tagline": {
     "message": "An open-source Vietnamese input method — lightweight and privacy-respecting."
   },
+  "android.status.badge": {
+    "message": "Closed testing"
+  },
+  "android.status.text": {
+    "message": "Funput on Android is in closed testing on Google Play. You need an invite to try it."
+  },
+  "android.feature.input.title": {
+    "message": "Telex & VNI"
+  },
+  "android.feature.input.body": {
+    "message": "Type Vietnamese the way you already know — Telex or VNI."
+  },
+  "android.feature.cross.title": {
+    "message": "Cross-platform"
+  },
+  "android.feature.cross.body": {
+    "message": "A consistent typing experience with Funput on iOS, desktop, and Android."
+  },
+  "android.feature.open.title": {
+    "message": "Open source"
+  },
+  "android.feature.open.body": {
+    "message": "Free under MIT, privacy-first — we do not sell what you type."
+  },
+  "android.cta.title": {
+    "message": "Request a Funput Android trial"
+  },
+  "android.cta.body": {
+    "message": "Email us to receive a closed-testing invite. Include the Google Play (Gmail) address you use on your Android device."
+  },
+  "android.cta.button": {
+    "message": "Send signup email"
+  },
+  "android.cta.copy": {
+    "message": "Copy email"
+  },
+  "android.cta.copied": {
+    "message": "Copied"
+  },
+  "android.cta.emailLabel": {
+    "message": "Email:"
+  },
+  "android.cta.hint": {
+    "message": "Detailed install steps will be added when testing expands further."
+  },
   "homepage.description": {
     "message": "Funput docs — an open-source Vietnamese input method that is lightweight and privacy-focused. Type with Telex or VNI on iOS, Android, macOS, Windows, and Linux."
   },

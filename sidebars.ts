@@ -22,7 +22,7 @@ const sidebars: SidebarsConfig = {
       label: 'Tổng quan cài đặt',
       link: {type: 'doc', id: 'install/index'},
       collapsed: false,
-      items: ['install/ios', 'install/macos', 'install/windows', 'install/linux'],
+      items: ['install/ios', 'install/android', 'install/macos', 'install/windows', 'install/linux'],
     },
     'input-methods/vietnamese',
   ],
