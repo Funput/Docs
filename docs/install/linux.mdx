@@ -31,7 +31,7 @@ Script `install.sh` tự chọn framework: KDE Plasma → Fcitx5, còn lại →
 
 ## Cách 1: Kho Funput `repo.funput.app` (khuyến nghị)
 
-[Kho phần mềm Funput](https://repo.funput.app) là kênh **khuyến nghị** — kho apt/dnf/zypper **có ký GPG**, tự cập nhật khi có bản phát hành mới. Bạn chỉ cần thêm kho **một lần**, sau đó cài và cập nhật như gói hệ thống bình thường.
+[Kho phần mềm Funput](https://repo.funput.app) là kênh **khuyến nghị** — kho apt/dnf/zypper/pacman **có ký GPG**, tự cập nhật khi có bản phát hành mới. Bạn chỉ cần thêm kho **một lần**, sau đó cài và cập nhật như gói hệ thống bình thường.
 
 Trang hướng dẫn trực quan (có nút copy lệnh): [repo.funput.app](https://repo.funput.app)
 
@@ -176,30 +176,60 @@ curl -fsSL .../install.sh | bash -s -- --version v1.2026.28
 ```
 
 :::info
-Chỉ `--no-repo` và `--version` mới tải gói rời từ **GitHub Releases**; hai đường đó **không có cập nhật tự động** — chạy lại script để cập nhật.
+Chỉ `--no-repo` và `--version` mới tải gói rời từ **GitHub Releases**; hai đường đó **không có cập nhật tự động** — chạy lại script để cập nhật. Trên **Arch** không dùng được hai cờ này (không có gói rời cho Arch) — dùng kho, hoặc `--user`.
 :::
 
-## Arch Linux (AUR)
+## Arch Linux
 
-Arch không có gói trên GitHub Releases hay kho `repo.funput.app`. Cài qua AUR helper (ví dụ `yay`) — gói build từ mã nguồn của tag phát hành:
+Arch không có gói trên GitHub Releases. Kho `repo.funput.app` phục vụ Arch bằng **kho pacman** riêng, cùng khoá GPG với kho apt/dnf.
+
+:::caution
+Gói dựng sẵn cho **x86_64**. Arch Linux ARM là distro riêng, không dùng được kho này — trên máy ARM hãy dùng [đường `--user`](#không-sudo-trên-arch).
+:::
+
+**Bước 1 — Nhập khoá (làm một lần):**
+
+pacman giữ keyring riêng, nên phải nhập rồi ký cục bộ thì chữ ký mới được tin:
+
+```bash
+curl -fsSL https://repo.funput.app/funput.asc | sudo pacman-key --add -
+sudo pacman-key --lsign-key hello@funput.app
+```
+
+**Bước 2 — Thêm kho vào `/etc/pacman.conf`:**
+
+```bash
+sudo tee -a /etc/pacman.conf <<'EOF'
+
+[funput]
+Server = https://repo.funput.app/arch/$arch
+EOF
+sudo pacman -Sy
+```
+
+**Bước 3 — Cài đặt:**
 
 ```bash
 # IBus (GNOME)
-yay -S funput-ibus
+sudo pacman -S funput-ibus
 
 # Fcitx5 (KDE / đầy đủ tính năng)
-yay -S funput
+sudo pacman -S funput
 ```
 
-Cả hai đều kéo theo `funput-settings` (app cài đặt) đúng cùng phiên bản. Cập nhật theo AUR helper như mọi gói AUR khác.
+Cả hai đều kéo theo `funput-settings` (app cài đặt) đúng cùng phiên bản. Cập nhật bằng `sudo pacman -Syu` như mọi gói khác.
 
-:::tip
-Không dùng AUR helper, hoặc không có quyền sudo? Đường cài vào `~/.local` cũng chạy trên Arch, chỉ cần đã có sẵn daemon IBus hoặc Fcitx5:
+:::info
+Đây là gói **binary**, link vào thư viện Arch tại thời điểm dựng. Arch cập nhật liên tục, nên sau một đợt bump soname (fcitx5, ibus, gtk4) gói có thể tạm không nạp được. Kho **tự dựng lại hai tuần một lần** trên Arch mới nhất, nên tình trạng đó được vá trong khoảng hai tuần mà không cần đợi Funput ra bản mới — `pacman -Syu` sẽ nhận bản dựng lại đó. Muốn build từ mã nguồn ngay trên máy mình thì dùng AUR khi kênh đó mở.
+:::
+
+### Không sudo trên Arch
+
+Đường cài vào `~/.local` chạy được trên mọi kiến trúc, chỉ cần đã có sẵn daemon IBus hoặc Fcitx5:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/Funput/Funput/main/platforms/linux/install.sh | bash -s -- --user
 ```
-:::
 
 ## Bật bộ gõ
 
@@ -229,9 +259,8 @@ curl -fsSL https://raw.githubusercontent.com/Funput/Funput/main/platforms/linux/
 | `install.sh` (mặc định) | Đã thêm kho, nên cũng **cập nhật tự động** |
 | `install.sh --no-repo` / `--version` | Chạy lại script |
 | GitHub Releases | Tải gói mới, cài đè thủ công |
-| AUR | Theo AUR helper (`yay -Syu`) |
 
-Cập nhật tự động qua apt/dnf/zypper cần đã thêm kho **repo.funput.app** — bằng tay theo Cách 1, hoặc để `install.sh` tự làm.
+Cập nhật tự động qua apt/dnf/zypper/pacman cần đã thêm kho **repo.funput.app** — bằng tay theo Cách 1 (hoặc mục Arch Linux), hoặc để `install.sh` tự làm.
 
 ### Cập nhật qua kho Funput
 
@@ -253,6 +282,9 @@ sudo zypper update funput-ibus
 
 # openSUSE (Fcitx5)
 sudo zypper update funput
+
+# Arch
+sudo pacman -Syu
 ```
 
 :::tip
@@ -284,6 +316,9 @@ sudo rm /etc/yum.repos.d/funput.repo
 
 # openSUSE
 sudo zypper removerepo funput
+
+# Arch — xoá phần [funput] trong /etc/pacman.conf, rồi:
+sudo pacman-key --delete hello@funput.app
 ```
 
 ## Cần trợ giúp thêm?

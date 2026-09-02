@@ -31,7 +31,7 @@ The `install.sh` script auto-selects a framework: KDE Plasma → Fcitx5, otherwi
 
 ## Option 1: Funput repository `repo.funput.app` (recommended)
 
-The [Funput package repository](https://repo.funput.app) is the **recommended** channel — a GPG-signed apt/dnf/zypper repo that updates when new releases ship. Add the repository **once**, then install and upgrade like any system package.
+The [Funput package repository](https://repo.funput.app) is the **recommended** channel — a GPG-signed apt/dnf/zypper/pacman repo that updates when new releases ship. Add the repository **once**, then install and upgrade like any system package.
 
 Visual guide with copy buttons: [repo.funput.app](https://repo.funput.app)
 
@@ -176,30 +176,60 @@ curl -fsSL .../install.sh | bash -s -- --version v1.2026.28
 ```
 
 :::info
-Only `--no-repo` and `--version` download from **GitHub Releases**; those two paths have **no automatic update** — run the script again to upgrade.
+Only `--no-repo` and `--version` download from **GitHub Releases**; those two paths have **no automatic update** — run the script again to upgrade. Neither flag works on **Arch**, which has no release asset — use the repository, or `--user`.
 :::
 
-## Arch Linux (AUR)
+## Arch Linux
 
-Arch has no package on GitHub Releases or `repo.funput.app`. Install via an AUR helper (e.g. `yay`) — the packages build from the release tag's source:
+Arch has no package on GitHub Releases. `repo.funput.app` serves it as a **pacman repository** instead, under the same GPG key as the apt and dnf ones.
+
+:::caution
+The packages are built for **x86_64**. Arch Linux ARM is a separate distribution and cannot use this repository — on ARM, use [the `--user` install](#no-sudo-on-arch).
+:::
+
+**Step 1 — Import the key (one time):**
+
+pacman keeps its own keyring, so the key has to be imported *and* locally signed before any signature is trusted:
+
+```bash
+curl -fsSL https://repo.funput.app/funput.asc | sudo pacman-key --add -
+sudo pacman-key --lsign-key hello@funput.app
+```
+
+**Step 2 — Add the repository to `/etc/pacman.conf`:**
+
+```bash
+sudo tee -a /etc/pacman.conf <<'EOF'
+
+[funput]
+Server = https://repo.funput.app/arch/$arch
+EOF
+sudo pacman -Sy
+```
+
+**Step 3 — Install:**
 
 ```bash
 # IBus (GNOME)
-yay -S funput-ibus
+sudo pacman -S funput-ibus
 
 # Fcitx5 (KDE / full features)
-yay -S funput
+sudo pacman -S funput
 ```
 
-Both pull in `funput-settings` (the Settings app) at exactly the same version. Updates come through your AUR helper like any other AUR package.
+Both pull in `funput-settings` (the Settings app) at exactly the same version. Update with `sudo pacman -Syu` like any other package.
 
-:::tip
-No AUR helper, or no sudo? The user-local install works on Arch too — it only needs an IBus or Fcitx5 daemon already present:
+:::info
+These are **binary** packages, linked against the Arch libraries of the build day. Arch moves continuously, so after a soname bump (fcitx5, ibus, gtk4) they may briefly fail to load. The repository **rebuilds itself fortnightly** against current Arch, so that is repaired within about two weeks without waiting for a new Funput release — `pacman -Syu` picks the rebuild up. To build from source on your own machine, use the AUR once that channel opens.
+:::
+
+### No sudo on Arch
+
+The `~/.local` install works on any architecture — it only needs an IBus or Fcitx5 daemon already present:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/Funput/Funput/main/platforms/linux/install.sh | bash -s -- --user
 ```
-:::
 
 ## Enable the input method
 
@@ -229,9 +259,8 @@ curl -fsSL https://raw.githubusercontent.com/Funput/Funput/main/platforms/linux/
 | `install.sh` (default) | Adds the repository, so also **automatic updates** |
 | `install.sh --no-repo` / `--version` | Run the script again |
 | GitHub Releases | Download new package, install over existing |
-| AUR | Through your AUR helper (`yay -Syu`) |
 
-Automatic updates through apt/dnf/zypper require the **repo.funput.app** repository — added by hand as in Option 1, or by `install.sh` for you.
+Automatic updates through apt/dnf/zypper/pacman require the **repo.funput.app** repository — added by hand as in Option 1 (or under Arch Linux), or by `install.sh` for you.
 
 ### Update via the Funput repository
 
@@ -253,6 +282,9 @@ sudo zypper update funput-ibus
 
 # openSUSE (Fcitx5)
 sudo zypper update funput
+
+# Arch
+sudo pacman -Syu
 ```
 
 :::tip
@@ -284,6 +316,9 @@ sudo rm /etc/yum.repos.d/funput.repo
 
 # openSUSE
 sudo zypper removerepo funput
+
+# Arch — delete the [funput] section from /etc/pacman.conf, then:
+sudo pacman-key --delete hello@funput.app
 ```
 
 ## Need more help?
