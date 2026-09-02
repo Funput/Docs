@@ -42,9 +42,18 @@ Trang hướng dẫn trực quan (có nút copy lệnh): [repo.funput.app](https
 ```bash
 sudo install -d /usr/share/keyrings
 curl -fsSL https://repo.funput.app/funput.asc | sudo tee /usr/share/keyrings/funput.asc >/dev/null
-echo "deb [signed-by=/usr/share/keyrings/funput.asc] https://repo.funput.app/deb ./" | sudo tee /etc/apt/sources.list.d/funput.list
+sudo tee /etc/apt/sources.list.d/funput.sources >/dev/null <<'EOF'
+Types: deb
+URIs: https://repo.funput.app/deb
+Suites: ./
+Signed-By: /usr/share/keyrings/funput.asc
+EOF
 sudo apt update
 ```
+
+:::info
+Đây là định dạng **deb822** (`.sources`). Dạng một dòng `.list` cũ vẫn chạy nhưng apt 3.0 (Debian 13, Ubuntu 25.04 trở lên) đã báo deprecated.
+:::
 
 **Bước 2 — Cài đặt:**
 
@@ -61,8 +70,12 @@ sudo apt install funput
 **Bước 1 — Thêm kho (làm một lần):**
 
 ```bash
-sudo dnf config-manager --add-repo https://repo.funput.app/funput.repo
+sudo curl -fsSL https://repo.funput.app/funput.repo -o /etc/yum.repos.d/funput.repo
 ```
+
+:::info
+Thả thẳng file `.repo` thay vì `dnf config-manager --add-repo <url>` — dnf5 (Fedora 41 trở lên) đã bỏ dạng lệnh đó. Cách này chạy trên cả dnf4 lẫn dnf5. Khoá GPG không cần import tay: `funput.repo` đã khai `gpgkey=`, dnf tự tải khi cài lần đầu.
+:::
 
 **Bước 2 — Cài đặt:**
 
@@ -142,7 +155,7 @@ Nếu `apt`/`dpkg` báo lỗi đọc file (`could not locate member control.tar`
 
 ## Cách 3: Script cài nhanh (`install.sh`)
 
-Một lệnh tự nhận distro + kiến trúc, tải gói từ GitHub Releases và cài bằng package manager bản địa:
+Một lệnh tự nhận distro + kiến trúc, **thêm kho `repo.funput.app`** rồi cài bằng package manager bản địa — nên vẫn có cập nhật tự động như Cách 1:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/Funput/Funput/main/platforms/linux/install.sh | bash
@@ -155,17 +168,20 @@ Tùy chọn:
 curl -fsSL .../install.sh | bash -s -- --ibus
 curl -fsSL .../install.sh | bash -s -- --fcitx5
 
-# Ghim phiên bản
+# Bỏ qua kho, tải gói rời từ GitHub Releases (không tự cập nhật)
+curl -fsSL .../install.sh | bash -s -- --no-repo
+
+# Ghim phiên bản (tự hàm ý --no-repo, vì kho chỉ giữ bản mới nhất)
 curl -fsSL .../install.sh | bash -s -- --version v1.2026.28
 ```
 
 :::info
-Script tải từ **GitHub Releases**, không dùng `repo.funput.app`. **Không có cập nhật tự động** — chạy lại script để cập nhật.
+Chỉ `--no-repo` và `--version` mới tải gói rời từ **GitHub Releases**; hai đường đó **không có cập nhật tự động** — chạy lại script để cập nhật.
 :::
 
 ## Arch Linux (AUR)
 
-Arch không có gói trên GitHub Releases hay kho `repo.funput.app`. Cài qua AUR helper (ví dụ `yay`):
+Arch không có gói trên GitHub Releases hay kho `repo.funput.app`. Cài qua AUR helper (ví dụ `yay`) — gói build từ mã nguồn của tag phát hành:
 
 ```bash
 # IBus (GNOME)
@@ -174,6 +190,16 @@ yay -S funput-ibus
 # Fcitx5 (KDE / đầy đủ tính năng)
 yay -S funput
 ```
+
+Cả hai đều kéo theo `funput-settings` (app cài đặt) đúng cùng phiên bản. Cập nhật theo AUR helper như mọi gói AUR khác.
+
+:::tip
+Không dùng AUR helper, hoặc không có quyền sudo? Đường cài vào `~/.local` cũng chạy trên Arch, chỉ cần đã có sẵn daemon IBus hoặc Fcitx5:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/Funput/Funput/main/platforms/linux/install.sh | bash -s -- --user
+```
+:::
 
 ## Bật bộ gõ
 
@@ -200,10 +226,12 @@ yay -S funput
 | Kênh | Cách cập nhật |
 | ---- | ------------- |
 | **[repo.funput.app](https://repo.funput.app)** | Qua package manager — **cập nhật tự động** |
+| `install.sh` (mặc định) | Đã thêm kho, nên cũng **cập nhật tự động** |
+| `install.sh --no-repo` / `--version` | Chạy lại script |
 | GitHub Releases | Tải gói mới, cài đè thủ công |
-| `install.sh` | Chạy lại script |
+| AUR | Theo AUR helper (`yay -Syu`) |
 
-**repo.funput.app** là kênh duy nhất hỗ trợ cập nhật tự động qua apt/dnf/zypper (sau khi đã thêm kho).
+Cập nhật tự động qua apt/dnf/zypper cần đã thêm kho **repo.funput.app** — bằng tay theo Cách 1, hoặc để `install.sh` tự làm.
 
 ### Cập nhật qua kho Funput
 
@@ -247,12 +275,12 @@ Thường do **sai kiến trúc** — ví dụ tải gói `amd64` trên máy `ar
 
 ```bash
 # Debian / Ubuntu
-sudo rm /etc/apt/sources.list.d/funput.list
+sudo rm -f /etc/apt/sources.list.d/funput.sources
+sudo rm -f /etc/apt/sources.list.d/funput.list   # nếu bạn đã thêm kho theo hướng dẫn cũ
 sudo apt update
 
 # Fedora
 sudo rm /etc/yum.repos.d/funput.repo
-# hoặc: sudo dnf config-manager --disable funput
 
 # openSUSE
 sudo zypper removerepo funput

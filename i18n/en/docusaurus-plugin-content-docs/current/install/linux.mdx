@@ -42,9 +42,18 @@ Visual guide with copy buttons: [repo.funput.app](https://repo.funput.app)
 ```bash
 sudo install -d /usr/share/keyrings
 curl -fsSL https://repo.funput.app/funput.asc | sudo tee /usr/share/keyrings/funput.asc >/dev/null
-echo "deb [signed-by=/usr/share/keyrings/funput.asc] https://repo.funput.app/deb ./" | sudo tee /etc/apt/sources.list.d/funput.list
+sudo tee /etc/apt/sources.list.d/funput.sources >/dev/null <<'EOF'
+Types: deb
+URIs: https://repo.funput.app/deb
+Suites: ./
+Signed-By: /usr/share/keyrings/funput.asc
+EOF
 sudo apt update
 ```
+
+:::info
+This is the **deb822** (`.sources`) format. The older one-line `.list` form still works, but apt 3.0 (Debian 13, Ubuntu 25.04 and newer) reports it as deprecated.
+:::
 
 **Step 2 — Install:**
 
@@ -61,8 +70,12 @@ sudo apt install funput
 **Step 1 — Add the repository (one time):**
 
 ```bash
-sudo dnf config-manager --add-repo https://repo.funput.app/funput.repo
+sudo curl -fsSL https://repo.funput.app/funput.repo -o /etc/yum.repos.d/funput.repo
 ```
+
+:::info
+The `.repo` file is dropped in directly rather than through `dnf config-manager --add-repo <url>`, which dnf5 (Fedora 41 and newer) removed. This works on both dnf4 and dnf5. No manual key import is needed: `funput.repo` declares `gpgkey=`, and dnf fetches it on first install.
+:::
 
 **Step 2 — Install:**
 
@@ -142,7 +155,7 @@ If `apt`/`dpkg` reports read errors (`could not locate member control.tar`, `une
 
 ## Option 3: Quick install script (`install.sh`)
 
-One command detects your distro and architecture, downloads from GitHub Releases, and installs with the native package manager:
+One command detects your distro and architecture, **adds the `repo.funput.app` repository**, and installs with the native package manager — so you still get automatic updates, exactly like Option 1:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/Funput/Funput/main/platforms/linux/install.sh | bash
@@ -155,17 +168,20 @@ Options:
 curl -fsSL .../install.sh | bash -s -- --ibus
 curl -fsSL .../install.sh | bash -s -- --fcitx5
 
-# Pin version
+# Skip the repository, fetch a standalone package from GitHub Releases
+curl -fsSL .../install.sh | bash -s -- --no-repo
+
+# Pin a version (implies --no-repo, since the repository only carries the latest)
 curl -fsSL .../install.sh | bash -s -- --version v1.2026.28
 ```
 
 :::info
-The script downloads from **GitHub Releases**, not `repo.funput.app`. There is **no automatic update** — run the script again to upgrade.
+Only `--no-repo` and `--version` download from **GitHub Releases**; those two paths have **no automatic update** — run the script again to upgrade.
 :::
 
 ## Arch Linux (AUR)
 
-Arch has no package on GitHub Releases or `repo.funput.app`. Install via an AUR helper (e.g. `yay`):
+Arch has no package on GitHub Releases or `repo.funput.app`. Install via an AUR helper (e.g. `yay`) — the packages build from the release tag's source:
 
 ```bash
 # IBus (GNOME)
@@ -174,6 +190,16 @@ yay -S funput-ibus
 # Fcitx5 (KDE / full features)
 yay -S funput
 ```
+
+Both pull in `funput-settings` (the Settings app) at exactly the same version. Updates come through your AUR helper like any other AUR package.
+
+:::tip
+No AUR helper, or no sudo? The user-local install works on Arch too — it only needs an IBus or Fcitx5 daemon already present:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/Funput/Funput/main/platforms/linux/install.sh | bash -s -- --user
+```
+:::
 
 ## Enable the input method
 
@@ -200,10 +226,12 @@ yay -S funput
 | Channel | How to update |
 | ------- | ------------- |
 | **[repo.funput.app](https://repo.funput.app)** | Via package manager — **automatic updates** |
+| `install.sh` (default) | Adds the repository, so also **automatic updates** |
+| `install.sh --no-repo` / `--version` | Run the script again |
 | GitHub Releases | Download new package, install over existing |
-| `install.sh` | Run the script again |
+| AUR | Through your AUR helper (`yay -Syu`) |
 
-**repo.funput.app** is the only channel that supports automatic updates through apt/dnf/zypper (after adding the repository).
+Automatic updates through apt/dnf/zypper require the **repo.funput.app** repository — added by hand as in Option 1, or by `install.sh` for you.
 
 ### Update via the Funput repository
 
@@ -247,12 +275,12 @@ Usually a **wrong architecture** — e.g. an `amd64` package on an `arm64` machi
 
 ```bash
 # Debian / Ubuntu
-sudo rm /etc/apt/sources.list.d/funput.list
+sudo rm -f /etc/apt/sources.list.d/funput.sources
+sudo rm -f /etc/apt/sources.list.d/funput.list   # if you added the repo the old way
 sudo apt update
 
 # Fedora
 sudo rm /etc/yum.repos.d/funput.repo
-# or: sudo dnf config-manager --disable funput
 
 # openSUSE
 sudo zypper removerepo funput
