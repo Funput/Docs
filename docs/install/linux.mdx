@@ -220,7 +220,7 @@ sudo pacman -S funput
 Cả hai đều kéo theo `funput-settings` (app cài đặt) đúng cùng phiên bản. Cập nhật bằng `sudo pacman -Syu` như mọi gói khác.
 
 :::info
-Đây là gói **binary**, link vào thư viện Arch tại thời điểm dựng. Arch cập nhật liên tục, nên sau một đợt bump soname lớn (fcitx5, ibus, gtk4) gói có thể phải đợi bản phát hành kế tiếp. Muốn build từ mã nguồn trên máy mình thì dùng AUR khi kênh đó mở.
+Đây là gói **binary**, link vào thư viện Arch tại thời điểm dựng. Arch cập nhật liên tục, nên sau một đợt bump soname (fcitx5, ibus, gtk4) gói có thể tạm không nạp được. Kho **tự dựng lại hàng tuần** trên Arch mới nhất, nên tình trạng đó được vá trong vòng một tuần mà không cần đợi Funput ra bản mới — `pacman -Syu` sẽ nhận bản dựng lại đó. Muốn build từ mã nguồn ngay trên máy mình thì dùng AUR khi kênh đó mở.
 :::
 
 ### Không sudo trên Arch
