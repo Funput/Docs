@@ -202,7 +202,7 @@ Với `--no-repo`, `--version` và `--user`, script tải gói từ GitHub Relea
 Chỉ `--no-repo` và `--version` mới tải gói rời từ **GitHub Releases**; hai đường đó **không có cập nhật tự động** — chạy lại script để cập nhật. Trên **Arch** không dùng được hai cờ này (không có gói rời cho Arch) — dùng kho, hoặc `--user`.
 :::
 
-## Cài không cần sudo (`--user`) {#khong-sudo}
+## Cài không cần sudo (`--user`) \{#khong-sudo\}
 
 Đường này cài vào `~/.local` — không cần quyền root, không đụng package manager. Chạy trên **mọi distro và mọi kiến trúc**, kể cả Arch Linux ARM. Điều kiện: máy **đã có sẵn** daemon Fcitx5 hoặc IBus (bản thân daemon vẫn phải cài bằng package manager).
 
@@ -266,7 +266,7 @@ Cả hai đều kéo theo `funput-settings` (app cài đặt) đúng cùng phiê
 Đây là gói **binary**, link vào thư viện Arch tại thời điểm dựng. Arch cập nhật liên tục, nên sau một đợt bump soname (fcitx5, ibus, gtk4) gói có thể tạm không nạp được. Kho **tự dựng lại hai tuần một lần** trên Arch mới nhất, nên tình trạng đó được vá trong khoảng hai tuần mà không cần đợi Funput ra bản mới — `pacman -Syu` sẽ nhận bản dựng lại đó.
 :::
 
-## Bật bộ gõ {#bat-bo-go}
+## Bật bộ gõ \{#bat-bo-go\}
 
 ### Fcitx5 (khuyến nghị)
 
@@ -283,7 +283,7 @@ Cả hai đều kéo theo `funput-settings` (app cài đặt) đúng cùng phiê
 3. Mở `fcitx5-configtool` → **+** → thêm **Funput** (nhóm Vietnamese).
 4. Bật/tắt tiếng Việt: **`Ctrl + ` ` `** hoặc icon Fcitx5 ở khay hệ thống.
 
-### Nối session vào Fcitx5 {#noi-session}
+### Nối session vào Fcitx5 \{#noi-session\}
 
 Funput là engine *bên trong* Fcitx5 — ứng dụng chỉ gõ được nếu session đã trỏ về Fcitx5. Đặt biến nào thì phụ thuộc **loại session trước, desktop sau**. Xem bạn đang ở loại nào:
 
@@ -344,7 +344,7 @@ EOF
 `im-config` **không đặt biến nào** cho phiên Wayland — hook `/etc/profile.d/im-config_wayland.sh` được ship ở trạng thái vô hiệu hoá. Nên trên Ubuntu/Wayland bạn vẫn phải tự đặt theo hai khối trên; `im-config -n fcitx5` chỉ có tác dụng cho phiên X11.
 :::
 
-#### Đặt ở đâu {#dat-o-dau}
+#### Đặt ở đâu \{#dat-o-dau\}
 
 | Nơi đặt | Được đọc bởi |
 | ------- | ------------ |

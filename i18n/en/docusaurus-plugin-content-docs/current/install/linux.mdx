@@ -202,7 +202,7 @@ On the `--no-repo`, `--version` and `--user` paths the script downloads from Git
 Only `--no-repo` and `--version` download from **GitHub Releases**; those two paths have **no automatic update** — run the script again to upgrade. Neither flag works on **Arch**, which has no release asset — use the repository, or `--user`.
 :::
 
-## Install without sudo (`--user`) {#khong-sudo}
+## Install without sudo (`--user`) \{#khong-sudo\}
 
 This path installs into `~/.local` — no root, no package manager. It works on **every distro and architecture**, Arch Linux ARM included. It requires an **already-installed** Fcitx5 or IBus daemon (the daemon itself still comes from your package manager).
 
@@ -266,7 +266,7 @@ Both pull in `funput-settings` (the Settings app) at exactly the same version. U
 These are **binary** packages, linked against the Arch libraries of the build day. Arch moves continuously, so after a soname bump (fcitx5, ibus, gtk4) they may briefly fail to load. The repository **rebuilds itself fortnightly** against current Arch, so that is repaired within about two weeks without waiting for a new Funput release — `pacman -Syu` picks the rebuild up.
 :::
 
-## Enable the input method {#bat-bo-go}
+## Enable the input method \{#bat-bo-go\}
 
 ### Fcitx5 (recommended)
 
@@ -283,7 +283,7 @@ These are **binary** packages, linked against the Arch libraries of the build da
 3. Open `fcitx5-configtool` → **+** → add **Funput** (Vietnamese group).
 4. Toggle Vietnamese: **`Ctrl + ` ` `** or the Fcitx5 tray icon.
 
-### Connect your session to Fcitx5 {#noi-session}
+### Connect your session to Fcitx5 \{#noi-session\}
 
 Funput is an engine *inside* Fcitx5 — applications only reach it if the session itself talks to Fcitx5. What to set depends on **the session type first, the desktop second**. Check which one you are on:
 
@@ -344,7 +344,7 @@ EOF
 `im-config` **sets no variables at all** in a Wayland session — the `/etc/profile.d/im-config_wayland.sh` hook ships disabled. So on Ubuntu under Wayland you still set them yourself with the blocks above; `im-config -n fcitx5` only takes effect in an X11 session.
 :::
 
-#### Where to put them {#dat-o-dau}
+#### Where to put them \{#dat-o-dau\}
 
 | Location | Read by |
 | -------- | ------- |
