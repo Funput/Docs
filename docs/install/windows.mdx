@@ -5,9 +5,21 @@ sidebar_position: 3
 
 # Cài đặt trên Windows
 
-Funput trên Windows là app **portable một file `.exe`** — chạy nền ở **khay hệ thống (System Tray)**, gõ được ngay trên mọi ứng dụng. Không cần cài MSI/installer (chưa có): double-click là chạy.
+Funput trên Windows là app **portable một file `.exe`** — chạy nền ở **khay hệ thống (System Tray)**, gõ được ngay trên mọi ứng dụng. Không cần thêm Input Source như macOS hay Linux, cũng chưa có MSI/installer: double-click là chạy.
 
-Hỗ trợ **Windows 10 & 11 (64-bit)**.
+## Yêu cầu
+
+| | |
+| --- | --- |
+| **Hệ điều hành** | Windows 10 phiên bản **1809** (build 17763) trở lên · Windows 11 |
+| **Kiến trúc** | **x86-64**. Windows on ARM chạy được qua emulation, nhưng chưa có bản build riêng |
+| **Runtime ngoài** | Không cần — không WebView2, không .NET |
+
+:::note[Vì sao là build 17763?]
+Đó là mốc Windows bắt đầu hỗ trợ nền **Acrylic** mà Control Center của Funput dùng. Bản Windows cũ hơn không bị chặn chạy, nhưng chưa được thử nghiệm và Control Center sẽ mất hiệu ứng nền.
+
+Riêng nền **Mica** chỉ có trên Windows 11. Trên Windows 10, cửa sổ Cài đặt hiển thị nền đục — đây là lựa chọn cố ý để cửa sổ không bị giật khi kéo/thay đổi kích thước, không phải lỗi.
+:::
 
 ## Tải xuống
 
@@ -29,11 +41,20 @@ So sánh kết quả với nội dung file `.sha256` trên trang release.
 ## Cài đặt / chạy lần đầu
 
 1. Tải file `Funput-*.exe` từ GitHub Releases.
-2. Double-click để chạy — icon **FU** xuất hiện ở khay hệ thống (góc dưới phải màn hình).
-3. Bạn có thể gõ tiếng Việt ngay sau khi app chạy.
+2. Đặt file vào một thư mục cố định, ví dụ `%LOCALAPPDATA%\Programs\Funput\`.
+3. Double-click để chạy — icon **f** của Funput xuất hiện ở khay hệ thống (góc dưới phải màn hình).
+4. Cửa sổ **Onboarding** mở ra hướng dẫn chọn kiểu gõ; xong là gõ tiếng Việt được ngay.
 
-:::tip
-Nên đặt file ở vị trí cố định, ví dụ `%LOCALAPPDATA%\Programs\Funput\` hoặc `C:\Program Files\Funput\`, thay vì chỉ để trong thư mục Downloads — tránh mất file khi dọn download hoặc cập nhật thủ công.
+:::tip[Đặt file ở đâu]
+Đừng để app trong thư mục **Downloads** — bạn dễ xoá nhầm khi dọn máy, và cấu hình nằm cùng chỗ với app nên sẽ mất theo. `%LOCALAPPDATA%\Programs\Funput\` là lựa chọn tốt: không cần quyền admin và Funput ghi cấu hình vào đó được.
+:::
+
+:::danger[File bạn vừa tải sẽ tự đổi tên — đừng hoảng]
+
+Ở lần chạy đầu tiên, `Funput-<version>.exe` **tự nhân bản thành `Funput.exe`** nằm cùng thư mục, khởi động lại từ file mới, rồi **xoá file có số phiên bản** đi.
+
+Đây là hành vi cố ý: tính năng khởi động cùng Windows và tự cập nhật cần một đường dẫn cố định, không đổi theo phiên bản. Từ lần sau, bạn chỉ chạy `Funput.exe`.
+
 :::
 
 :::warning[SmartScreen]
@@ -45,50 +66,95 @@ Windows có thể hiện cảnh báo **SmartScreen** lần đầu (Funput chưa 
 
 :::
 
-Sau khi chạy, chuyển sang mục [Onboarding & bắt đầu gõ](#onboarding--bắt-đầu-gõ) bên dưới.
+## Bắt đầu gõ
 
-## Onboarding & bắt đầu gõ
+Phím tắt bật/tắt tiếng Việt mặc định là **`Ctrl` + `` ` ``** (đổi được trong Cài đặt sang `Ctrl Space` hoặc `Alt Shift`).
 
-- **Lần đầu mở:** Funput hiển thị cửa sổ **Onboarding** hướng dẫn thiết lập ban đầu.
-- **Không cần thêm Input Source** như trên macOS hay Linux — app hoạt động ngay qua keyboard hook.
-- **Phím tắt** bật/tắt tiếng Việt mặc định: **`Ctrl + ` ` `** (có thể đổi trong Cài đặt).
+Thử gõ nhanh:
 
-Thử gõ nhanh: Telex `tieesng vieejt` → `tiếng việt`, hoặc VNI `xin chaof` → `xin chào`.
+| Kiểu gõ | Gõ thế này | Ra thế này |
+| --- | --- | --- |
+| **Telex** | `tieesng vieejt` | tiếng việt |
+| **VNI** | `xin chao2` | xin chào |
+
+:::info[Telex và VNI khác nhau chỗ nào?]
+**Telex** đặt dấu bằng chữ cái: `s` sắc, `f` huyền, `r` hỏi, `x` ngã, `j` nặng — nên `chaof` ra `chào`.
+
+**VNI** đặt dấu bằng chữ số: `1` sắc, `2` huyền, `3` hỏi, `4` ngã, `5` nặng — nên `chao2` mới ra `chào`.
+
+Funput còn có **Telex+**: giữ nguyên Telex và thêm `w` đầu từ cùng phím tắt `[` `]` cho `ư` `ơ`.
+:::
 
 ## Dùng System Tray
 
-Icon **FU** trên khay hệ thống là trung tâm điều khiển Funput:
+Icon Funput trên khay hệ thống là trung tâm điều khiển:
 
 | Thao tác | Chức năng |
 | -------- | --------- |
-| **Click trái** | Bật/tắt "Tiếng Việt" (icon đổi màu ↔ mono) |
+| **Click trái** | Mở / đóng **Control Center** |
 | **Click phải** | Mở menu ngữ cảnh |
 
-Menu click phải gồm:
+**Control Center** (click trái) là bảng điều khiển nhanh, bật/tắt ngay mà không phải mở Cài đặt:
 
-- Bật/tắt VI/EN
-- Chuyển **Telex** / **VNI**
-- **Cài đặt…** — mở cửa sổ Settings
-- **Hướng dẫn**
+- Bật / tắt **gõ tiếng Việt**
+- Đổi **kiểu gõ** — Telex · Telex+ · VNI
+- Bật nhanh **Kiểm tra chính tả**, **Khôi phục tiếng Anh**, **Tự động viết hoa**
+- Xem **phím chuyển** và **kiểu đặt dấu** đang dùng
+- **Mở cài đặt đầy đủ**
+
+**Menu click phải** gồm đúng bốn mục:
+
+- **Cài đặt…**
+- **Chuyển mã…**
 - **Kiểm tra cập nhật…**
 - **Thoát**
 
+:::tip
+Icon tray đổi **màu ↔ trắng đen** theo trạng thái: có màu là đang gõ tiếng Việt, trắng đen là đang gõ tiếng Anh. Liếc một cái là biết, không cần mở gì.
+:::
+
 ## Cấu hình
 
-Mở **Cài đặt…** từ menu tray để chỉnh:
+Mở **Cài đặt…** từ menu tray. Cửa sổ chia làm sáu mục:
 
-- Kiểu gõ **Telex** hoặc **VNI**
-- Phím tắt bật/tắt tiếng Việt
-- Smart/eager restore
-- **Khởi động cùng Windows** — Funput tự chạy khi đăng nhập (registry `HKCU\...\Run`)
-
-Cài đặt lưu tại:
-
-```
-%APPDATA%\Funput\settings.json
-```
+| Mục | Chỉnh được gì |
+| --- | --- |
+| **Tổng quan** | Bật/tắt tiếng Việt · kiểu gõ · tự tắt khi đổi bàn phím (Nhật, Hàn, Trung…) · khởi động cùng Windows |
+| **Cách gõ** | Kiểu gõ · kiểu đặt dấu (truyền thống `hòa` / hiện đại `hoà`) · tự khôi phục tiếng Anh · khôi phục tức thì · kiểm tra chính tả · tự động viết hoa |
+| **Phím tắt** | Phím chuyển VI/EN · phím lật lại từ vừa gõ (mặc định tắt) |
+| **Gõ tắt** | Bảng viết tắt tự bung, tuỳ chọn khớp cả hoa lẫn thường |
+| **Dữ liệu** | Xuất / nhập cấu hình · công cụ Chuyển mã · nhập bảng gõ tắt từ UniKey |
+| **Giới thiệu** | Phiên bản · kiểm tra cập nhật · liên kết |
 
 Thay đổi có hiệu lực ngay và được giữ qua các lần khởi động lại.
+
+### Cấu hình lưu ở đâu
+
+Funput ưu tiên **portable**: cấu hình nằm ngay cạnh file `Funput.exe` để cả app đi theo USB được. Nó chọn vị trí theo thứ tự sau:
+
+| Thứ tự | Vị trí | Khi nào dùng |
+| --- | --- | --- |
+| 1 | `%FUNPUT_CONFIG%` | Chỉ khi bạn tự đặt biến môi trường này |
+| 2 | `<thư mục chứa Funput.exe>\settings.json` | **Trường hợp thường gặp** — khi thư mục đó ghi được |
+| 3 | `%APPDATA%\Funput\settings.json` | Dự phòng, khi thư mục chứa app chỉ đọc |
+
+:::info
+Đặt app trong `C:\Program Files\Funput\` sẽ rơi vào trường hợp 3, vì thư mục đó cần quyền admin để ghi. Đặt trong `%LOCALAPPDATA%\Programs\Funput\` thì cấu hình nằm cùng chỗ với app.
+:::
+
+## Giới hạn đã biết
+
+:::danger[Không gõ được vào ứng dụng chạy quyền Administrator]
+
+Task Manager, Registry Editor, một số trình cài đặt và công cụ quản trị chạy ở quyền cao hơn Funput, nên Windows **chặn** Funput đưa phím vào các cửa sổ đó. Đây là cơ chế bảo vệ của hệ điều hành, không phải lỗi của app.
+
+**Cách xử lý:** click phải `Funput.exe` → **Run as administrator**. Funput sẽ gõ được vào cả ứng dụng thường lẫn ứng dụng elevated.
+
+:::
+
+- **Không tự kiểm tra cập nhật nền.** Bạn phải chủ động chọn **Kiểm tra cập nhật…**.
+- **Chưa có installer.** Bản phát hành là một file `.exe` portable, chưa có MSI.
+- **Chưa ký Authenticode**, nên SmartScreen sẽ cảnh báo ở lần chạy đầu tiên.
 
 ## Cập nhật
 
@@ -98,7 +164,7 @@ Windows **không có** kho package như Linux (`repo.funput.app`). Cập nhật 
 
 | Cách truy cập | Thao tác |
 | ------------- | -------- |
-| **System Tray** | Click phải icon FU → **Kiểm tra cập nhật…** |
+| **System Tray** | Click phải icon Funput → **Kiểm tra cập nhật…** |
 | **Cài đặt** | **Cài đặt → Giới thiệu → Kiểm tra cập nhật…** |
 
 Quy trình khi có bản mới:
@@ -116,8 +182,28 @@ Funput **không tự kiểm tra cập nhật nền** — bạn cần chủ độ
 
 1. Tải `Funput-<version>.exe` mới từ [GitHub Releases](https://github.com/Funput/Funput/releases)
 2. Thoát Funput (menu tray → **Thoát**)
-3. Thay file `.exe` cũ bằng bản mới
-4. Double-click chạy lại
+3. Đặt file mới vào **cùng thư mục** với `Funput.exe` cũ, rồi double-click file mới
+4. Funput tự thay `Funput.exe` bằng bản mới và dọn file có số phiên bản
+
+## Gỡ cài đặt
+
+Funput là app portable, không có trình gỡ cài đặt. Cần dọn ba thứ:
+
+1. **Thoát Funput** từ menu tray, rồi xoá thư mục chứa app.
+2. **Xoá mục khởi động cùng Windows**, nếu bạn đã bật.
+3. **Xoá cấu hình dự phòng** trong `%APPDATA%`, nếu có.
+
+Chạy trong PowerShell (sửa đường dẫn ở dòng đầu cho khớp nơi bạn đặt app):
+
+```powershell
+Remove-Item -Recurse "$env:LOCALAPPDATA\Programs\Funput"
+Remove-ItemProperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\Run" -Name Funput -ErrorAction SilentlyContinue
+Remove-Item -Recurse "$env:APPDATA\Funput" -ErrorAction SilentlyContinue
+```
+
+:::caution
+Xoá thư mục app cũng xoá `settings.json` nằm trong đó. Muốn giữ lại cấu hình, vào **Cài đặt → Dữ liệu → Xuất cấu hình** trước khi gỡ.
+:::
 
 ## Xử lý sự cố
 
@@ -127,17 +213,29 @@ Xem mục [Cài đặt / chạy lần đầu](#cài-đặt--chạy-lần-đầu)
 
 ### Không gõ được trong app chạy quyền Admin
 
-Funput chạy ở quyền thường **không thể hook** vào app elevated (Task Manager, một số công cụ admin). Để gõ trong app Admin, Funput cũng cần chạy với quyền Administrator.
+Xem mục [Giới hạn đã biết](#giới-hạn-đã-biết) — chạy Funput bằng **Run as administrator**.
+
+### File `Funput-<version>.exe` biến mất sau khi chạy
+
+Bình thường. Funput đã đổi nó thành `Funput.exe` cùng thư mục — xem mục [Cài đặt / chạy lần đầu](#cài-đặt--chạy-lần-đầu).
+
+### Gõ VNI mà không ra dấu
+
+VNI đặt dấu bằng **chữ số** (`chao2` → `chào`), không phải chữ cái. Nếu bạn quen `chaof` thì đang gõ **Telex** — đổi kiểu gõ trong Control Center hoặc **Cài đặt → Cách gõ**.
 
 ### Funput không tự khởi động khi bật máy
 
-Bật **Khởi động cùng Windows** trong **Cài đặt**, hoặc tạo shortcut trong thư mục Startup của Windows.
+Bật **Khởi động cùng Windows** trong **Cài đặt → Tổng quan**. Nếu bạn di chuyển `Funput.exe` sang thư mục khác, hãy tắt rồi bật lại tuỳ chọn này để Funput ghi lại đường dẫn mới.
 
-### Không thấy icon FU trên khay hệ thống
+### Không thấy icon Funput trên khay hệ thống
 
-- Kiểm tra vùng **hidden icons** (mũi tên ^ trên taskbar) — Windows có thể ẩn icon mới.
-- Chạy lại `Funput-*.exe`.
+- Kiểm tra vùng **hidden icons** (mũi tên ^ trên taskbar) — Windows thường ẩn icon mới.
+- Chạy lại `Funput.exe`. Nếu Funput đã chạy sẵn, lần chạy thứ hai chỉ mở cửa sổ Cài đặt — đó là dấu hiệu app vẫn sống và icon chỉ đang bị ẩn.
 - Khởi động lại Windows nếu app bị crash im lặng.
+
+### Cài đặt không được lưu
+
+Thư mục chứa app có thể chỉ đọc. Kiểm tra xem `settings.json` nằm ở đâu theo bảng trong mục [Cấu hình lưu ở đâu](#cấu-hình-lưu-ở-đâu), hoặc chuyển app sang `%LOCALAPPDATA%\Programs\Funput\`.
 
 ### File `.exe` nghi bị hỏng
 

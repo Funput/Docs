@@ -5,25 +5,60 @@ sidebar_position: 2
 
 # Cài đặt trên macOS
 
-Funput là **Input Method native** trên macOS — tích hợp sâu vào hệ thống, hiển thị trên Menu bar và hoạt động trong mọi ứng dụng. Bản phát hành hỗ trợ cả **Apple Silicon** (M-series) và **Intel**.
+Funput là **Input Method native** trên macOS — tích hợp sâu vào hệ thống, hiển thị trên thanh menu và hoạt động trong mọi ứng dụng.
+
+## Yêu cầu
+
+| | |
+| --- | --- |
+| **Hệ điều hành tối thiểu** | **macOS 26 (Tahoe)**. macOS 27 được hỗ trợ đầy đủ |
+| **Chip** | **Apple Silicon (M-series) và Intel** — bản phát hành là universal binary |
+| **Chữ ký** | Ký **Developer ID** và **notarized**, nên Gatekeeper không chặn |
+
+:::danger[macOS 26 là yêu cầu bắt buộc]
+
+Trên **macOS 15 (Sequoia) trở xuống, Funput không chạy được** — hệ thống từ chối nạp bộ gõ, và không có chế độ chạy giới hạn nào thay thế. Đây là giới hạn cứng ghi trong chính bundle, không phải khuyến nghị.
+
+Nguyên nhân là giao diện Funput dựng trên các API SwiftUI mới của macOS 26 (Liquid Glass), không phải ở phần xử lý gõ tiếng Việt.
+
+Kiểm tra phiên bản máy bạn:  → **About This Mac**.
+
+:::
+
+## Tính năng
+
+| | |
+| --- | --- |
+| **Ba kiểu gõ** | Telex · Telex nâng cao (thêm `w` đầu từ, phím tắt `[` `]`) · VNI |
+| **Kiểu đặt dấu** | Truyền thống (`hòa`, `khỏe`) hoặc hiện đại (`hoà`, `khoẻ`) |
+| **Gõ thông minh** | Tự khôi phục từ tiếng Anh · khôi phục tức thì · kiểm tra chính tả · tự động viết hoa |
+| **Bỏ dấu sau Backspace** | Xoá lùi rồi gõ dấu khác, Funput đặt lại dấu cho đúng từ |
+| **Nhớ theo ứng dụng** | Bật tiếng Việt ở Pages, tắt ở Terminal — Funput tự chuyển khi bạn đổi app |
+| **Gõ tắt** | Bảng viết tắt tự bung, tuỳ chọn khớp cả hoa lẫn thường |
+| **Chuyển mã** | Đổi qua lại giữa Unicode dựng sẵn, Unicode tổ hợp, TCVN3 (ABC) và VNI-Windows |
+| **Xuất / nhập cấu hình** | Mang toàn bộ tuỳ chọn và gõ tắt sang máy khác bằng một tệp |
 
 ## Tải xuống
 
-Tải bản phát hành mới nhất từ [GitHub Releases](https://github.com/Funput/Funput/releases). Mỗi bản macOS thường có hai file cài đặt:
+Tải bản phát hành mới nhất từ [GitHub Releases](https://github.com/Funput/Funput/releases). Mỗi bản macOS có hai file cài đặt:
 
 | File | Mô tả |
 | ---- | ----- |
 | `Funput-*.pkg` | Cài system-wide, **cần quyền admin** |
 | `Funput-*.app.zip` | Giải nén và cài thủ công, **không cần admin** |
 
-Cả hai bản đều được **ký Developer ID** và **notarized** — macOS Gatekeeper sẽ không chặn khi bạn mở file.
-
 :::tip[Chọn cách cài phù hợp]
 
-- Có quyền admin trên máy → dùng **`.pkg`** (nhanh, một bước).
+- Có quyền admin trên máy → dùng **`.pkg`** (nhanh, một bước, dùng chung cho mọi tài khoản).
 - Không có quyền admin (máy công ty, tài khoản Standard) → dùng **`.app.zip`**.
 
 :::
+
+**Kiểm tra SHA-256** trước khi cài — so kết quả với file `.sha256` trên trang release:
+
+```bash
+shasum -a 256 Funput-*.pkg
+```
 
 ## Cách 1: Cài bằng `.pkg` (khuyến nghị)
 
@@ -54,7 +89,9 @@ Không chạy Funput trực tiếp từ thư mục Downloads hoặc Desktop lâu
 
 ## Bật bộ gõ
 
-Sau khi cài (cả hai cách), thêm Funput vào nguồn nhập của macOS:
+:::warning
+Cài xong **chưa gõ tiếng Việt được ngay**. macOS bắt buộc bạn thêm Funput vào danh sách nguồn nhập trước.
+:::
 
 1. Mở **System Settings** (Cài đặt Hệ thống)
 2. Vào **Keyboard** → **Input Sources** (Bàn phím → Nguồn nhập)
@@ -62,30 +99,152 @@ Sau khi cài (cả hai cách), thêm Funput vào nguồn nhập của macOS:
 4. Chọn **Vietnamese** → **Funput**
 5. Nhấn **Add** (Thêm)
 
-Funput sẽ xuất hiện trên Menu bar. Dùng phím tắt chuyển bộ gõ của macOS (mặc định thường là `Ctrl + Space` hoặc `Globe`) để chọn Funput.
+Funput sẽ xuất hiện trên thanh menu. Dùng phím tắt chuyển bộ gõ của macOS (mặc định thường là `⌃Space` hoặc phím 🌐) để chọn Funput.
 
-## Sau khi cài
+## Bắt đầu gõ
 
-- **Lần đầu mở:** Funput có thể hiển thị màn hình **onboarding** hướng dẫn bật Input Source.
-- **Cấu hình kiểu gõ:** Mở **Funput** từ menu ứng dụng (Launchpad hoặc Spotlight) để chọn **Telex** hoặc **VNI** và các tùy chọn khác.
-- **Menu bar:** Icon Funput trên thanh menu cho phép truy cập nhanh cài đặt.
+Sau khi chọn Funput làm nguồn nhập, phím tắt bật/tắt tiếng Việt mặc định là **`⌃` + `\`** (Control + dấu gạch chéo ngược). Đổi được trong **Cài đặt → Phím tắt**.
+
+Thử gõ nhanh:
+
+| Kiểu gõ | Gõ thế này | Ra thế này |
+| --- | --- | --- |
+| **Telex** | `tieesng vieejt` | tiếng việt |
+| **VNI** | `xin chao2` | xin chào |
+
+:::info[Telex và VNI khác nhau chỗ nào?]
+**Telex** đặt dấu bằng chữ cái: `s` sắc, `f` huyền, `r` hỏi, `x` ngã, `j` nặng — nên `chaof` ra `chào`.
+
+**VNI** đặt dấu bằng chữ số: `1` sắc, `2` huyền, `3` hỏi, `4` ngã, `5` nặng — nên `chao2` mới ra `chào`.
+
+Funput còn có **Telex nâng cao**: giữ nguyên Telex và thêm `w` đầu từ cùng phím tắt `[` `]` cho `ư` `ơ`.
+:::
+
+## Tìm Funput ở đâu sau khi cài
+
+Bộ gõ nằm trong thư mục `Library/Input Methods`, mà **Spotlight không đánh chỉ mục thư mục đó** — nên gõ "Funput" vào Spotlight sẽ không ra gì nếu chỉ có bộ gõ.
+
+Để giải quyết, Funput tự đặt thêm một app nhỏ làm lối vào:
+
+| Cách cài | App nằm ở |
+| --- | --- |
+| `.pkg` | `/Applications/Funput.app` |
+| `.app.zip` | `~/Applications/Funput.app` — app tự tạo ở lần chạy đầu |
+
+App này không phải bộ gõ, nó chỉ mở thẳng cửa sổ **Cài đặt**. Nhờ vậy bạn gõ "Funput" trong Spotlight là vào được cài đặt như một ứng dụng bình thường.
+
+Ngoài ra, icon **VI** trên thanh menu cũng mở nhanh bảng điều khiển: bật/tắt tiếng Việt, đổi kiểu gõ, mở Cài đặt. Tắt icon này được trong **Cài đặt → Tổng quan → Hiện biểu tượng thanh menu**.
+
+## Cấu hình
+
+Cửa sổ **Cài đặt** có bốn mục chính, cộng các công cụ ở cuối thanh bên:
+
+| Mục | Chỉnh được gì |
+| --- | --- |
+| **Tổng quan** | Trạng thái · kiểu gõ · khởi động cùng máy · hiện biểu tượng thanh menu |
+| **Cách gõ** | Kiểu gõ · kiểu đặt dấu · tự khôi phục từ tiếng Anh · khôi phục tức thì · kiểm tra chính tả · tự động viết hoa |
+| **Phím tắt** | Phím chuyển Việt/Anh · phím lật lại từ vừa gõ |
+| **Gõ tắt** | Bảng viết tắt tự bung, tuỳ chọn khớp cả hoa lẫn thường |
+| **Công cụ** | Chuyển mã · nhập / xuất cấu hình · kiểm tra cập nhật · giới thiệu |
+
+:::info[Tổ hợp phím tự đặt]
+Phím tắt bạn tự ghi bắt buộc phải kèm `⌃`, `⌥` hoặc `⌘`. Một phím trần sẽ bắn nhầm ngay giữa lúc gõ, nên Funput từ chối nhận.
+:::
+
+### Cấu hình lưu ở đâu
+
+macOS không dùng file cấu hình riêng — Funput lưu vào `UserDefaults` của hệ thống:
+
+| Domain | Của |
+| --- | --- |
+| `app.funput.inputmethod.Funput` | Bộ gõ và mọi tuỳ chọn |
+| `app.funput.Funput` | App lối vào trong Applications |
+
+Muốn mang cấu hình sang máy khác, dùng **Cài đặt → Dữ liệu → Xuất cấu hình** thay vì chép file thủ công.
+
+## Giới hạn đã biết
+
+:::danger[Gõ vào app Chromium/Electron trên macOS 26/27 beta có thể đứng im]
+
+**Hiện tượng:** sau khi chuyển nguồn nhập trong lúc một ô nhập của Chrome, Cursor, VS Code, Slack, Discord, Notion… đang có focus, phím chữ ngừng ra chữ. Phím tắt không cần bộ gõ (⌘C, Delete, phím mũi tên) vẫn chạy bình thường. Nặng hơn thì app đứng 15–30 giây.
+
+**Không phải lỗi của Funput.** Apple đổi nội bộ `TextInputUIMacHelper` trên macOS 26/27 beta, và cầu nối `NSTextInputContext` của Chromium chưa theo kịp. Mọi bộ gõ bên thứ ba đều dính — Funput, OpenKey, EVKey, GoTiengViet đều vậy, vì macOS không có API nào khác cho bộ gõ tuỳ chỉnh.
+
+**Cách né:** chuyển sang Funput **trước** khi bấm vào ô nhập, hoặc bấm ra ngoài rồi bấm lại vào ô nhập sau khi đổi nguồn. App AppKit thuần (TextEdit, Notes, Mail, Safari, Pages) không bị.
+
+:::
+
+- **Bỏ dấu sau Backspace không chạy trong Cursor.** Cursor báo vị trí con trỏ mâu thuẫn, nên Funput từ chối thay vì đoán bừa và làm hỏng văn bản. VS Code thì bình thường.
+- **Không tự kiểm tra cập nhật nền** — bạn cần chủ động bấm **Kiểm tra cập nhật**.
+- **Không có bản Mac App Store.** Bộ gõ không thể chạy trong sandbox, nên Funput chỉ phát hành trực tiếp qua GitHub Releases.
 
 ## Cập nhật
 
-Funput hỗ trợ **tự cập nhật** qua Sparkle. Khi có bản mới, app sẽ thông báo và bạn có thể cập nhật trực tiếp trong ứng dụng.
+Mở **Cài đặt → Kiểm tra cập nhật**. Funput đọc `appcast.xml` đã ký từ GitHub Releases, xác minh chữ ký **Ed25519**, rồi cài bản mới.
+
+:::info
+Funput **không tự kiểm tra cập nhật nền** và cũng không hiện thông báo khi có bản mới — bạn cần chủ động bấm **Kiểm tra cập nhật**.
+:::
 
 Nếu muốn cập nhật thủ công:
 
 1. Tải bản mới từ [GitHub Releases](https://github.com/Funput/Funput/releases)
 2. Cài đè theo cùng cách bạn đã dùng lần trước (`.pkg` hoặc `.app.zip`)
 
+## Gỡ cài đặt
+
+macOS nhớ nguồn nhập độc lập với file trên đĩa, nên **thứ tự rất quan trọng**:
+
+1. Mở **System Settings → Keyboard → Input Sources**, chọn **Funput**, nhấn **−**.
+2. Xoá các file của Funput (xem bên dưới).
+3. **Đăng xuất rồi đăng nhập lại**, hoặc khởi động lại máy, để macOS quên hẳn nguồn nhập.
+
+Nếu bạn có mã nguồn, script gỡ dọn sạch mọi thứ — cả bản system-wide lẫn bản per-user, app lối vào, receipt của `.pkg`, preferences và cache:
+
+```bash
+./scripts/uninstall.sh              # gỡ sạch
+./scripts/uninstall.sh --keep-prefs # gỡ app nhưng giữ lại cài đặt
+```
+
+:::warning
+Chạy script bằng tài khoản thường, **đừng `sudo ./uninstall.sh`**. Script tự gọi `sudo` đúng chỗ cần; chạy cả script dưới root sẽ xoá preferences của root thay vì của bạn.
+:::
+
+Muốn xoá tay thì đây là toàn bộ đường dẫn liên quan:
+
+```bash
+sudo rm -rf "/Library/Input Methods/Funput.app"   # bản .pkg
+rm -rf "$HOME/Library/Input Methods/Funput.app"   # bản .app.zip
+sudo rm -rf /Applications/Funput.app              # app lối vào (.pkg)
+rm -rf "$HOME/Applications/Funput.app"            # app lối vào (.app.zip)
+sudo pkgutil --forget com.funput.installer        # receipt của .pkg
+defaults delete app.funput.inputmethod.Funput     # cài đặt
+defaults delete app.funput.Funput
+```
+
 ## Xử lý sự cố
 
 ### Không thấy Funput trong Input Sources
 
-- **Đăng xuất và đăng nhập lại** (log out/in) một lần — macOS cần làm mới danh sách Input Method.
+- **Đăng xuất và đăng nhập lại** (log out/in) một lần — macOS chỉ quét lại danh sách Input Method khi phiên đăng nhập bắt đầu.
 - Kiểm tra `Funput.app` đã nằm đúng trong `/Library/Input Methods` hoặc `~/Library/Input Methods` chưa.
-- Thử mở Funput từ Launchpad — onboarding có thể hướng dẫn thêm bước còn thiếu.
+- Kiểm tra máy bạn chạy **macOS 26 trở lên** — bản cũ hơn sẽ không nạp bộ gõ, xem mục [Yêu cầu](#yêu-cầu).
+
+### Spotlight không tìm thấy "Funput"
+
+Bình thường: bộ gõ nằm trong thư mục Spotlight không đánh chỉ mục. Xem mục [Tìm Funput ở đâu sau khi cài](#tìm-funput-ở-đâu-sau-khi-cài) — app lối vào trong `Applications` mới là thứ Spotlight thấy.
+
+### Đã chọn Funput nhưng gõ ra tiếng Anh
+
+Funput có thể đang ở chế độ tiếng Anh. Nhấn **`⌃` + `\`** để bật lại, hoặc bấm icon **VI** trên thanh menu để xem trạng thái.
+
+### Gõ VNI mà không ra dấu
+
+VNI đặt dấu bằng **chữ số** (`chao2` → `chào`), không phải chữ cái. Nếu bạn quen `chaof` thì đang gõ **Telex** — đổi kiểu gõ trên thanh menu hoặc trong **Cài đặt → Cách gõ**.
+
+### Đang gõ thì app Chrome / VS Code / Slack ngừng nhận chữ
+
+Xem mục [Giới hạn đã biết](#giới-hạn-đã-biết) — đây là lỗi phía Chromium trên macOS 26/27 beta, không phải của Funput.
 
 ### macOS cảnh báo khi mở file
 

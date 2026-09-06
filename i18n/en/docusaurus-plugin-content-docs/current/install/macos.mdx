@@ -5,47 +5,82 @@ sidebar_position: 2
 
 # Install on macOS
 
-Funput is a **native Input Method** on macOS — deeply integrated with the system, shown in the menu bar, and works in every app. Releases support both **Apple Silicon** (M-series) and **Intel**.
+On macOS, Funput is a **native input method** — deeply integrated with the system, visible in the menu bar, and working in every app.
+
+## Requirements
+
+| | |
+| --- | --- |
+| **Minimum OS** | **macOS 26 (Tahoe)**. macOS 27 is fully supported |
+| **Chip** | **Apple Silicon (M-series) and Intel** — releases are universal binaries |
+| **Signing** | **Developer ID signed** and **notarized**, so Gatekeeper does not block it |
+
+:::danger[macOS 26 is a hard requirement]
+
+**Funput will not run on macOS 15 (Sequoia) or earlier** — the system refuses to load the input method, and there is no reduced mode to fall back on. This limit is baked into the bundle itself; it is not a recommendation.
+
+The reason is that Funput's interface is built on SwiftUI APIs introduced in macOS 26 (Liquid Glass), not on anything in the Vietnamese typing engine.
+
+To check your version:  → **About This Mac**.
+
+:::
+
+## Features
+
+| | |
+| --- | --- |
+| **Three input methods** | Telex · Telex Advanced (leading `w`, plus `[` / `]` shortcuts) · VNI |
+| **Tone placement** | Traditional (`hòa`, `khỏe`) or modern (`hoà`, `khoẻ`) |
+| **Smart typing** | English word restore · instant restore · spell check · auto-capitalization |
+| **Retone after Backspace** | Delete back, type a different tone mark, and Funput re-tones the word correctly |
+| **Per-app memory** | Vietnamese on in Pages, off in Terminal — Funput switches as you change apps |
+| **Text expansion** | Abbreviation table that expands as you type, with optional case-insensitive matching |
+| **Charset converter** | Convert between precomposed Unicode, combining Unicode, TCVN3 (ABC) and VNI-Windows |
+| **Export / import config** | Move every option and abbreviation to another machine as a single file |
 
 ## Download
 
-Download the latest release from [GitHub Releases](https://github.com/Funput/Funput/releases). Each macOS release typically includes two installers:
+Get the latest release from [GitHub Releases](https://github.com/Funput/Funput/releases). Each macOS release ships two installers:
 
 | File | Description |
 | ---- | ----------- |
-| `Funput-*.pkg` | System-wide install, **requires admin** |
-| `Funput-*.app.zip` | Extract and install manually, **no admin required** |
+| `Funput-*.pkg` | System-wide install, **requires admin rights** |
+| `Funput-*.app.zip` | Unzip and install manually, **no admin rights needed** |
 
-Both builds are **Developer ID signed** and **notarized** — macOS Gatekeeper will not block them when you open the file.
+:::tip[Which one to choose]
 
-:::tip[Choose the right installer]
-
-- You have admin rights on the machine → use **`.pkg`** (fast, one step).
-- No admin rights (work machine, Standard account) → use **`.app.zip`**.
+- You have admin rights → use the **`.pkg`** (one step, shared by every account on the Mac).
+- No admin rights (work machine, Standard account) → use the **`.app.zip`**.
 
 :::
+
+**Verify the SHA-256** before installing — compare with the `.sha256` file on the release page:
+
+```bash
+shasum -a 256 Funput-*.pkg
+```
 
 ## Option 1: Install with `.pkg` (recommended)
 
 1. Double-click `Funput-*.pkg` — macOS opens **Installer.app**.
-2. Follow the on-screen steps and **enter your password** when prompted.
+2. Follow the on-screen steps and **enter your password** when asked.
 3. Funput is installed to `/Library/Input Methods/Funput.app`.
 
 :::info
-This path is the **system-wide** Input Methods folder, not the per-user folder (`~/Library/Input Methods`).
+That path is the **system-wide** Input Methods folder, distinct from the per-user one (`~/Library/Input Methods`).
 :::
 
-When installation finishes, continue to [Enable the input method](#enable-the-input-method) below.
+Once installed, continue to [Enable the input method](#enable-the-input-method) below.
 
-## Option 2: Install with `.app.zip` (no admin)
+## Option 2: Install with `.app.zip` (no admin rights)
 
-1. Double-click `Funput-*.app.zip` to extract — you will get `Funput.app`.
-2. Open the **Input Methods** folder in your user Library:
+1. Double-click `Funput-*.app.zip` to unzip — you get `Funput.app`.
+2. Open the per-user **Input Methods** folder:
    - Open **Finder**
    - Press `Cmd + Shift + G`
    - Type `~/Library/Input Methods` and press Enter
-   - If the folder does not exist, create it with the name `Input Methods`
-3. Drag `Funput.app` into the `Input Methods` folder.
+   - If the folder does not exist, create one named `Input Methods`
+3. Drag `Funput.app` into that folder.
 4. Continue to [Enable the input method](#enable-the-input-method) below.
 
 :::caution
@@ -54,7 +89,9 @@ Do not run Funput from Downloads or Desktop long term — place it in `~/Library
 
 ## Enable the input method
 
-After installing (either option), add Funput to macOS input sources:
+:::warning
+Installing is not enough to start typing Vietnamese. macOS requires you to add Funput to your input sources first.
+:::
 
 1. Open **System Settings**
 2. Go to **Keyboard** → **Input Sources**
@@ -62,30 +99,152 @@ After installing (either option), add Funput to macOS input sources:
 4. Select **Vietnamese** → **Funput**
 5. Click **Add**
 
-Funput appears in the menu bar. Use macOS input switching shortcuts (often `Ctrl + Space` or the **Globe** key) to select Funput.
+Funput appears in the menu bar. Use the macOS input-switching shortcut (usually `⌃Space` or the 🌐 key) to select Funput.
 
-## After installation
+## Getting started
 
-- **First launch:** Funput may show an **onboarding** screen to help you enable the input source.
-- **Input method settings:** Open **Funput** from the app menu (Launchpad or Spotlight) to choose **Telex** or **VNI** and other options.
-- **Menu bar:** The Funput icon in the menu bar provides quick access to settings.
+Once Funput is the active input source, the default shortcut to turn Vietnamese on and off is **`⌃` + `\`** (Control + backslash). You can change it in **Settings → Shortcuts**.
 
-## Updates
+Try typing:
 
-Funput supports **automatic updates** via Sparkle. When a new version is available, the app notifies you and you can update in place.
+| Input method | Type this | You get |
+| --- | --- | --- |
+| **Telex** | `tieesng vieejt` | tiếng việt |
+| **VNI** | `xin chao2` | xin chào |
+
+:::info[How Telex and VNI differ]
+**Telex** marks tones with letters: `s` acute, `f` grave, `r` hook, `x` tilde, `j` dot below — so `chaof` gives `chào`.
+
+**VNI** marks tones with digits: `1` acute, `2` grave, `3` hook, `4` tilde, `5` dot below — so `chao2` is what gives `chào`.
+
+Funput also offers **Telex Advanced**: plain Telex plus a leading `w` and the `[` / `]` shortcuts for `ư` and `ơ`.
+:::
+
+## Where to find Funput after installing
+
+The input method lives in a `Library/Input Methods` folder, and **Spotlight does not index those** — so searching for "Funput" finds nothing if only the input method is installed.
+
+To work around that, Funput adds a small companion app as an entry point:
+
+| Install method | App location |
+| --- | --- |
+| `.pkg` | `/Applications/Funput.app` |
+| `.app.zip` | `~/Applications/Funput.app` — created by the app on first launch |
+
+That app is not the input method; it simply opens the **Settings** window. With it in place, searching "Funput" in Spotlight gets you to settings like any normal app.
+
+The **VI** icon in the menu bar is the other quick way in: toggle Vietnamese, switch input method, open Settings. You can hide it under **Settings → Overview → Show menu bar icon**.
+
+## Configuration
+
+The **Settings** window has four main sections, plus tools at the bottom of the sidebar:
+
+| Section | What you can change |
+| --- | --- |
+| **Overview** | Status · input method · launch at login · show menu bar icon |
+| **Typing** | Input method · tone placement · English restore · instant restore · spell check · auto-capitalization |
+| **Shortcuts** | Vietnamese/English toggle key · key to flip the word you just typed |
+| **Text expansion** | Abbreviation table, with optional case-insensitive matching |
+| **Tools** | Charset converter · import / export configuration · check for updates · about |
+
+:::info[Custom key combinations]
+A shortcut you record must include `⌃`, `⌥` or `⌘`. A bare key would fire in the middle of normal typing, so Funput refuses to accept one.
+:::
+
+### Where settings are stored
+
+macOS does not use a separate configuration file — Funput writes to the system's `UserDefaults`:
+
+| Domain | Holds |
+| --- | --- |
+| `app.funput.inputmethod.Funput` | The input method and every option |
+| `app.funput.Funput` | The entry-point app in Applications |
+
+To move your configuration to another machine, use **Settings → Data → Export configuration** rather than copying files by hand.
+
+## Known limitations
+
+:::danger[Typing can stop working in Chromium/Electron apps on macOS 26/27 beta]
+
+**Symptom:** after switching input source while a text field in Chrome, Cursor, VS Code, Slack, Discord or Notion already has focus, character keys stop producing text. Shortcuts that do not need the input method (⌘C, Delete, arrow keys) keep working. In the worst case the app freezes for 15–30 seconds.
+
+**This is not a Funput bug.** Apple changed internals of `TextInputUIMacHelper` on macOS 26/27 beta, and Chromium's `NSTextInputContext` bridge does not yet handle the new timing. Every third-party input method is affected — Funput, OpenKey, EVKey, GoTiengViet alike — because macOS offers no other API for a custom input method.
+
+**Workaround:** switch to Funput **before** clicking into a text field, or click away and back into the field after switching. Native AppKit apps (TextEdit, Notes, Mail, Safari, Pages) are unaffected.
+
+:::
+
+- **Retone after Backspace does not work in Cursor.** Cursor reports a self-contradictory caret position, so Funput declines rather than guessing and corrupting your text. VS Code works fine.
+- **No background update checks** — you have to choose **Check for updates** yourself.
+- **No Mac App Store build.** An input method cannot be sandboxed, so Funput is distributed directly through GitHub Releases.
+
+## Updating
+
+Open **Settings → Check for updates**. Funput reads the signed `appcast.xml` from GitHub Releases, verifies its **Ed25519** signature, and installs the new version.
+
+:::info
+Funput **never checks for updates in the background** and does not notify you when a new version appears — you have to choose **Check for updates**.
+:::
 
 To update manually:
 
 1. Download the new release from [GitHub Releases](https://github.com/Funput/Funput/releases)
 2. Install over the previous version using the same method (`.pkg` or `.app.zip`)
 
+## Uninstalling
+
+macOS remembers input sources independently of the files on disk, so **order matters**:
+
+1. Open **System Settings → Keyboard → Input Sources**, select **Funput**, click **−**.
+2. Delete Funput's files (see below).
+3. **Log out and back in**, or restart, so macOS forgets the input source completely.
+
+If you have the source checkout, the uninstall script cleans up everything — system-wide and per-user bundles, the entry-point app, the `.pkg` receipt, preferences and caches:
+
+```bash
+./scripts/uninstall.sh              # remove everything
+./scripts/uninstall.sh --keep-prefs # remove the apps but keep settings
+```
+
+:::warning
+Run the script as your normal user — **not `sudo ./uninstall.sh`**. It escalates with `sudo` exactly where needed; running the whole script as root would wipe root's preferences instead of yours.
+:::
+
+To clean up by hand, these are all the paths involved:
+
+```bash
+sudo rm -rf "/Library/Input Methods/Funput.app"   # .pkg install
+rm -rf "$HOME/Library/Input Methods/Funput.app"   # .app.zip install
+sudo rm -rf /Applications/Funput.app              # entry-point app (.pkg)
+rm -rf "$HOME/Applications/Funput.app"            # entry-point app (.app.zip)
+sudo pkgutil --forget com.funput.installer        # .pkg receipt
+defaults delete app.funput.inputmethod.Funput     # settings
+defaults delete app.funput.Funput
+```
+
 ## Troubleshooting
 
 ### Funput does not appear in Input Sources
 
-- **Log out and log back in** once — macOS needs to refresh the Input Method list.
+- **Log out and log back in** once — macOS only rescans the Input Method list at the start of a login session.
 - Confirm `Funput.app` is in `/Library/Input Methods` or `~/Library/Input Methods`.
-- Try opening Funput from Launchpad — onboarding may guide you through any missing step.
+- Confirm your Mac runs **macOS 26 or newer** — older versions will not load the input method, see [Requirements](#requirements).
+
+### Spotlight cannot find "Funput"
+
+That is expected: the input method sits in a folder Spotlight does not index. See [Where to find Funput after installing](#where-to-find-funput-after-installing) — the entry-point app in `Applications` is what Spotlight sees.
+
+### Funput is selected but I still get English
+
+Funput may be in English mode. Press **`⌃` + `\`** to switch back, or click the **VI** menu bar icon to check the current state.
+
+### VNI typing produces no tone marks
+
+VNI marks tones with **digits** (`chao2` → `chào`), not letters. If `chaof` is what you are used to, you are typing **Telex** — switch method from the menu bar or in **Settings → Typing**.
+
+### Chrome / VS Code / Slack stops accepting characters
+
+See [Known limitations](#known-limitations) — this is a Chromium-side issue on macOS 26/27 beta, not a Funput bug.
 
 ### macOS warns when opening the file
 

@@ -5,9 +5,21 @@ sidebar_position: 3
 
 # Install on Windows
 
-On Windows, Funput is a **single portable `.exe` file** — it runs in the background in the **system tray** and works in every app. No MSI/installer is required (not available yet): double-click to run.
+On Windows, Funput is a **single portable `.exe` file** — it runs in the background in the **system tray** and works in every app. There is no Input Source to add as on macOS or Linux, and no MSI/installer yet: double-click to run.
 
-Supports **Windows 10 & 11 (64-bit)**.
+## Requirements
+
+| | |
+| --- | --- |
+| **Operating system** | Windows 10 version **1809** (build 17763) or newer · Windows 11 |
+| **Architecture** | **x86-64**. Windows on ARM runs it under emulation, but there is no native build yet |
+| **External runtime** | None — no WebView2, no .NET |
+
+:::note[Why build 17763?]
+That is the Windows version where the **Acrylic** backdrop used by Funput's Control Center became available. Older Windows versions are not blocked from running the app, but they are untested and the Control Center loses its backdrop material.
+
+The **Mica** backdrop is Windows 11 only. On Windows 10 the Settings window is drawn opaque — a deliberate choice so the window does not lag while being dragged or resized, not a bug.
+:::
 
 ## Download
 
@@ -29,11 +41,20 @@ Compare the output with the contents of the `.sha256` file on the release page.
 ## Install / first run
 
 1. Download `Funput-*.exe` from GitHub Releases.
-2. Double-click to run — the **FU** icon appears in the system tray (bottom-right of the screen).
-3. You can start typing Vietnamese immediately.
+2. Put the file in a fixed folder, e.g. `%LOCALAPPDATA%\Programs\Funput\`.
+3. Double-click to run — the Funput **f** icon appears in the system tray (bottom-right of the screen).
+4. An **Onboarding** window walks you through picking an input method; after that you can type Vietnamese anywhere.
 
-:::tip
-Keep the file in a fixed location, e.g. `%LOCALAPPDATA%\Programs\Funput\` or `C:\Program Files\Funput\`, instead of leaving it only in Downloads — this avoids losing the file when cleaning downloads or updating manually.
+:::tip[Where to put the file]
+Do not leave the app in **Downloads** — it is easy to delete by accident when clearing out downloads, and your settings live next to the app, so they would go with it. `%LOCALAPPDATA%\Programs\Funput\` is a good choice: no admin rights needed, and Funput can write its settings there.
+:::
+
+:::danger[The file you downloaded renames itself — this is expected]
+
+On its first run, `Funput-<version>.exe` **copies itself to `Funput.exe`** in the same folder, relaunches from that copy, and then **deletes the versioned file**.
+
+This is deliberate: launch-at-login and auto-update need a stable path that does not change with every release. From then on, you only ever run `Funput.exe`.
+
 :::
 
 :::warning[SmartScreen]
@@ -45,79 +66,144 @@ Windows may show a **SmartScreen** warning the first time (Funput is not Authent
 
 :::
 
-When the app is running, continue to [Onboarding & getting started](#onboarding--getting-started) below.
+## Getting started
 
-## Onboarding & getting started
+The default shortcut to turn Vietnamese on and off is **`Ctrl` + `` ` ``** (changeable in Settings to `Ctrl Space` or `Alt Shift`).
 
-- **First launch:** Funput shows an **Onboarding** window for initial setup.
-- **No Input Source setup** needed (unlike macOS or Linux) — the app works immediately via a keyboard hook.
-- Default **shortcut** to toggle Vietnamese: **`Ctrl + ` ` `** (configurable in Settings).
+Try typing:
 
-Quick test: Telex `tieesng vieejt` → `tiếng việt`, or VNI `xin chaof` → `xin chào`.
+| Input method | Type this | You get |
+| --- | --- | --- |
+| **Telex** | `tieesng vieejt` | tiếng việt |
+| **VNI** | `xin chao2` | xin chào |
+
+:::info[How Telex and VNI differ]
+**Telex** marks tones with letters: `s` acute, `f` grave, `r` hook, `x` tilde, `j` dot below — so `chaof` gives `chào`.
+
+**VNI** marks tones with digits: `1` acute, `2` grave, `3` hook, `4` tilde, `5` dot below — so `chao2` is what gives `chào`.
+
+Funput also offers **Telex+**: plain Telex plus a leading `w` and the `[` / `]` shortcuts for `ư` and `ơ`.
+:::
 
 ## Using the system tray
 
-The **FU** icon in the system tray is Funput's control center:
+The Funput tray icon is the control hub:
 
-| Action | Function |
-| ------ | -------- |
-| **Left-click** | Toggle Vietnamese on/off (icon switches color ↔ mono) |
-| **Right-click** | Open context menu |
+| Action | What it does |
+| ------ | ------------ |
+| **Left click** | Open / close the **Control Center** |
+| **Right click** | Open the context menu |
 
-The right-click menu includes:
+The **Control Center** (left click) is a quick panel, so you rarely need full Settings:
 
-- Toggle VI/EN
-- Switch **Telex** / **VNI**
-- **Settings…** — open the Settings window
-- **Help**
+- Turn **Vietnamese typing** on or off
+- Switch **input method** — Telex · Telex+ · VNI
+- Quick-toggle **spell check**, **English restore**, **auto-capitalization**
+- See the current **toggle shortcut** and **tone placement style**
+- **Open full settings**
+
+The **right-click menu** has exactly four items:
+
+- **Settings…**
+- **Charset converter…**
 - **Check for updates…**
 - **Quit**
 
+:::tip
+The tray icon switches between **colour and monochrome**: colour means Vietnamese typing is on, monochrome means you are typing English. One glance tells you which mode you are in.
+:::
+
 ## Configuration
 
-Open **Settings…** from the tray menu to configure:
+Open **Settings…** from the tray menu. The window has six sections:
 
-- Input method **Telex** or **VNI**
-- Toggle shortcut
-- Smart/eager restore
-- **Start with Windows** — Funput launches at sign-in (registry `HKCU\...\Run`)
+| Section | What you can change |
+| --- | --- |
+| **Overview** | Vietnamese on/off · input method · auto-disable when switching to a Japanese/Korean/Chinese keyboard · launch at login |
+| **Typing** | Input method · tone placement (traditional `hòa` / modern `hoà`) · English restore · instant restore · spell check · auto-capitalization |
+| **Shortcuts** | Vietnamese toggle key · key to flip the word you just typed (off by default) |
+| **Text expansion** | Abbreviation table that expands as you type, with optional case-insensitive matching |
+| **Data** | Export / import configuration · charset converter · import a UniKey abbreviation table |
+| **About** | Version · check for updates · links |
 
-Settings are stored at:
+Changes take effect immediately and persist across restarts.
 
-```
-%APPDATA%\Funput\settings.json
-```
+### Where settings are stored
 
-Changes apply immediately and persist across restarts.
+Funput is **portable-first**: its configuration lives next to `Funput.exe` so the whole app can travel on a USB stick. It picks a location in this order:
 
-## Updates
+| Order | Location | When it applies |
+| --- | --- | --- |
+| 1 | `%FUNPUT_CONFIG%` | Only if you set this environment variable yourself |
+| 2 | `<folder containing Funput.exe>\settings.json` | **The usual case** — when that folder is writable |
+| 3 | `%APPDATA%\Funput\settings.json` | Fallback, when the app's folder is read-only |
 
-Windows has **no package repository** like Linux (`repo.funput.app`). Update through the **app** (similar to Sparkle on macOS) or download manually from GitHub.
+:::info
+Putting the app in `C:\Program Files\Funput\` lands you in case 3, because that folder needs admin rights to write. Putting it in `%LOCALAPPDATA%\Programs\Funput\` keeps settings alongside the app.
+:::
+
+## Known limitations
+
+:::danger[Typing does not work in apps running as Administrator]
+
+Task Manager, Registry Editor, some installers and admin tools run at a higher privilege level than Funput, so Windows **blocks** it from sending keystrokes into those windows. This is an OS security boundary, not an app bug.
+
+**Workaround:** right-click `Funput.exe` → **Run as administrator**. Funput will then type into both normal and elevated apps.
+
+:::
+
+- **No background update checks.** You have to choose **Check for updates…** yourself.
+- **No installer yet.** Releases ship as a single portable `.exe`, not an MSI.
+- **Not Authenticode-signed**, so SmartScreen warns on the first run.
+
+## Updating
+
+Windows has **no package repository** like Linux (`repo.funput.app`). Update from inside the **app** (similar to Sparkle on macOS) or download manually from GitHub.
 
 ### In-app update (recommended)
 
-| Access | Action |
-| ------ | ------ |
-| **System tray** | Right-click FU icon → **Check for updates…** |
+| Where | Action |
+| ----- | ------ |
+| **System tray** | Right-click the Funput icon → **Check for updates…** |
 | **Settings** | **Settings → About → Check for updates…** |
 
-When a new version is available:
+When a newer version exists:
 
 1. The app reads the `funput-windows.json` manifest from GitHub Releases
 2. Downloads the new `.exe`
-3. **Verifies the Ed25519 signature** (same public key as macOS)
+3. **Verifies the Ed25519 signature** (same public key as the macOS build)
 4. Replaces the running executable and relaunches — **no sign-out required**
 
 :::info
-Funput does **not** check for updates in the background — you must choose **Check for updates…** manually.
+Funput **never checks for updates in the background** — you have to choose **Check for updates…**.
 :::
 
 ### Manual update
 
 1. Download the new `Funput-<version>.exe` from [GitHub Releases](https://github.com/Funput/Funput/releases)
 2. Quit Funput (tray menu → **Quit**)
-3. Replace the old `.exe` with the new one
-4. Double-click to run again
+3. Put the new file in the **same folder** as the old `Funput.exe`, then double-click the new file
+4. Funput replaces `Funput.exe` with the new build and cleans up the versioned file
+
+## Uninstalling
+
+Funput is portable, so there is no uninstaller. Three things to clean up:
+
+1. **Quit Funput** from the tray menu, then delete the folder holding the app.
+2. **Remove the launch-at-login entry**, if you enabled it.
+3. **Remove the fallback configuration** under `%APPDATA%`, if there is one.
+
+Run this in PowerShell (adjust the first path to wherever you put the app):
+
+```powershell
+Remove-Item -Recurse "$env:LOCALAPPDATA\Programs\Funput"
+Remove-ItemProperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\Run" -Name Funput -ErrorAction SilentlyContinue
+Remove-Item -Recurse "$env:APPDATA\Funput" -ErrorAction SilentlyContinue
+```
+
+:::caution
+Deleting the app folder also deletes the `settings.json` inside it. To keep your configuration, go to **Settings → Data → Export configuration** before uninstalling.
+:::
 
 ## Troubleshooting
 
@@ -125,25 +211,37 @@ Funput does **not** check for updates in the background — you must choose **Ch
 
 See [Install / first run](#install--first-run). Only download from the official [GitHub Releases](https://github.com/Funput/Funput/releases).
 
-### Cannot type in apps running as Administrator
+### Typing does not work in apps running as Administrator
 
-Funput running at normal privilege **cannot hook** into elevated apps (Task Manager, some admin tools). To type in admin apps, Funput must also run as Administrator.
+See [Known limitations](#known-limitations) — run Funput via **Run as administrator**.
 
-### Funput does not start automatically on boot
+### `Funput-<version>.exe` disappeared after I ran it
 
-Enable **Start with Windows** in **Settings**, or add a shortcut to the Windows Startup folder.
+That is expected. Funput renamed it to `Funput.exe` in the same folder — see [Install / first run](#install--first-run).
 
-### FU icon not visible in the system tray
+### VNI typing produces no tone marks
 
-- Check **hidden icons** (the ^ arrow on the taskbar) — Windows may hide new icons.
-- Run `Funput-*.exe` again.
+VNI marks tones with **digits** (`chao2` → `chào`), not letters. If `chaof` is what you are used to, you are typing **Telex** — switch method in the Control Center or **Settings → Typing**.
+
+### Funput does not start with Windows
+
+Enable **Launch at login** in **Settings → Overview**. If you moved `Funput.exe` to a different folder, toggle the option off and on again so Funput records the new path.
+
+### The Funput icon is missing from the system tray
+
+- Check the **hidden icons** area (the ^ arrow on the taskbar) — Windows usually hides new icons there.
+- Run `Funput.exe` again. If Funput is already running, the second launch simply opens the Settings window — a sign the app is alive and the icon is only hidden.
 - Restart Windows if the app crashed silently.
 
-### Suspected corrupt `.exe`
+### Settings are not being saved
 
-Verify SHA-256 (see [Download](#download)) and re-download if it does not match.
+The app's folder may be read-only. Check where `settings.json` actually lives using the table in [Where settings are stored](#where-settings-are-stored), or move the app to `%LOCALAPPDATA%\Programs\Funput\`.
+
+### The `.exe` looks corrupted
+
+Compare the SHA-256 (see [Download](#download)) and re-download if it does not match.
 
 ## Need more help?
 
-- [Report issues or discuss on GitHub](https://github.com/Funput/Funput/issues)
+- [Report a bug or start a discussion on GitHub](https://github.com/Funput/Funput/issues)
 - [Funput website](https://funput.app)
