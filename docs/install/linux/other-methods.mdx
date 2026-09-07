@@ -1,0 +1,150 @@
+---
+title: Cách cài khác
+sidebar_position: 4
+---
+
+# Cách cài khác
+
+[Hướng dẫn chính](./index.mdx) dùng kho `repo.funput.app` — đó là cách khuyến nghị cho gần như mọi người: có ký GPG và tự cập nhật. Trang này dành cho những trường hợp còn lại.
+
+| Bạn cần | Dùng |
+| ------- | ---- |
+| Một lệnh duy nhất, script tự nhận distro | [`install.sh`](#install-sh) |
+| Ghim một phiên bản cũ | [`install.sh --version`](#install-sh) |
+| Cài mà không có quyền root | [`--user`](#user-install) |
+| Tải gói về cài tay | [GitHub Releases](#releases) |
+| Distro không nằm trong 4 family được hỗ trợ | [Distro khác](#unsupported-distros) |
+
+## Script cài nhanh `install.sh` \{#install-sh\}
+
+Một lệnh tự nhận distro + kiến trúc, **thêm kho `repo.funput.app`** rồi cài bằng package manager bản địa — nên mặc định vẫn có cập nhật tự động y như hướng dẫn chính:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/Funput/Funput/main/platforms/linux/install.sh | bash
+```
+
+Không có cờ nào thì script cài bản **Fcitx5**.
+
+Tuỳ chọn:
+
+```bash
+# Ép framework
+curl -fsSL .../install.sh | bash -s -- --ibus
+curl -fsSL .../install.sh | bash -s -- --fcitx5
+
+# Cài vào ~/.local, không cần sudo
+curl -fsSL .../install.sh | bash -s -- --user
+
+# Bỏ qua kho, tải gói rời từ GitHub Releases (không tự cập nhật)
+curl -fsSL .../install.sh | bash -s -- --no-repo
+
+# Ghim phiên bản (tự hàm ý --no-repo, vì kho chỉ giữ bản mới nhất)
+curl -fsSL .../install.sh | bash -s -- --version v1.2026.28
+
+# Xem script sẽ chạy những lệnh gì mà không thay đổi gì cả
+curl -fsSL .../install.sh | bash -s -- --dry-run
+```
+
+Script in ra kế hoạch (distro, framework, gói, nguồn cài) trước khi động vào máy, và `--dry-run` in **đúng từng lệnh** sẽ chạy mà không thực thi lệnh nào — hữu ích khi bạn muốn xem trước những gì sẽ chạy bằng `sudo`. `--help` liệt kê đầy đủ tuỳ chọn.
+
+:::info
+Với `--no-repo`, `--version` và `--user`, script tải gói từ GitHub Releases rồi **đối chiếu SHA-256** với digest mà GitHub công bố cho chính file đó; lệch một byte là dừng, không cài. Đường mặc định (qua kho) không cần bước này — apt/dnf/zypper/pacman đã kiểm chữ ký GPG.
+:::
+
+:::caution
+`--no-repo` và `--version` **không có cập nhật tự động** — chạy lại script để cập nhật. Trên **Arch** hai cờ này không dùng được (không có gói rời cho Arch) — dùng kho, hoặc `--user`.
+:::
+
+## Cài không cần sudo `--user` \{#user-install\}
+
+Đường này cài vào `~/.local` — không cần quyền root, không đụng package manager. Chạy trên **mọi distro**, kiến trúc **x86-64 hoặc ARM64** (script dừng với kiến trúc khác).
+
+**Dành cho:**
+
+- Máy bạn không có quyền root.
+- **Arch Linux ARM** — kho pacman chỉ có x86_64.
+- Distro nằm ngoài 4 family được hỗ trợ.
+
+Đây **không** phải kênh phân phối ngang hàng với kho: không có chữ ký của package manager, không tự cập nhật, và cần máy **đã có sẵn** daemon Fcitx5 hoặc IBus (bản thân daemon vẫn phải cài bằng package manager).
+
+```bash
+# Fcitx5 (mặc định)
+curl -fsSL https://raw.githubusercontent.com/Funput/Funput/main/platforms/linux/install.sh | bash -s -- --user
+
+# IBus
+curl -fsSL https://raw.githubusercontent.com/Funput/Funput/main/platforms/linux/install.sh | bash -s -- --user --ibus
+```
+
+:::caution
+Với **Fcitx5**, script phải ghi thêm `FCITX_ADDON_DIRS` vào `~/.config/environment.d/funput.conf` — Fcitx5 chỉ quét thư mục addon hệ thống, không quét `~/.local`. Biến đó chỉ có hiệu lực sau khi **đăng xuất và đăng nhập lại**. Muốn thử ngay trong phiên hiện tại, chạy lại daemon với đúng dòng lệnh mà script in ra.
+
+Với **IBus** thì không cần: `ibus-daemon` tự quét `~/.local/share/ibus/component`, chỉ cần `ibus restart`.
+:::
+
+Cập nhật: chạy lại đúng lệnh đó — nó luôn lấy bản mới nhất và ghi đè.
+
+## GitHub Releases \{#releases\}
+
+Tải gói phù hợp từ [GitHub Releases](https://github.com/Funput/Funput/releases):
+
+| Định dạng | Fcitx5 | IBus |
+| --------- | ------ | ---- |
+| `.deb` (Debian/Ubuntu) | `funput_*_<arch>.deb` | `funput-ibus_*_<arch>.deb` |
+| `.rpm` (Fedora/openSUSE) | `funput-*.<arch>.rpm` | `funput-ibus-*.<arch>.rpm` |
+
+Kiến trúc: `.deb` dùng `amd64` / `arm64`; `.rpm` dùng `x86_64` / `aarch64`. Arch Linux không có gói rời.
+
+Phải tải **kèm `funput-settings`** đúng cùng phiên bản. Cả `funput` lẫn `funput-ibus` đều khai phụ thuộc vào nó ở **đúng một phiên bản**, nên khi cài từ file rời bạn phải đưa cả hai file vào cùng một lệnh — thiếu là package manager báo lỗi phụ thuộc.
+
+**Cài gói đã tải — bản Fcitx5:**
+
+```bash
+# Debian / Ubuntu
+sudo apt install ./funput_*.deb ./funput-settings_*.deb
+
+# Fedora
+sudo dnf install ./funput-<version>.<arch>.rpm ./funput-settings-<version>.<arch>.rpm
+
+# openSUSE
+sudo zypper install --allow-unsigned-rpm \
+  ./funput-<version>.<arch>.rpm ./funput-settings-<version>.<arch>.rpm
+```
+
+**Bản IBus:**
+
+```bash
+# Debian / Ubuntu
+sudo apt install ./funput-ibus_*.deb ./funput-settings_*.deb
+
+# Fedora
+sudo dnf install ./funput-ibus-<version>.<arch>.rpm ./funput-settings-<version>.<arch>.rpm
+
+# openSUSE
+sudo zypper install --allow-unsigned-rpm \
+  ./funput-ibus-<version>.<arch>.rpm ./funput-settings-<version>.<arch>.rpm
+```
+
+:::tip
+Với `.rpm` hãy gõ đủ tên file thay vì dùng dấu `*`: cả ba gói đều bắt đầu bằng `funput-`, nên `./funput-*.rpm` sẽ vơ luôn cả bản Fcitx5 lẫn bản IBus. Tên `.deb` thì không lẫn — `funput_` có gạch dưới, chỉ khớp đúng bản Fcitx5.
+:::
+
+:::info
+Gói rời trên GitHub Releases **không được ký** — chữ ký GPG chỉ có ở kho `repo.funput.app`. `apt` và `dnf` chấp nhận file cục bộ, riêng `zypper` sẽ dừng lại hỏi, nên cần `--allow-unsigned-rpm`.
+:::
+
+:::caution
+Nếu `apt`/`dpkg` báo lỗi đọc file (`could not locate member control.tar`, `unexpected end of file`) — file `.deb` tải về bị **hỏng/cắt cụt**. Tải lại từ đầu.
+:::
+
+## Distro không có trong danh sách \{#unsupported-distros\}
+
+`install.sh` nhận **bốn family**, khớp theo `ID` rồi `ID_LIKE` trong `/etc/os-release` nên các bản dẫn xuất tự rơi đúng nhóm. Danh sách đầy đủ nằm ở [bộ chọn distro trong hướng dẫn chính](./index.mdx#step-2-add-repo) — gõ tên distro của bạn vào ô tìm kiếm ở đó.
+
+Ngoài bốn nhóm này (Alpine, Void, Gentoo, NixOS, Solus…) script sẽ dừng với lỗi. Hai lối đi:
+
+- **[`--user`](#user-install)** — chạy trên mọi distro, miễn là máy đã có sẵn daemon Fcitx5 hoặc IBus.
+- **Build từ nguồn** — `platforms/linux/build.sh` trong [kho mã nguồn](https://github.com/Funput/Funput).
+
+:::info[Vì sao không có bản Flatpak / Snap / AppImage?]
+Funput là một **addon của Fcitx5**, không phải ứng dụng độc lập: file `.so` phải được chính tiến trình `fcitx5` của hệ thống nạp, từ thư mục addon của hệ thống. Các định dạng đóng gói sandbox chạy tiến trình trong không gian riêng nên không làm được việc đó — giới hạn này đúng với mọi bộ gõ, không riêng Funput.
+:::

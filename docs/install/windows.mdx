@@ -7,7 +7,7 @@ sidebar_position: 3
 
 Funput trên Windows là app **portable một file `.exe`** — chạy nền ở **khay hệ thống (System Tray)**, gõ được ngay trên mọi ứng dụng. Không cần thêm Input Source như macOS hay Linux, cũng chưa có MSI/installer: double-click là chạy.
 
-## Yêu cầu
+## Yêu cầu \{#requirements\}
 
 | | |
 | --- | --- |
@@ -21,7 +21,7 @@ Funput trên Windows là app **portable một file `.exe`** — chạy nền ở
 Riêng nền **Mica** chỉ có trên Windows 11. Trên Windows 10, cửa sổ Cài đặt hiển thị nền đục — đây là lựa chọn cố ý để cửa sổ không bị giật khi kéo/thay đổi kích thước, không phải lỗi.
 :::
 
-## Tải xuống
+## Tải xuống \{#download\}
 
 Tải bản phát hành mới nhất từ [GitHub Releases](https://github.com/Funput/Funput/releases):
 
@@ -38,7 +38,7 @@ Get-FileHash .\Funput-*.exe -Algorithm SHA256
 
 So sánh kết quả với nội dung file `.sha256` trên trang release.
 
-## Cài đặt / chạy lần đầu
+## Cài đặt / chạy lần đầu \{#install\}
 
 1. Tải file `Funput-*.exe` từ GitHub Releases.
 2. Đặt file vào một thư mục cố định, ví dụ `%LOCALAPPDATA%\Programs\Funput\`.
@@ -66,7 +66,7 @@ Windows có thể hiện cảnh báo **SmartScreen** lần đầu (Funput chưa 
 
 :::
 
-## Bắt đầu gõ
+## Bắt đầu gõ \{#start-typing\}
 
 Phím tắt bật/tắt tiếng Việt mặc định là **`Ctrl` + `` ` ``** (đổi được trong Cài đặt sang `Ctrl Space` hoặc `Alt Shift`).
 
@@ -85,7 +85,7 @@ Thử gõ nhanh:
 Funput còn có **Telex+**: giữ nguyên Telex và thêm `w` đầu từ cùng phím tắt `[` `]` cho `ư` `ơ`.
 :::
 
-## Dùng System Tray
+## Dùng System Tray \{#system-tray\}
 
 Icon Funput trên khay hệ thống là trung tâm điều khiển:
 
@@ -113,7 +113,7 @@ Icon Funput trên khay hệ thống là trung tâm điều khiển:
 Icon tray đổi **màu ↔ trắng đen** theo trạng thái: có màu là đang gõ tiếng Việt, trắng đen là đang gõ tiếng Anh. Liếc một cái là biết, không cần mở gì.
 :::
 
-## Cấu hình
+## Cấu hình \{#configuration\}
 
 Mở **Cài đặt…** từ menu tray. Cửa sổ chia làm sáu mục:
 
@@ -128,7 +128,7 @@ Mở **Cài đặt…** từ menu tray. Cửa sổ chia làm sáu mục:
 
 Thay đổi có hiệu lực ngay và được giữ qua các lần khởi động lại.
 
-### Cấu hình lưu ở đâu
+### Cấu hình lưu ở đâu \{#config-location\}
 
 Funput ưu tiên **portable**: cấu hình nằm ngay cạnh file `Funput.exe` để cả app đi theo USB được. Nó chọn vị trí theo thứ tự sau:
 
@@ -142,7 +142,7 @@ Funput ưu tiên **portable**: cấu hình nằm ngay cạnh file `Funput.exe` �
 Đặt app trong `C:\Program Files\Funput\` sẽ rơi vào trường hợp 3, vì thư mục đó cần quyền admin để ghi. Đặt trong `%LOCALAPPDATA%\Programs\Funput\` thì cấu hình nằm cùng chỗ với app.
 :::
 
-## Giới hạn đã biết
+## Giới hạn đã biết \{#known-limitations\}
 
 :::danger[Không gõ được vào ứng dụng chạy quyền Administrator]
 
@@ -156,11 +156,11 @@ Task Manager, Registry Editor, một số trình cài đặt và công cụ qu�
 - **Chưa có installer.** Bản phát hành là một file `.exe` portable, chưa có MSI.
 - **Chưa ký Authenticode**, nên SmartScreen sẽ cảnh báo ở lần chạy đầu tiên.
 
-## Cập nhật
+## Cập nhật \{#update\}
 
 Windows **không có** kho package như Linux (`repo.funput.app`). Cập nhật qua **app** (tương tự Sparkle trên macOS) hoặc tải thủ công từ GitHub.
 
-### Cập nhật trong app (khuyến nghị)
+### Cập nhật trong app (khuyến nghị) \{#update-in-app\}
 
 | Cách truy cập | Thao tác |
 | ------------- | -------- |
@@ -178,14 +178,14 @@ Quy trình khi có bản mới:
 Funput **không tự kiểm tra cập nhật nền** — bạn cần chủ động chọn **Kiểm tra cập nhật…**.
 :::
 
-### Cập nhật thủ công
+### Cập nhật thủ công \{#update-manual\}
 
 1. Tải `Funput-<version>.exe` mới từ [GitHub Releases](https://github.com/Funput/Funput/releases)
 2. Thoát Funput (menu tray → **Thoát**)
 3. Đặt file mới vào **cùng thư mục** với `Funput.exe` cũ, rồi double-click file mới
 4. Funput tự thay `Funput.exe` bằng bản mới và dọn file có số phiên bản
 
-## Gỡ cài đặt
+## Gỡ cài đặt \{#uninstall\}
 
 Funput là app portable, không có trình gỡ cài đặt. Cần dọn ba thứ:
 
@@ -205,43 +205,43 @@ Remove-Item -Recurse "$env:APPDATA\Funput" -ErrorAction SilentlyContinue
 Xoá thư mục app cũng xoá `settings.json` nằm trong đó. Muốn giữ lại cấu hình, vào **Cài đặt → Dữ liệu → Xuất cấu hình** trước khi gỡ.
 :::
 
-## Xử lý sự cố
+## Xử lý sự cố \{#troubleshooting\}
 
-### SmartScreen chặn hoặc cảnh báo
+### SmartScreen chặn hoặc cảnh báo \{#smartscreen\}
 
-Xem mục [Cài đặt / chạy lần đầu](#cài-đặt--chạy-lần-đầu). Chỉ tải từ [GitHub Releases](https://github.com/Funput/Funput/releases) chính thức.
+Xem mục [Cài đặt / chạy lần đầu](#install). Chỉ tải từ [GitHub Releases](https://github.com/Funput/Funput/releases) chính thức.
 
-### Không gõ được trong app chạy quyền Admin
+### Không gõ được trong app chạy quyền Admin \{#admin-apps\}
 
-Xem mục [Giới hạn đã biết](#giới-hạn-đã-biết) — chạy Funput bằng **Run as administrator**.
+Xem mục [Giới hạn đã biết](#known-limitations) — chạy Funput bằng **Run as administrator**.
 
-### File `Funput-<version>.exe` biến mất sau khi chạy
+### File `Funput-<version>.exe` biến mất sau khi chạy \{#exe-disappears\}
 
-Bình thường. Funput đã đổi nó thành `Funput.exe` cùng thư mục — xem mục [Cài đặt / chạy lần đầu](#cài-đặt--chạy-lần-đầu).
+Bình thường. Funput đã đổi nó thành `Funput.exe` cùng thư mục — xem mục [Cài đặt / chạy lần đầu](#install).
 
-### Gõ VNI mà không ra dấu
+### Gõ VNI mà không ra dấu \{#vni-no-tones\}
 
 VNI đặt dấu bằng **chữ số** (`chao2` → `chào`), không phải chữ cái. Nếu bạn quen `chaof` thì đang gõ **Telex** — đổi kiểu gõ trong Control Center hoặc **Cài đặt → Cách gõ**.
 
-### Funput không tự khởi động khi bật máy
+### Funput không tự khởi động khi bật máy \{#no-autostart\}
 
 Bật **Khởi động cùng Windows** trong **Cài đặt → Tổng quan**. Nếu bạn di chuyển `Funput.exe` sang thư mục khác, hãy tắt rồi bật lại tuỳ chọn này để Funput ghi lại đường dẫn mới.
 
-### Không thấy icon Funput trên khay hệ thống
+### Không thấy icon Funput trên khay hệ thống \{#no-tray-icon\}
 
 - Kiểm tra vùng **hidden icons** (mũi tên ^ trên taskbar) — Windows thường ẩn icon mới.
 - Chạy lại `Funput.exe`. Nếu Funput đã chạy sẵn, lần chạy thứ hai chỉ mở cửa sổ Cài đặt — đó là dấu hiệu app vẫn sống và icon chỉ đang bị ẩn.
 - Khởi động lại Windows nếu app bị crash im lặng.
 
-### Cài đặt không được lưu
+### Cài đặt không được lưu \{#settings-not-saved\}
 
-Thư mục chứa app có thể chỉ đọc. Kiểm tra xem `settings.json` nằm ở đâu theo bảng trong mục [Cấu hình lưu ở đâu](#cấu-hình-lưu-ở-đâu), hoặc chuyển app sang `%LOCALAPPDATA%\Programs\Funput\`.
+Thư mục chứa app có thể chỉ đọc. Kiểm tra xem `settings.json` nằm ở đâu theo bảng trong mục [Cấu hình lưu ở đâu](#config-location), hoặc chuyển app sang `%LOCALAPPDATA%\Programs\Funput\`.
 
-### File `.exe` nghi bị hỏng
+### File `.exe` nghi bị hỏng \{#corrupt-exe\}
 
-Đối chiếu SHA-256 (xem mục [Tải xuống](#tải-xuống)) và tải lại nếu không khớp.
+Đối chiếu SHA-256 (xem mục [Tải xuống](#download)) và tải lại nếu không khớp.
 
-## Cần trợ giúp thêm?
+## Cần trợ giúp thêm? \{#help\}
 
 - [Báo lỗi hoặc thảo luận trên GitHub](https://github.com/Funput/Funput/issues)
 - [Website Funput](https://funput.app)

@@ -7,7 +7,7 @@ sidebar_position: 3
 
 Trên Linux, Funput Term cài qua **Homebrew (Linuxbrew)** — cùng lệnh như macOS.
 
-## Điều kiện
+## Điều kiện \{#requirements\}
 
 Cần có [Homebrew trên Linux](https://docs.brew.sh/Homebrew-on-Linux). Nếu chưa có:
 
@@ -17,7 +17,7 @@ Cần có [Homebrew trên Linux](https://docs.brew.sh/Homebrew-on-Linux). Nếu 
 
 Nhớ thêm `brew` vào PATH theo hướng dẫn hiện ra cuối bước cài (dòng `eval "$(...brew shellenv)"`).
 
-## Cài đặt
+## Cài đặt \{#install\}
 
 ```bash
 brew tap funput/tap
@@ -38,7 +38,7 @@ Khi dùng Funput Term, hãy chuyển IME hệ thống về **tiếng Anh** (ho�
 
 :::
 
-## Kiểm tra
+## Kiểm tra \{#verify\}
 
 ```bash
 funput --version
@@ -48,19 +48,19 @@ funput term -- "$SHELL"
 Gõ thử `Tieesng Vieejt` (Telex) → ra `Tiếng Việt`. `Ctrl-\` bật/tắt tiếng Việt; `Ctrl-^` đổi
 Telex ↔ VNI.
 
-## Cấu hình dùng chung
+## Cấu hình dùng chung \{#shared-config\}
 
 Funput Term đọc `~/.config/Funput/settings.json` — **cùng file** với IME Funput trên Linux, nên
 phương thức gõ, gõ tắt… được chia sẻ. Xem [trang giới thiệu](../intro) để biết các biến môi
 trường ghi đè.
 
-## Luôn bật trong shell
+## Luôn bật trong shell \{#enable-in-shell\}
 
 ```bash
 funput term install --alias claude --write
 ```
 
-## Cập nhật & gỡ
+## Cập nhật & gỡ \{#update-uninstall\}
 
 ```bash
 brew update && brew upgrade funput

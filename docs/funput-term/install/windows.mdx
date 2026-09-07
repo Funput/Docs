@@ -15,7 +15,7 @@ admin**, hợp với triết lý "không quyền hệ thống" của Funput Term
 
 :::
 
-## Điều kiện
+## Điều kiện \{#requirements\}
 
 Scoop **không có sẵn** trong Windows nên phải cài trước (kèm `git` để dùng bucket của bên thứ ba) —
 đều **không cần admin**:
@@ -27,7 +27,7 @@ irm get.scoop.sh | iex
 scoop install git
 ```
 
-## Cài đặt
+## Cài đặt \{#install\}
 
 ```powershell
 scoop bucket add funput https://github.com/Funput/scoop-funput
@@ -36,7 +36,7 @@ scoop install funput
 
 Scoop tạo shim `funput` trong PATH, dùng được từ PowerShell, cmd hay Windows Terminal.
 
-## Kiểm tra
+## Kiểm tra \{#verify\}
 
 ```powershell
 funput --version
@@ -53,7 +53,7 @@ cổ, chỉ dấu **màu con trỏ** (OSC 12/112) có thể không hiển thị;
 
 :::
 
-## Luôn bật trong shell
+## Luôn bật trong shell \{#enable-in-shell\}
 
 ```powershell
 funput term install --alias claude --write
@@ -62,7 +62,7 @@ funput term install --alias claude --write
 Đoạn tích hợp được ghi vào profile của shell. Mở shell mới, `claude` sẽ tự chạy qua
 `funput term -- claude`. Bỏ `--write` để chỉ xem trước.
 
-## Cập nhật & gỡ
+## Cập nhật & gỡ \{#update-uninstall\}
 
 ```powershell
 scoop update funput

@@ -1,0 +1,72 @@
+---
+title: Troubleshooting
+sidebar_position: 5
+---
+
+# Troubleshooting
+
+Before anything else, run this:
+
+```bash
+fcitx5-diagnose
+```
+
+It checks both the session environment variables and the loaded addons, and points straight at whatever is missing — it catches most of what follows on its own.
+
+## Funput does not appear in the input method list \{#not-listed\}
+
+**Fcitx5:**
+
+1. Run `fcitx5-diagnose` first.
+2. Restart the daemon: `fcitx5 -r -d` — **except on KDE**, see [this warning](./session-setup.mdx#kde-no-restart).
+3. Reopen `fcitx5-configtool`, click **+**, clear *Only Show Current Language*, and look for **Funput**.
+
+**IBus:** run `ibus restart` or log back in. See also the [IBus page](./ibus.mdx).
+
+Check that you installed the package matching your framework: `funput` for Fcitx5, `funput-ibus` for IBus.
+
+Open the **Funput** app from your application menu — onboarding may point out the missing step.
+
+## Funput is added in Fcitx5 but typing does nothing in applications \{#typing-does-nothing\}
+
+This is almost always the session environment variables — redo [step 3](./index.mdx#step-3-wire-session) for your session type. `fcitx5-diagnose` lists every variable with its current value.
+
+Remember that the variables only take effect after you **log out and back in**, not after opening a new terminal.
+
+If only **some applications** are affected (usually Qt or XWayland apps such as WPS), it is `QT_IM_MODULE` — see the [Wayland block in step 3](./index.mdx#step-3-wire-session) and the [Qt 6.8.2 note](./session-setup.mdx).
+
+## Typing works but no preedit shows (Chrome, WPS) \{#no-preedit\}
+
+Some applications hide the preedit. Fcitx5 can draw it on its own panel for those cases.
+
+The **Funput** app also has a **Type directly into the application → Enable direct typing** switch (Overview tab): text appears in the input field itself instead of on an underlined line. The app itself notes this feature is **experimental** — where an application does not support it, Funput falls back to the old behaviour.
+
+## `apt` reports a dependency that is not installable \{#apt-dependency-error\}
+
+Usually the **wrong architecture** — for example an `amd64` package on an `arm64` machine, or the other way round. Download the package matching your machine; see [GitHub Releases](./other-methods.mdx#releases).
+
+## Two input methods receive the same keystrokes \{#two-frameworks\}
+
+You have both Fcitx5 and IBus active in one session. `funput` and `funput-ibus` can be installed side by side, but only **one framework** should be active per session — disable the autostart of the one you do not use, or remove that package entirely.
+
+## Removing the Funput repository \{#remove-repo\}
+
+```bash
+# Debian / Ubuntu
+sudo rm -f /etc/apt/sources.list.d/funput.sources
+sudo rm -f /etc/apt/sources.list.d/funput.list   # if you added the repo per the older guide
+sudo apt update
+
+# Fedora
+sudo rm /etc/yum.repos.d/funput.repo
+
+# openSUSE
+sudo zypper removerepo funput
+
+# Arch — delete the [funput] section from /etc/pacman.conf, then:
+sudo pacman-key --delete hello@funput.app
+```
+
+## Still stuck? \{#still-stuck\}
+
+- [Report a bug or start a discussion on GitHub](https://github.com/Funput/Funput/issues) — attaching the output of `fcitx5-diagnose` gets you an answer much faster.

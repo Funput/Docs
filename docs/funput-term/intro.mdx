@@ -19,7 +19,7 @@ funput term -- claude      # hoặc chỉ một lệnh cụ thể
 
 `funput term` là một lệnh con của binary thương hiệu **`funput`** (cài qua [Homebrew](./install/)).
 
-## Vì sao dùng Funput Term?
+## Vì sao dùng Funput Term? \{#why\}
 
 - **Gõ tiếng Việt ở nơi IME chịu thua.** Nhiều TUI và ứng dụng terminal (vim, REPL, công cụ
   CLI…) không phối hợp tốt với IME hệ thống. Funput Term xử lý ở tầng luồng byte nên hoạt động
@@ -29,7 +29,7 @@ funput term -- claude      # hoặc chỉ một lệnh cụ thể
 - **Hành vi gõ y hệt IME Funput.** Dùng **chung engine** với bộ gõ Funput, nên cách bỏ dấu,
   khôi phục tiếng Anh… đều nhất quán.
 
-## Tính năng
+## Tính năng \{#features\}
 
 - **Telex & VNI** — cùng lõi xử lý với IME Funput.
 - **Khôi phục tiếng Anh thông minh** (smart restore), **kiểm tra chính tả**, **tự động viết
@@ -48,7 +48,7 @@ Funput Term và IME hệ thống (macOS IMKit, fcitx5/ibus trên Linux) xử lý
 
 :::
 
-## Cấu hình
+## Cấu hình \{#configuration\}
 
 Funput Term đọc cấu hình theo thứ tự ưu tiên: **cờ dòng lệnh > biến môi trường > file
 `settings.json` > mặc định**.
@@ -79,7 +79,7 @@ Bạn cũng có thể chỉ định phương thức trực tiếp bằng cờ:
 funput term --method telex -- claude
 ```
 
-## Luôn bật trong shell
+## Luôn bật trong shell \{#enable-in-shell\}
 
 Để không phải gõ `funput term --` mỗi lần, thêm alias vào shell của bạn:
 
@@ -94,7 +94,7 @@ funput term install --alias claude --write
 Sau đó `claude` sẽ tự chạy qua `funput term -- claude`. Xem thêm ở phần
 [Cài đặt](./install/).
 
-## Cài đặt
+## Cài đặt \{#install\}
 
 - [Tổng quan](./install/) — cài qua Homebrew trên macOS và Linux
 - [Cài đặt trên macOS](./install/macos)

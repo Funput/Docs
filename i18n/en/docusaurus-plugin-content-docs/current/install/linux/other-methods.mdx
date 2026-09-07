@@ -1,0 +1,150 @@
+---
+title: Other install methods
+sidebar_position: 4
+---
+
+# Other install methods
+
+The [main guide](./index.mdx) uses the `repo.funput.app` repository — the recommended route for almost everyone: GPG-signed and self-updating. This page covers everything else.
+
+| You need | Use |
+| -------- | --- |
+| A single command that detects your distro | [`install.sh`](#install-sh) |
+| To pin an older version | [`install.sh --version`](#install-sh) |
+| To install without root | [`--user`](#user-install) |
+| To download packages and install them by hand | [GitHub Releases](#releases) |
+| A distro outside the four supported families | [Other distros](#unsupported-distros) |
+
+## The quick install script `install.sh` \{#install-sh\}
+
+One command detects the distro and architecture, **adds the `repo.funput.app` repository**, and installs with the native package manager — so by default you still get automatic updates, exactly like the main guide:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/Funput/Funput/main/platforms/linux/install.sh | bash
+```
+
+With no flags, the script installs the **Fcitx5** build.
+
+Options:
+
+```bash
+# Force a framework
+curl -fsSL .../install.sh | bash -s -- --ibus
+curl -fsSL .../install.sh | bash -s -- --fcitx5
+
+# Install into ~/.local, no sudo
+curl -fsSL .../install.sh | bash -s -- --user
+
+# Skip the repository, fetch a standalone package from GitHub Releases (no auto-updates)
+curl -fsSL .../install.sh | bash -s -- --no-repo
+
+# Pin a version (implies --no-repo, since the repository only carries the newest)
+curl -fsSL .../install.sh | bash -s -- --version v1.2026.28
+
+# Print what the script would run, changing nothing
+curl -fsSL .../install.sh | bash -s -- --dry-run
+```
+
+The script prints its plan (distro, framework, package, install source) before touching the machine, and `--dry-run` prints **every single command** it would run without executing any of them — useful when you want to see what will run under `sudo` first. `--help` lists every option.
+
+:::info
+With `--no-repo`, `--version` and `--user`, the script downloads the package from GitHub Releases and **checks its SHA-256** against the digest GitHub publishes for that exact file; one byte off and it stops without installing. The default route (via the repository) does not need this — apt/dnf/zypper/pacman already verify the GPG signature.
+:::
+
+:::caution
+`--no-repo` and `--version` get **no automatic updates** — re-run the script to update. On **Arch** neither flag works (there is no standalone package for Arch) — use the repository, or `--user`.
+:::
+
+## Installing without sudo: `--user` \{#user-install\}
+
+This route installs into `~/.local` — no root, no package manager involved. It runs on **any distro**, on **x86-64 or ARM64** (the script stops on any other architecture).
+
+**Who it is for:**
+
+- Machines where you have no root access.
+- **Arch Linux ARM** — the pacman repository is x86_64 only.
+- Distros outside the four supported families.
+
+This is **not** a distribution channel on par with the repository: no package-manager signature, no automatic updates, and the machine must **already have** the Fcitx5 or IBus daemon (that daemon still comes from the package manager).
+
+```bash
+# Fcitx5 (default)
+curl -fsSL https://raw.githubusercontent.com/Funput/Funput/main/platforms/linux/install.sh | bash -s -- --user
+
+# IBus
+curl -fsSL https://raw.githubusercontent.com/Funput/Funput/main/platforms/linux/install.sh | bash -s -- --user --ibus
+```
+
+:::caution
+For **Fcitx5**, the script also has to write `FCITX_ADDON_DIRS` into `~/.config/environment.d/funput.conf` — Fcitx5 only scans the system addon directory, not `~/.local`. That variable takes effect only after you **log out and back in**. To try it in the current session, re-run the daemon with the exact command the script prints.
+
+For **IBus** this is not needed: `ibus-daemon` scans `~/.local/share/ibus/component` on its own, so `ibus restart` is enough.
+:::
+
+To update: run the same command again — it always fetches the newest build and overwrites.
+
+## GitHub Releases \{#releases\}
+
+Download the right package from [GitHub Releases](https://github.com/Funput/Funput/releases):
+
+| Format | Fcitx5 | IBus |
+| ------ | ------ | ---- |
+| `.deb` (Debian/Ubuntu) | `funput_*_<arch>.deb` | `funput-ibus_*_<arch>.deb` |
+| `.rpm` (Fedora/openSUSE) | `funput-*.<arch>.rpm` | `funput-ibus-*.<arch>.rpm` |
+
+Architecture: `.deb` uses `amd64` / `arm64`; `.rpm` uses `x86_64` / `aarch64`. Arch Linux has no standalone package.
+
+You must also download **`funput-settings`** at the exact same version. Both `funput` and `funput-ibus` declare a dependency on it pinned to **one exact version**, so when installing from local files you have to pass both files in the same command — leave it out and the package manager reports a dependency error.
+
+**Installing the downloaded packages — Fcitx5 build:**
+
+```bash
+# Debian / Ubuntu
+sudo apt install ./funput_*.deb ./funput-settings_*.deb
+
+# Fedora
+sudo dnf install ./funput-<version>.<arch>.rpm ./funput-settings-<version>.<arch>.rpm
+
+# openSUSE
+sudo zypper install --allow-unsigned-rpm \
+  ./funput-<version>.<arch>.rpm ./funput-settings-<version>.<arch>.rpm
+```
+
+**IBus build:**
+
+```bash
+# Debian / Ubuntu
+sudo apt install ./funput-ibus_*.deb ./funput-settings_*.deb
+
+# Fedora
+sudo dnf install ./funput-ibus-<version>.<arch>.rpm ./funput-settings-<version>.<arch>.rpm
+
+# openSUSE
+sudo zypper install --allow-unsigned-rpm \
+  ./funput-ibus-<version>.<arch>.rpm ./funput-settings-<version>.<arch>.rpm
+```
+
+:::tip
+For `.rpm`, type the full filename rather than using `*`: all three packages start with `funput-`, so `./funput-*.rpm` would sweep up both the Fcitx5 and the IBus build. `.deb` names do not collide — `funput_` has an underscore, so it matches only the Fcitx5 build.
+:::
+
+:::info
+Standalone packages on GitHub Releases are **not signed** — GPG signatures exist only in the `repo.funput.app` repository. `apt` and `dnf` accept a local file as is; `zypper` stops to ask, hence `--allow-unsigned-rpm`.
+:::
+
+:::caution
+If `apt`/`dpkg` reports a read error (`could not locate member control.tar`, `unexpected end of file`), the downloaded `.deb` is **corrupt or truncated**. Download it again from scratch.
+:::
+
+## Distros not on the list \{#unsupported-distros\}
+
+`install.sh` recognises **four families**, matching on `ID` and then `ID_LIKE` in `/etc/os-release`, so derivatives land in the right group on their own. The full list is in the [distro picker in the main guide](./index.mdx#step-2-add-repo) — type your distro's name into the search box there.
+
+Outside those four groups (Alpine, Void, Gentoo, NixOS, Solus…) the script stops with an error. Two ways forward:
+
+- **[`--user`](#user-install)** — runs on any distro, as long as the Fcitx5 or IBus daemon is already installed.
+- **Build from source** — `platforms/linux/build.sh` in the [source repository](https://github.com/Funput/Funput).
+
+:::info[Why is there no Flatpak / Snap / AppImage build?]
+Funput is an **Fcitx5 addon**, not a standalone application: the `.so` has to be loaded by the system's own `fcitx5` process, from the system's addon directory. Sandboxed packaging formats run their processes in a separate namespace and cannot do that — this limitation applies to every input method, not just Funput.
+:::

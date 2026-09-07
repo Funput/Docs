@@ -15,7 +15,7 @@ description: Đặc tả V5 cho mode Full Telex có thể chọn riêng trong Fu
 **Telex nâng cao** là một mode có thể chọn riêng. Mode này kế thừa toàn bộ hành vi của
 Telex hiện tại và bổ sung các phím tắt Full Telex phổ biến. Telex hiện tại không đổi.
 
-## Phạm vi V5
+## Phạm vi V5 \{#v5-scope\}
 
 | Phím | Kết quả trong Telex nâng cao |
 | --- | --- |
@@ -40,7 +40,7 @@ Các ánh xạ `[` → `ư`, `]` → `ơ` và `w` độc lập → `ư` tương 
 trong [hướng dẫn UniKey](https://www.unikey.org/support/ukmanual.html). Funput dùng tên
 “Telex nâng cao” để phân biệt mode này với Telex mặc định an toàn hơn.
 
-## Hành vi được kế thừa
+## Hành vi được kế thừa \{#inherited-behavior\}
 
 Telex nâng cao phải dùng chung implementation với Telex và kế thừa:
 
@@ -54,7 +54,7 @@ Telex nâng cao phải dùng chung implementation với Telex và kế thừa:
 Flip phải khôi phục chính xác chuỗi phím gốc khi người dùng muốn giữ Latin hoặc ký tự
 `[`/`]`. Lựa chọn Latin sau Flip tiếp tục được giữ qua word boundary như Telex hiện tại.
 
-## Phân biệt với Telex hiện tại
+## Phân biệt với Telex hiện tại \{#vs-current-telex\}
 
 | Tình huống | Telex | Telex nâng cao |
 | --- | --- | --- |
@@ -66,13 +66,13 @@ Mode Telex hiện tại phải giữ nguyên để tránh collision khi nhập t
 Người dùng chủ động chọn Telex nâng cao sẽ chấp nhận phạm vi biến đổi rộng hơn và dùng
 Flip làm escape chính thức.
 
-## Ngoài phạm vi
+## Ngoài phạm vi \{#out-of-scope\}
 
 V5 không bao gồm deferred tone, hoán vị modifier tùy ý, dictionary, prediction,
 autocorrect hoặc thay đổi behavior mặc định của Telex. Ánh xạ `{` → `Ư` và `}` → `Ơ`
 cần một quyết định sản phẩm riêng trước khi được thêm vào đặc tả.
 
-## Hợp đồng kiến trúc
+## Hợp đồng kiến trúc \{#architecture-contract\}
 
 - `funput-core` là nguồn sự thật duy nhất cho mapping, validation và transform.
 - `funput-engine` tiếp tục quản lý session, raw keys, Flip, restore và diff; không nhân

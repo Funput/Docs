@@ -403,5 +403,26 @@
   "theme.tags.tagsPageTitle": {
     "message": "Tags",
     "description": "The title of the tag list page"
+  },
+  "distro.search.label": {
+    "message": "Find your distro"
+  },
+  "distro.search.placeholder": {
+    "message": "Ubuntu, Mint, Fedora, Manjaro…"
+  },
+  "distro.coverage.before": {
+    "message": "This list mirrors how"
+  },
+  "distro.coverage.after": {
+    "message": "identifies distros, but Funput has not been tested on all of them. If your package manager reports a missing library, your distro is older than the machine the packages were built on — please report it on GitHub, or use the install into ~/.local."
+  },
+  "distro.search.empty": {
+    "message": "No distro matches. Distros outside these four groups can still be installed — see Other install methods below."
+  },
+  "distro.note.fedora": {
+    "message": "Immutable variants (Silverblue, Kinoite, Bazzite) have no dnf: still drop the .repo file as above, then install with rpm-ostree install funput and reboot."
+  },
+  "distro.note.arch": {
+    "message": "x86_64 only. SteamOS has a read-only rootfs, so it must be unlocked before pacman can write."
   }
 }

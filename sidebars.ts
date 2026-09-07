@@ -22,7 +22,26 @@ const sidebars: SidebarsConfig = {
       label: 'Tổng quan cài đặt',
       link: {type: 'doc', id: 'install/index'},
       collapsed: false,
-      items: ['install/ios', 'install/android', 'install/macos', 'install/windows', 'install/linux'],
+      items: [
+        'install/ios',
+        'install/android',
+        'install/macos',
+        'install/windows',
+        // Linux is the only platform with sub-pages: its session wiring, the IBus
+        // variant and the fallback install paths are each their own page so the
+        // main guide can stay a single five-step path.
+        {
+          type: 'category',
+          label: 'Linux',
+          link: {type: 'doc', id: 'install/linux/index'},
+          items: [
+            'install/linux/session-setup',
+            'install/linux/ibus',
+            'install/linux/other-methods',
+            'install/linux/troubleshooting',
+          ],
+        },
+      ],
     },
     'input-methods/vietnamese',
   ],
