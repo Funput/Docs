@@ -7,7 +7,7 @@ sidebar_position: 2
 
 Funput là **Input Method native** trên macOS — tích hợp sâu vào hệ thống, hiển thị trên thanh menu và hoạt động trong mọi ứng dụng.
 
-## Yêu cầu
+## Yêu cầu \{#requirements\}
 
 | | |
 | --- | --- |
@@ -25,7 +25,7 @@ Kiểm tra phiên bản máy bạn:  → **About This Mac**.
 
 :::
 
-## Tính năng
+## Tính năng \{#features\}
 
 | | |
 | --- | --- |
@@ -38,7 +38,7 @@ Kiểm tra phiên bản máy bạn:  → **About This Mac**.
 | **Chuyển mã** | Đổi qua lại giữa Unicode dựng sẵn, Unicode tổ hợp, TCVN3 (ABC) và VNI-Windows |
 | **Xuất / nhập cấu hình** | Mang toàn bộ tuỳ chọn và gõ tắt sang máy khác bằng một tệp |
 
-## Tải xuống
+## Tải xuống \{#download\}
 
 Tải bản phát hành mới nhất từ [GitHub Releases](https://github.com/Funput/Funput/releases). Mỗi bản macOS có hai file cài đặt:
 
@@ -60,7 +60,7 @@ Tải bản phát hành mới nhất từ [GitHub Releases](https://github.com/F
 shasum -a 256 Funput-*.pkg
 ```
 
-## Cách 1: Cài bằng `.pkg` (khuyến nghị)
+## Cách 1: Cài bằng `.pkg` (khuyến nghị) \{#install-pkg\}
 
 1. Double-click file `Funput-*.pkg` — macOS mở **Installer.app**.
 2. Làm theo hướng dẫn trên màn hình và **nhập mật khẩu** khi được hỏi.
@@ -70,9 +70,9 @@ shasum -a 256 Funput-*.pkg
 Đường dẫn trên là thư mục Input Methods **toàn hệ thống** (system-wide), khác với thư mục trong thư mục người dùng (`~/Library/Input Methods`).
 :::
 
-Sau khi cài xong, chuyển sang mục [Bật bộ gõ](#bật-bộ-gõ) bên dưới.
+Sau khi cài xong, chuyển sang mục [Bật bộ gõ](#enable) bên dưới.
 
-## Cách 2: Cài bằng `.app.zip` (không cần admin)
+## Cách 2: Cài bằng `.app.zip` (không cần admin) \{#install-zip\}
 
 1. Double-click file `Funput-*.app.zip` để giải nén — bạn sẽ có `Funput.app`.
 2. Mở thư mục **Input Methods** trong thư mục người dùng:
@@ -81,13 +81,13 @@ Sau khi cài xong, chuyển sang mục [Bật bộ gõ](#bật-bộ-gõ) bên d�
    - Gõ `~/Library/Input Methods` rồi Enter
    - Nếu thư mục chưa tồn tại, tạo mới với tên `Input Methods`
 3. Kéo `Funput.app` vào thư mục `Input Methods`.
-4. Chuyển sang mục [Bật bộ gõ](#bật-bộ-gõ) bên dưới.
+4. Chuyển sang mục [Bật bộ gõ](#enable) bên dưới.
 
 :::caution
 Không chạy Funput trực tiếp từ thư mục Downloads hoặc Desktop lâu dài — hãy đặt vào `~/Library/Input Methods` để macOS nhận diện đúng như một Input Method.
 :::
 
-## Bật bộ gõ
+## Bật bộ gõ \{#enable\}
 
 :::warning
 Cài xong **chưa gõ tiếng Việt được ngay**. macOS bắt buộc bạn thêm Funput vào danh sách nguồn nhập trước.
@@ -101,7 +101,7 @@ Cài xong **chưa gõ tiếng Việt được ngay**. macOS bắt buộc bạn t
 
 Funput sẽ xuất hiện trên thanh menu. Dùng phím tắt chuyển bộ gõ của macOS (mặc định thường là `⌃Space` hoặc phím 🌐) để chọn Funput.
 
-## Bắt đầu gõ
+## Bắt đầu gõ \{#start-typing\}
 
 Sau khi chọn Funput làm nguồn nhập, phím tắt bật/tắt tiếng Việt mặc định là **`⌃` + `\`** (Control + dấu gạch chéo ngược). Đổi được trong **Cài đặt → Phím tắt**.
 
@@ -120,7 +120,7 @@ Thử gõ nhanh:
 Funput còn có **Telex nâng cao**: giữ nguyên Telex và thêm `w` đầu từ cùng phím tắt `[` `]` cho `ư` `ơ`.
 :::
 
-## Tìm Funput ở đâu sau khi cài
+## Tìm Funput ở đâu sau khi cài \{#where-is-funput\}
 
 Bộ gõ nằm trong thư mục `Library/Input Methods`, mà **Spotlight không đánh chỉ mục thư mục đó** — nên gõ "Funput" vào Spotlight sẽ không ra gì nếu chỉ có bộ gõ.
 
@@ -135,7 +135,7 @@ App này không phải bộ gõ, nó chỉ mở thẳng cửa sổ **Cài đặt
 
 Ngoài ra, icon **VI** trên thanh menu cũng mở nhanh bảng điều khiển: bật/tắt tiếng Việt, đổi kiểu gõ, mở Cài đặt. Tắt icon này được trong **Cài đặt → Tổng quan → Hiện biểu tượng thanh menu**.
 
-## Cấu hình
+## Cấu hình \{#configuration\}
 
 Cửa sổ **Cài đặt** có bốn mục chính, cộng các công cụ ở cuối thanh bên:
 
@@ -151,7 +151,7 @@ Cửa sổ **Cài đặt** có bốn mục chính, cộng các công cụ ở cu
 Phím tắt bạn tự ghi bắt buộc phải kèm `⌃`, `⌥` hoặc `⌘`. Một phím trần sẽ bắn nhầm ngay giữa lúc gõ, nên Funput từ chối nhận.
 :::
 
-### Cấu hình lưu ở đâu
+### Cấu hình lưu ở đâu \{#config-location\}
 
 macOS không dùng file cấu hình riêng — Funput lưu vào `UserDefaults` của hệ thống:
 
@@ -162,7 +162,7 @@ macOS không dùng file cấu hình riêng — Funput lưu vào `UserDefaults` c
 
 Muốn mang cấu hình sang máy khác, dùng **Cài đặt → Dữ liệu → Xuất cấu hình** thay vì chép file thủ công.
 
-## Giới hạn đã biết
+## Giới hạn đã biết \{#known-limitations\}
 
 :::danger[Gõ vào app Chromium/Electron trên macOS 26/27 beta có thể đứng im]
 
@@ -178,7 +178,7 @@ Muốn mang cấu hình sang máy khác, dùng **Cài đặt → Dữ liệu →
 - **Không tự kiểm tra cập nhật nền** — bạn cần chủ động bấm **Kiểm tra cập nhật**.
 - **Không có bản Mac App Store.** Bộ gõ không thể chạy trong sandbox, nên Funput chỉ phát hành trực tiếp qua GitHub Releases.
 
-## Cập nhật
+## Cập nhật \{#update\}
 
 Mở **Cài đặt → Kiểm tra cập nhật**. Funput đọc `appcast.xml` đã ký từ GitHub Releases, xác minh chữ ký **Ed25519**, rồi cài bản mới.
 
@@ -191,7 +191,7 @@ Nếu muốn cập nhật thủ công:
 1. Tải bản mới từ [GitHub Releases](https://github.com/Funput/Funput/releases)
 2. Cài đè theo cùng cách bạn đã dùng lần trước (`.pkg` hoặc `.app.zip`)
 
-## Gỡ cài đặt
+## Gỡ cài đặt \{#uninstall\}
 
 macOS nhớ nguồn nhập độc lập với file trên đĩa, nên **thứ tự rất quan trọng**:
 
@@ -222,38 +222,38 @@ defaults delete app.funput.inputmethod.Funput     # cài đặt
 defaults delete app.funput.Funput
 ```
 
-## Xử lý sự cố
+## Xử lý sự cố \{#troubleshooting\}
 
-### Không thấy Funput trong Input Sources
+### Không thấy Funput trong Input Sources \{#not-in-input-sources\}
 
 - **Đăng xuất và đăng nhập lại** (log out/in) một lần — macOS chỉ quét lại danh sách Input Method khi phiên đăng nhập bắt đầu.
 - Kiểm tra `Funput.app` đã nằm đúng trong `/Library/Input Methods` hoặc `~/Library/Input Methods` chưa.
-- Kiểm tra máy bạn chạy **macOS 26 trở lên** — bản cũ hơn sẽ không nạp bộ gõ, xem mục [Yêu cầu](#yêu-cầu).
+- Kiểm tra máy bạn chạy **macOS 26 trở lên** — bản cũ hơn sẽ không nạp bộ gõ, xem mục [Yêu cầu](#requirements).
 
-### Spotlight không tìm thấy "Funput"
+### Spotlight không tìm thấy "Funput" \{#spotlight\}
 
-Bình thường: bộ gõ nằm trong thư mục Spotlight không đánh chỉ mục. Xem mục [Tìm Funput ở đâu sau khi cài](#tìm-funput-ở-đâu-sau-khi-cài) — app lối vào trong `Applications` mới là thứ Spotlight thấy.
+Bình thường: bộ gõ nằm trong thư mục Spotlight không đánh chỉ mục. Xem mục [Tìm Funput ở đâu sau khi cài](#where-is-funput) — app lối vào trong `Applications` mới là thứ Spotlight thấy.
 
-### Đã chọn Funput nhưng gõ ra tiếng Anh
+### Đã chọn Funput nhưng gõ ra tiếng Anh \{#types-english\}
 
 Funput có thể đang ở chế độ tiếng Anh. Nhấn **`⌃` + `\`** để bật lại, hoặc bấm icon **VI** trên thanh menu để xem trạng thái.
 
-### Gõ VNI mà không ra dấu
+### Gõ VNI mà không ra dấu \{#vni-no-tones\}
 
 VNI đặt dấu bằng **chữ số** (`chao2` → `chào`), không phải chữ cái. Nếu bạn quen `chaof` thì đang gõ **Telex** — đổi kiểu gõ trên thanh menu hoặc trong **Cài đặt → Cách gõ**.
 
-### Đang gõ thì app Chrome / VS Code / Slack ngừng nhận chữ
+### Đang gõ thì app Chrome / VS Code / Slack ngừng nhận chữ \{#app-stops-accepting\}
 
-Xem mục [Giới hạn đã biết](#giới-hạn-đã-biết) — đây là lỗi phía Chromium trên macOS 26/27 beta, không phải của Funput.
+Xem mục [Giới hạn đã biết](#known-limitations) — đây là lỗi phía Chromium trên macOS 26/27 beta, không phải của Funput.
 
-### macOS cảnh báo khi mở file
+### macOS cảnh báo khi mở file \{#gatekeeper-warning\}
 
 Bản phát hành chính thức đã được ký và notarized. Nếu vẫn gặp cảnh báo:
 
 - Đảm bảo bạn tải từ [GitHub Releases](https://github.com/Funput/Funput/releases) chính thức, không phải mirror lạ.
 - Kiểm tra checksum **SHA-256** (file `.sha256` đi kèm trên trang release) để xác nhận file tải về không bị hỏng.
 
-### Kiểm tra SHA-256
+### Kiểm tra SHA-256 \{#verify-sha256\}
 
 Trên macOS, chạy lệnh sau trong Terminal (thay tên file cho đúng):
 
@@ -263,7 +263,7 @@ shasum -a 256 Funput-*.pkg
 
 So sánh kết quả với nội dung file `.sha256` trên trang release.
 
-## Cần trợ giúp thêm?
+## Cần trợ giúp thêm? \{#help\}
 
 - [Báo lỗi hoặc thảo luận trên GitHub](https://github.com/Funput/Funput/issues)
 - [Website Funput](https://funput.app)
