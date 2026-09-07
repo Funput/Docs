@@ -1,0 +1,98 @@
+---
+title: Funput on IBus
+sidebar_position: 3
+---
+
+import DistroPicker, {DistroFamily} from '@site/src/components/DistroPicker';
+
+# Funput on IBus
+
+Funput ships two separate packages for the two input method frameworks:
+
+| Package | Framework | Use when |
+| ------- | --------- | -------- |
+| `funput` | **Fcitx5** — recommended | The default on every desktop. [Install guide](./index.mdx) |
+| `funput-ibus` | **IBus** | You are already on IBus (GNOME/Ubuntu) and would rather not change the session |
+
+This page is for the second choice.
+
+## When should you pick IBus? \{#when-to-choose-ibus\}
+
+Pick IBus when you are **on GNOME or Ubuntu** and do not want to touch the session's environment variables. The default GNOME session is already wired to IBus, so `funput-ibus` works right after a single `ibus restart` — no logging out and back in the way the Fcitx5 route requires.
+
+**The trade-off:** Fcitx5 is the more complete build. It can draw the preedit on its own panel for applications that hide it (WPS Office) — something the IBus side has no channel for — and it supports switching input method per application.
+
+:::info
+The two packages **can be installed side by side** (they do not fight over files). But only **one framework** should be active per login session: enable both and two input methods receive the same keystrokes.
+:::
+
+## Installing \{#install\}
+
+Add the `repo.funput.app` repository **exactly** as on the Fcitx5 route — see [step 2 of the main guide](./index.mdx#step-2-add-repo) — then install `funput-ibus` instead of `funput`:
+
+<DistroPicker>
+<DistroFamily id="debian">
+
+```bash
+sudo apt install funput-ibus
+```
+
+</DistroFamily>
+<DistroFamily id="fedora">
+
+```bash
+sudo dnf install funput-ibus
+```
+
+</DistroFamily>
+<DistroFamily id="suse">
+
+```bash
+sudo zypper install funput-ibus
+```
+
+</DistroFamily>
+<DistroFamily id="arch">
+
+```bash
+sudo pacman -S funput-ibus
+```
+
+</DistroFamily>
+</DistroPicker>
+
+This package also pulls in `funput-settings` — the shared Settings app — at the exact same version.
+
+:::tip
+`install.sh` installs the Fcitx5 build by default. Force IBus with the `--ibus` flag — see [Other install methods](./other-methods.mdx).
+:::
+
+## Enabling the input method \{#enable\}
+
+1. Reload the engine: `ibus restart` (or log back in).
+2. **Settings → Keyboard → Input Sources → +** → **Vietnamese** → **Funput**.
+3. Switch input source: **`Super + Space`**.
+4. Toggle Vietnamese while on Funput: **`` Ctrl + ` ``**.
+
+## Updating \{#update\}
+
+Once the repository is added, updates are automatic, alongside your system packages:
+
+```bash
+sudo apt update && sudo apt upgrade funput-ibus   # Debian / Ubuntu
+sudo dnf upgrade funput-ibus                      # Fedora
+sudo zypper update funput-ibus                    # openSUSE
+sudo pacman -Syu                                  # Arch
+```
+
+If the input method misbehaves after an update: `ibus restart`, or log back in.
+
+## Troubleshooting \{#troubleshooting\}
+
+- **Funput does not appear in the input source list:** run `ibus restart` or log back in. Check that you installed `funput-ibus` and not `funput`.
+- **Both packages installed and the input method behaves oddly:** only one framework should be active per session. Remove the one you do not use, or disable its autostart.
+- Anything else: see [Troubleshooting](./troubleshooting.mdx).
+
+## Switching to Fcitx5 \{#switch-to-fcitx5\}
+
+To move to the more complete build: install `funput` (keeping or removing `funput-ibus` is up to you), then follow [step 3 of the install guide](./index.mdx#step-3-wire-session) and log out and back in.

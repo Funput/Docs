@@ -1,0 +1,76 @@
+---
+title: Session — trường hợp đặc biệt
+sidebar_position: 2
+---
+
+# Nối session vào Fcitx5 — trường hợp đặc biệt
+
+[Bước 3 của hướng dẫn cài đặt](./index.mdx) đã đủ cho phần lớn máy. Trang này dành cho những gì nằm ngoài ba khối lệnh đó.
+
+Nguồn: [Using Fcitx 5 on Wayland](https://fcitx-im.org/wiki/Using_Fcitx_5_on_Wayland) và [Setup Fcitx 5](https://fcitx-im.org/wiki/Setup_Fcitx_5).
+
+## `environment.d` không có tác dụng \{#where-to-set\}
+
+Bước 3 ghi biến vào `~/.config/environment.d/fcitx5.conf`. File đó do systemd user manager đọc, và không phải display manager nào cũng nạp nó. Nếu `fcitx5-diagnose` báo biến vẫn trống sau khi đã đăng nhập lại, đổi sang nơi khác:
+
+| Nơi đặt | Được đọc bởi |
+| ------- | ------------ |
+| `~/.config/environment.d/fcitx5.conf` | GDM, và Plasma 5.22+ (bất kể dùng DM nào) |
+| `~/.bash_profile` (nhớ `export`) | GDM / SDDM / LightDM, và cả đăng nhập từ TTY |
+| `/etc/profile` (cần root) | Mọi distro, áp cho mọi người dùng |
+
+:::caution
+Với `environment.d`, tài liệu Fcitx5 lưu ý systemd user manager có thể **sống sót qua lần đăng xuất** — nên khi thử nghiệm, khởi động lại máy là cách chắc chắn nhất.
+:::
+
+## Qt 6.8.2 trở lên \{#qt-6-8-2\}
+
+Khối Wayland ở bước 3 đặt `QT_IM_MODULE=fcitx`, đúng cho **Qt 5 và Qt cũ hơn 6.8.2** (chúng chạy qua XWayland). Nếu distro của bạn đã có Qt 6.8.2 trở lên, thay dòng đó bằng:
+
+```
+QT_IM_MODULES=wayland;fcitx
+```
+
+Để ý số nhiều: `QT_IM_MODULES`, không phải `QT_IM_MODULE`.
+
+## Công cụ của distro \{#distro-tools\}
+
+Trên **X11**, thay vì tự ghi file bạn có thể dùng công cụ sẵn có:
+
+| Distro | Công cụ |
+| ------ | ------- |
+| Debian / Ubuntu (và Mint, Pop!_OS…) | `im-config -n fcitx5` — ghi biến **và** khởi động daemon. Chạy `im-config` không tham số để có wizard. |
+| Fedora | `sudo dnf install fcitx5-autostart` — đặt sẵn `/etc/profile.d` và autostart. `im-chooser` (gói `imsettings`) là bản đồ hoạ tương đương. |
+| Arch, openSUSE, còn lại | Không có công cụ riêng — dùng khối lệnh ở bước 3. |
+
+:::caution[im-config không chạy trên Wayland]
+`im-config` **không đặt biến nào** cho phiên Wayland — hook `/etc/profile.d/im-config_wayland.sh` được ship ở trạng thái vô hiệu hoá. Trên Ubuntu/Wayland bạn vẫn phải tự đặt theo bước 3; `im-config -n fcitx5` chỉ có tác dụng cho phiên X11.
+:::
+
+## Gỡ cấu hình `im-config` cũ trên KDE \{#undo-im-config-kde\}
+
+Nếu trước đây bạn chạy `im-config` và nó đặt cả bộ ba biến, trên KDE Plasma/Wayland chúng sẽ làm candidate window nhấp nháy. Chạy lại `im-config` rồi chọn mục *"do not set any IM … use desktop default"*, sau đó đặt lại theo khối KDE ở bước 3.
+
+Nếu chỉ **một ứng dụng riêng lẻ** (loại chỉ chạy được X11) cần `QT_IM_MODULE`, đặt cho riêng nó thay vì đặt global:
+
+```bash
+env QT_IM_MODULE=fcitx wps
+```
+
+## Trên KDE thì đừng restart Fcitx5 \{#kde-no-restart\}
+
+:::caution
+Khi Fcitx5 được khởi động từ **Virtual keyboard**, KWin trao cho nó một socket mà tiến trình mới không kế thừa được. `fcitx5 -r` (hoặc "Restart" trong tray) sẽ làm ứng dụng Wayland mất bộ gõ cho tới lần đăng nhập sau — hãy **đăng xuất/đăng nhập lại** thay vì restart.
+:::
+
+Trên GNOME và các desktop khác thì `fcitx5 -r -d` an toàn.
+
+## Kiểm tra lại \{#verify\}
+
+```bash
+fcitx5-diagnose
+```
+
+Lệnh này liệt kê từng biến kèm giá trị đang có, nên nó nói thẳng cho bạn biết phần nào ở bước 3 chưa ăn.
+
+Vẫn không được? Xem [Xử lý sự cố](./troubleshooting.mdx).

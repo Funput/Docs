@@ -1,0 +1,98 @@
+---
+title: Funput trên IBus
+sidebar_position: 3
+---
+
+import DistroPicker, {DistroFamily} from '@site/src/components/DistroPicker';
+
+# Funput trên IBus
+
+Funput có hai gói riêng biệt cho hai input method framework:
+
+| Gói | Framework | Dùng khi |
+| --- | --------- | -------- |
+| `funput` | **Fcitx5** — khuyến nghị | Mặc định cho mọi desktop. [Hướng dẫn cài](./index.mdx) |
+| `funput-ibus` | **IBus** | Bạn đang dùng IBus sẵn (GNOME/Ubuntu) và không muốn đổi session |
+
+Trang này dành cho lựa chọn thứ hai.
+
+## Nên chọn IBus khi nào? \{#when-to-choose-ibus\}
+
+Chọn IBus khi bạn **đang ở GNOME hoặc Ubuntu** và không muốn đụng vào biến môi trường của session. Session GNOME mặc định đã nối vào IBus, nên `funput-ibus` cài xong là dùng được sau một lệnh `ibus restart` — không cần đăng xuất/đăng nhập lại như đường Fcitx5.
+
+**Đánh đổi:** Fcitx5 là bản đầy đủ hơn. Nó vẽ được preedit trên panel cho những ứng dụng tự giấu preedit (WPS Office) — điều mà phía IBus không có kênh nào làm được — và hỗ trợ tự chuyển bộ gõ theo từng ứng dụng.
+
+:::info
+Hai gói **cài chung được** (chúng không giành file của nhau). Nhưng mỗi phiên đăng nhập chỉ nên **bật một framework**: bật cả hai thì hai bộ gõ cùng nhận phím.
+:::
+
+## Cài đặt \{#install\}
+
+Thêm kho `repo.funput.app` **giống hệt** đường Fcitx5 — xem [bước 2 của hướng dẫn chính](./index.mdx#step-2-add-repo) — rồi cài gói `funput-ibus` thay vì `funput`:
+
+<DistroPicker>
+<DistroFamily id="debian">
+
+```bash
+sudo apt install funput-ibus
+```
+
+</DistroFamily>
+<DistroFamily id="fedora">
+
+```bash
+sudo dnf install funput-ibus
+```
+
+</DistroFamily>
+<DistroFamily id="suse">
+
+```bash
+sudo zypper install funput-ibus
+```
+
+</DistroFamily>
+<DistroFamily id="arch">
+
+```bash
+sudo pacman -S funput-ibus
+```
+
+</DistroFamily>
+</DistroPicker>
+
+Gói này cũng kéo theo `funput-settings` — ứng dụng Cài đặt dùng chung — đúng cùng phiên bản.
+
+:::tip
+Script `install.sh` mặc định cài Fcitx5. Ép sang IBus bằng cờ `--ibus` — xem [Cách cài khác](./other-methods.mdx).
+:::
+
+## Bật bộ gõ \{#enable\}
+
+1. Nạp lại engine: `ibus restart` (hoặc đăng nhập lại).
+2. **Settings → Keyboard → Input Sources → +** → **Vietnamese** → **Funput**.
+3. Chuyển nguồn nhập: **`Super + Space`**.
+4. Bật/tắt tiếng Việt khi đang ở Funput: **`` Ctrl + ` ``**.
+
+## Cập nhật \{#update\}
+
+Đã thêm kho thì cập nhật là tự động, đi cùng gói hệ thống:
+
+```bash
+sudo apt update && sudo apt upgrade funput-ibus   # Debian / Ubuntu
+sudo dnf upgrade funput-ibus                      # Fedora
+sudo zypper update funput-ibus                    # openSUSE
+sudo pacman -Syu                                  # Arch
+```
+
+Sau khi cập nhật mà bộ gõ không hoạt động bình thường: `ibus restart`, hoặc đăng nhập lại.
+
+## Xử lý sự cố \{#troubleshooting\}
+
+- **Funput không xuất hiện trong danh sách nguồn nhập:** chạy `ibus restart` hoặc đăng nhập lại. Kiểm tra bạn đã cài đúng gói `funput-ibus` (chứ không phải `funput`).
+- **Cài nhầm cả hai và bộ gõ hoạt động lạ:** mỗi phiên chỉ nên bật một framework. Gỡ cái không dùng, hoặc tắt autostart của nó.
+- Các vấn đề khác: xem [Xử lý sự cố](./troubleshooting.mdx).
+
+## Đổi sang Fcitx5 \{#switch-to-fcitx5\}
+
+Muốn chuyển sang bản đầy đủ hơn: cài `funput` (giữ hay gỡ `funput-ibus` đều được), rồi làm theo [bước 3 của hướng dẫn cài đặt](./index.mdx#step-3-wire-session) và đăng xuất/đăng nhập lại.

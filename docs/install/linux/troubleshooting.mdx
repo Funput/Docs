@@ -1,0 +1,72 @@
+---
+title: Xử lý sự cố
+sidebar_position: 5
+---
+
+# Xử lý sự cố
+
+Trước mọi thứ khác, chạy lệnh này:
+
+```bash
+fcitx5-diagnose
+```
+
+Nó soát cả biến môi trường session lẫn addon đã nạp, và chỉ thẳng ra chỗ còn thiếu — phần lớn các mục dưới đây đều được nó phát hiện hộ bạn.
+
+## Funput không xuất hiện trong danh sách bộ gõ \{#not-listed\}
+
+**Fcitx5:**
+
+1. Chạy `fcitx5-diagnose` trước tiên.
+2. Khởi động lại daemon: `fcitx5 -r -d` — **trừ trên KDE**, xem [cảnh báo này](./session-setup.mdx#kde-no-restart).
+3. Mở lại `fcitx5-configtool`, bấm **+**, bỏ dấu *Only Show Current Language* rồi tìm **Funput**.
+
+**IBus:** chạy `ibus restart` hoặc đăng nhập lại. Xem thêm [trang IBus](./ibus.mdx).
+
+Kiểm tra bạn đã cài đúng gói cho framework đang dùng: `funput` cho Fcitx5, `funput-ibus` cho IBus.
+
+Mở app **Funput** từ menu ứng dụng — onboarding có thể hướng dẫn bước còn thiếu.
+
+## Đã thêm Funput trong Fcitx5 nhưng gõ vào ứng dụng không ăn \{#typing-does-nothing\}
+
+Gần như luôn là biến môi trường của session — làm lại [bước 3](./index.mdx#step-3-wire-session) cho đúng loại session của bạn. `fcitx5-diagnose` liệt kê từng biến kèm giá trị đang có.
+
+Nhớ rằng biến chỉ có hiệu lực sau khi **đăng xuất/đăng nhập lại**, không phải sau khi mở terminal mới.
+
+Nếu chỉ **một vài ứng dụng** không ăn (thường là app Qt hoặc XWayland như WPS): đó là `QT_IM_MODULE` — xem [khối Wayland ở bước 3](./index.mdx#step-3-wire-session), và [ghi chú Qt 6.8.2](./session-setup.mdx).
+
+## Gõ được nhưng preedit không hiện (Chrome, WPS) \{#no-preedit\}
+
+Một số ứng dụng tự giấu preedit. Fcitx5 vẽ được preedit trên panel của nó cho những trường hợp này.
+
+Ngoài ra app **Funput** có công tắc **Gõ thẳng vào ứng dụng → Bật gõ thẳng** (tab Tổng quan): chữ hiện ngay trong ô gõ thay vì ở dòng gạch chân. Chính app ghi rõ tính năng này **đang thử nghiệm** — app nào chưa hỗ trợ thì Funput tự quay về cách cũ.
+
+## `apt` báo dependency not installable \{#apt-dependency-error\}
+
+Thường do **sai kiến trúc** — ví dụ tải gói `amd64` trên máy `arm64` (hoặc ngược lại). Tải đúng gói cho kiến trúc máy bạn, xem [GitHub Releases](./other-methods.mdx#releases).
+
+## Hai bộ gõ cùng nhận phím \{#two-frameworks\}
+
+Bạn đang bật cả Fcitx5 lẫn IBus trong một phiên. Hai gói `funput` và `funput-ibus` cài chung được, nhưng mỗi phiên chỉ nên **bật một framework** — tắt autostart của cái không dùng, hoặc gỡ hẳn gói đó.
+
+## Gỡ kho Funput \{#remove-repo\}
+
+```bash
+# Debian / Ubuntu
+sudo rm -f /etc/apt/sources.list.d/funput.sources
+sudo rm -f /etc/apt/sources.list.d/funput.list   # nếu bạn đã thêm kho theo hướng dẫn cũ
+sudo apt update
+
+# Fedora
+sudo rm /etc/yum.repos.d/funput.repo
+
+# openSUSE
+sudo zypper removerepo funput
+
+# Arch — xoá phần [funput] trong /etc/pacman.conf, rồi:
+sudo pacman-key --delete hello@funput.app
+```
+
+## Vẫn chưa được? \{#still-stuck\}
+
+- [Báo lỗi hoặc thảo luận trên GitHub](https://github.com/Funput/Funput/issues) — kèm output của `fcitx5-diagnose` sẽ được trả lời nhanh hơn nhiều.

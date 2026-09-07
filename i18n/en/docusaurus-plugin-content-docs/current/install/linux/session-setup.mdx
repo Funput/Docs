@@ -1,0 +1,76 @@
+---
+title: Session — special cases
+sidebar_position: 2
+---
+
+# Wiring the session to Fcitx5 — special cases
+
+[Step 3 of the install guide](./index.mdx) is enough for most machines. This page covers what falls outside those three blocks.
+
+Sources: [Using Fcitx 5 on Wayland](https://fcitx-im.org/wiki/Using_Fcitx_5_on_Wayland) and [Setup Fcitx 5](https://fcitx-im.org/wiki/Setup_Fcitx_5).
+
+## `environment.d` has no effect \{#where-to-set\}
+
+Step 3 writes the variables into `~/.config/environment.d/fcitx5.conf`. That file is read by the systemd user manager, and not every display manager loads it. If `fcitx5-diagnose` still reports the variables as empty after you have logged back in, put them somewhere else:
+
+| Location | Read by |
+| -------- | ------- |
+| `~/.config/environment.d/fcitx5.conf` | GDM, and Plasma 5.22+ (whichever DM you use) |
+| `~/.bash_profile` (remember `export`) | GDM / SDDM / LightDM, and TTY logins too |
+| `/etc/profile` (needs root) | Every distro, applies to all users |
+
+:::caution
+With `environment.d`, the Fcitx5 documentation notes that the systemd user manager can **survive a logout** — so while you are experimenting, rebooting is the reliable way to test.
+:::
+
+## Qt 6.8.2 and later \{#qt-6-8-2\}
+
+The Wayland block in step 3 sets `QT_IM_MODULE=fcitx`, which is right for **Qt 5 and Qt older than 6.8.2** (they run through XWayland). If your distro already ships Qt 6.8.2 or later, replace that line with:
+
+```
+QT_IM_MODULES=wayland;fcitx
+```
+
+Note the plural: `QT_IM_MODULES`, not `QT_IM_MODULE`.
+
+## Your distro's own tools \{#distro-tools\}
+
+On **X11**, instead of writing the file yourself you can use the tool your distro ships:
+
+| Distro | Tool |
+| ------ | ---- |
+| Debian / Ubuntu (and Mint, Pop!_OS…) | `im-config -n fcitx5` — writes the variables **and** starts the daemon. Run `im-config` with no arguments for a wizard. |
+| Fedora | `sudo dnf install fcitx5-autostart` — installs the `/etc/profile.d` snippet and the autostart entry. `im-chooser` (package `imsettings`) is the graphical equivalent. |
+| Arch, openSUSE, everything else | No dedicated tool — use the block from step 3. |
+
+:::caution[im-config does nothing on Wayland]
+`im-config` sets **no variables at all** for a Wayland session — the `/etc/profile.d/im-config_wayland.sh` hook ships disabled. On Ubuntu/Wayland you still have to set them yourself as in step 3; `im-config -n fcitx5` only affects X11 sessions.
+:::
+
+## Undoing an old `im-config` setup on KDE \{#undo-im-config-kde\}
+
+If you previously ran `im-config` and it set all three variables, on KDE Plasma/Wayland they will make the candidate window flicker. Run `im-config` again and pick *"do not set any IM … use desktop default"*, then set them again using the KDE block from step 3.
+
+If a **single application** (one that only runs under X11) needs `QT_IM_MODULE`, set it for that app instead of globally:
+
+```bash
+env QT_IM_MODULE=fcitx wps
+```
+
+## Do not restart Fcitx5 on KDE \{#kde-no-restart\}
+
+:::caution
+When Fcitx5 is launched from **Virtual keyboard**, KWin hands it a socket that a new process cannot inherit. `fcitx5 -r` (or "Restart" in the tray) leaves Wayland applications without an input method until the next login — **log out and back in** instead of restarting.
+:::
+
+On GNOME and other desktops, `fcitx5 -r -d` is safe.
+
+## Check again \{#verify\}
+
+```bash
+fcitx5-diagnose
+```
+
+It lists every variable with its current value, so it tells you directly which part of step 3 did not take.
+
+Still stuck? See [Troubleshooting](./troubleshooting.mdx).

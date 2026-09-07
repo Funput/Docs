@@ -1,0 +1,156 @@
+.root {
+  margin: 1.5rem 0 2rem;
+}
+
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  margin-bottom: 0.875rem;
+}
+
+.searchLabel {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--ifm-color-emphasis-800);
+}
+
+.search {
+  flex: 1 1 14rem;
+  min-width: 0;
+  padding: 0.4rem 0.7rem;
+  font: inherit;
+  font-size: 0.875rem;
+  color: var(--ifm-font-color-base);
+  background: var(--ifm-background-color);
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 8px;
+}
+
+.search:focus {
+  outline: none;
+  border-color: var(--funput-orange-500);
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.18);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+  gap: 0.75rem;
+}
+
+/* Cards are buttons so the whole surface is clickable and keyboard-reachable. */
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.875rem 1rem;
+  text-align: left;
+  cursor: pointer;
+  background: var(--ifm-background-surface-color, #fff);
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 12px;
+  transition: border-color 150ms ease, box-shadow 150ms ease, opacity 150ms ease;
+}
+
+[data-theme='dark'] .card {
+  background: var(--funput-dark-900);
+  border-color: var(--funput-dark-700);
+}
+
+.card:hover {
+  border-color: var(--funput-orange-500);
+}
+
+.cardSelected {
+  border-color: var(--funput-orange-500);
+  box-shadow: 0 0 0 1px var(--funput-orange-500);
+}
+
+.card.cardDimmed {
+  opacity: 0.4;
+}
+
+.cardHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.cardTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--ifm-heading-color);
+}
+
+.pm {
+  flex: none;
+  padding: 0.1rem 0.4rem;
+  font-size: 0.75rem;
+  color: var(--funput-orange-700);
+  background: var(--funput-orange-100);
+  border: none;
+  border-radius: 5px;
+}
+
+[data-theme='dark'] .pm {
+  color: var(--funput-orange-logo);
+  background: rgba(255, 164, 63, 0.15);
+}
+
+.distros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.4rem;
+}
+
+.distro {
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--ifm-color-emphasis-700);
+}
+
+/* Separator between distro names, so they read as a list without bullets. */
+.distro:not(:last-child)::after {
+  content: '·';
+  margin-left: 0.4rem;
+  color: var(--ifm-color-emphasis-400);
+}
+
+.distroHit {
+  font-weight: 700;
+  color: var(--funput-orange-700);
+}
+
+[data-theme='dark'] .distroHit {
+  color: var(--funput-orange-logo);
+}
+
+.note {
+  font-size: 0.75rem;
+  line-height: 1.45;
+  color: var(--ifm-color-emphasis-600);
+}
+
+.empty {
+  margin: 0.875rem 0 0;
+  font-size: 0.875rem;
+  color: var(--ifm-color-emphasis-700);
+}
+
+.panel {
+  margin-top: 1.25rem;
+}
+
+.panel > :first-child {
+  margin-top: 0;
+}
+
+.disclaimer {
+  margin: 0.875rem 0 0;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--ifm-color-emphasis-600);
+}
