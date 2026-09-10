@@ -6,6 +6,8 @@ Official documentation site for [Funput](https://funput.app) — an open-source 
 
 **App Store:** [Funput for iOS](https://apps.apple.com/vn/app/id6788829996)
 
+**Google Play:** [Funput for Android](https://play.google.com/store/apps/details?id=app.funput.funput)
+
 Built with [Docusaurus 3](https://docusaurus.io/). Default locale is **Vietnamese** (`vi`); **English** (`en`) is available via the locale switcher.
 
 ## Prerequisites
@@ -69,7 +71,7 @@ Docs/
 └── nginx.conf
 ```
 
-Installation guides live under `docs/install/` (`macos`, `windows`, `linux`).
+Installation guides live under `docs/install/` (`ios`, `android`, `macos`, `windows`, `linux`).
 
 ## Editing docs
 

@@ -1,36 +1,86 @@
 ---
 title: Android
 sidebar_position: 2
-description: Funput on Android — closed testing on Google Play. Request a trial invite by email.
+description: How to install and enable the Funput keyboard on an Android phone or tablet from Google Play.
 ---
 
-import AndroidInvite from '@site/src/components/AndroidInvite';
+# Install Funput on Android
 
-# Funput on Android
+Funput is a Vietnamese keyboard for Android phones and tablets. It supports both **VNI** and **Telex** input methods. After installing the app, you must enable Funput in Android's keyboard settings before you can type in Notes, Messages, or another app.
 
-Funput brings **Telex** and **VNI** Vietnamese typing to Android — lightweight, open source, and privacy-respecting. Type the same way you do on iOS or desktop, with a consistent experience across platforms.
+## Download
 
-Android is currently in **closed testing** as required by Google Play. We're expanding the tester group — email us if you'd like to join.
+Get Funput for free on Google Play:
 
-<AndroidInvite
-  mailtoHref="mailto:hello@funput.app?subject=Join%20Funput%20Android%20closed%20testing&body=Hello%20Funput%2C%0A%0AI%20would%20like%20to%20join%20closed%20testing%20for%20Funput%20on%20Android.%0A%0AMy%20Google%20Play%20(Gmail)%20address%3A%20%0A%0AThank%20you!"
-  shots={[
-    {
-      src: '/img/android/keyboard.png',
-      alt: 'Funput keyboard on Android',
-      caption: 'Funput keyboard on Android',
-    },
-    {
-      src: '/img/android/settings.png',
-      alt: 'Funput settings on Android',
-      caption: 'Funput keyboard on Android',
-    },
-    {
-      src: '/img/android/typing.png',
-      alt: 'Typing Vietnamese with Funput on Android',
-      caption: 'Funput keyboard on Android',
-    },
-  ]}
-/>
+- [Funput on Google Play](https://play.google.com/store/apps/details?id=app.funput.funput)
 
-See [Vietnamese typing guide](../input-methods/vietnamese) if you want to get familiar with Telex and VNI before joining the test.
+## Requirements
+
+- A phone or tablet running Android 8.0 (Oreo, API 26) or later.
+- The Funput app installed from [Google Play](https://play.google.com/store/apps/details?id=app.funput.funput).
+
+## Step 1: Open Funput
+
+Open **Funput** from the home screen. On the **Settings** tab, the **Set up Funput** card shows the two required setup steps.
+
+## Step 2: Enable Funput
+
+Tap **Enable Funput** in the app, or open Android's on-screen keyboard settings and turn Funput on.
+
+Some labels may differ slightly depending on the device maker and Android version. A common path is:
+
+**Settings → System → Languages & input → On-screen keyboard → Funput**
+
+## Step 3: Select Funput while typing
+
+1. Open any app with a text field.
+2. Tap the text field to display the keyboard.
+3. Tap the keyboard icon in the navigation bar, or touch and hold the 🌐 / space bar depending on the device.
+4. Select **Funput** from the list.
+5. Type a Vietnamese test sentence.
+
+<div className="text--center">
+  <img
+    src="/img/android/keyboard.png"
+    alt="Funput light keyboard on Android"
+    style={{width: '360px', maxWidth: '100%', height: 'auto'}}
+  />
+  <p><em>The Funput keyboard on Android.</em></p>
+</div>
+
+<div className="text--center">
+  <img
+    src="/img/android/settings.png"
+    alt="Funput dark keyboard on Android"
+    style={{width: '360px', maxWidth: '100%', height: 'auto'}}
+  />
+  <p><em>The Funput keyboard with a dark theme.</em></p>
+</div>
+
+<div className="text--center">
+  <img
+    src="/img/android/typing.png"
+    alt="Typing Vietnamese with the Funput keyboard on Android"
+    style={{width: '360px', maxWidth: '100%', height: 'auto'}}
+  />
+  <p><em>Type Vietnamese text to confirm that Funput is working.</em></p>
+</div>
+
+Return to the Funput app. After Funput is selected as the current keyboard, the setup card changes to **Funput is ready**.
+
+## Select VNI or Telex
+
+Open **Funput → Settings → Keyboard → Input method**, then select **VNI** or **Telex**. See [Vietnamese Typing Guide](../input-methods/vietnamese) for key mappings and test examples.
+
+VNI always needs the number row for diacritics, so Funput turns it on automatically when you select VNI. For Telex, the number row is optional — toggle it in **Settings → Keyboard → Number row**.
+
+## If Funput does not appear
+
+- Confirm that Funput is enabled in Android's keyboard settings.
+- Close and reopen the app in which you are entering text.
+- Tap the keyboard icon in the navigation bar, or touch and hold the 🌐 / space bar, then select Funput.
+- Open the Funput keyboard in a text field at least once, then return to the Funput app to refresh its status.
+
+:::note
+Android may use the system keyboard in password fields and certain secure text fields. This is an Android security behavior, not a Funput error.
+:::
