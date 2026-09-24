@@ -8,7 +8,8 @@ description: V5 specification for Funput's selectable Full Telex mode.
 
 :::info[Status]
 
-This is the **V5 specification**, not a released feature.
+Advanced Telex ships on all five platforms: macOS, Windows, Linux, iOS, and Android.
+This page describes the **V5 specification** the implementation follows.
 
 :::
 
@@ -20,33 +21,55 @@ unchanged.
 
 | Key | Result in Advanced Telex |
 | --- | --- |
-| `[` | `ư` |
-| `]` | `ơ` |
-| Word-initial or standalone `w` | `ư` |
+| `]` | `ư` |
+| `[` | `ơ` |
+| `w` while the syllable has no vowel yet | `ư` |
 
 Vowels created by these shortcuts accept tone marks and participate in all existing
 Telex rules just like vowels created through canonical sequences.
 
 ```text
-t[       → tư
-m]       → mơ
-tr[]ngf  → trường
-ng[]if   → người
+t]       → tư
+m[       → mơ
+tr][ngf  → trường
+ng][if   → người
 w        → ư
 wf       → ừ
+thw      → thư
+giwx     → giữ
 wngf     → ừng
 ```
 
-The `[` → `ư`, `]` → `ơ`, and standalone `w` → `ư` mappings match the Full Telex table
-in the [UniKey manual](https://www.unikey.org/support/ukmanual.html). Funput calls this
-mode “Advanced Telex” to distinguish it from the safer default Telex mode.
+The `]` → `ư`, `[` → `ơ` pair follows what UniKey actually does (the engine shared by
+UniKey for Windows and its Linux ports) and OpenKey, so UniKey users still get `ươ` from
+`][`. Note that the [UniKey manual](https://www.unikey.org/support/ukmanual.html) prints
+the pair the other way round; Funput follows UniKey's behavior, not its manual. Funput
+calls this mode “Advanced Telex” to distinguish it from the safer default Telex mode.
+
+### `w` after an onset \{#w-after-onset\}
+
+`w` is the `ư` key anywhere the syllable has no vowel yet, not only at the start of a
+word: `thw` → `thư`, `nhwng` → `nhưng`. The `gi` onset counts as having no vowel, since
+its `i` is a medial glide: `giwx` → `giữ`, `giwax` → `giữa`. Only `q` is excluded, as
+no syllable reads `qư`.
+
+In exchange, a `w` typed straight after the onset no longer waits to mark a later vowel
+the way it does in standard Telex:
+
+| Keys | Telex | Advanced Telex | Other ways in Advanced Telex |
+| --- | --- | --- | --- |
+| `cwon` | `cơn` | `cươn` | `conw`, `cown`, `c[n` |
+| `giwof` | `giờ` | `giuờ` | `giowf`, `gi[f` |
+
+The `ươ` rhyme still resolves: `thwongf` → `thường`, `ngwoif` → `người`.
 
 ## Inherited behavior
 
 Advanced Telex must share the Telex implementation and inherit:
 
 - Free-position `aa`, `ee`, and `oo` with tone convergence.
-- Deferred/free-order `w` after an onset and `ươ`/`ưa`/`ưu` normalization.
+- Deferred/free-order `w` after a vowel and `ươ`/`ưa`/`ưu` normalization (a `w` right
+  after the onset is the exception — see [`w` after an onset](#w-after-onset)).
 - Convergence of one deferred `w` with a `d` modifier.
 - Traditional and Modern tone placement.
 - Spell check, smart/eager restore, Vietnamese-first behavior, and Flip.
@@ -59,8 +82,8 @@ The Latin choice remains sticky across a word boundary as it does in current Tel
 
 | Situation | Telex | Advanced Telex |
 | --- | --- | --- |
-| `[` and `]` | Literal characters | Produce `ư` and `ơ` |
-| Initial/standalone `w` | Literal | Produces `ư` |
+| `]` and `[` | Literal characters | Produce `ư` and `ơ` |
+| `w` while the syllable has no vowel | Literal, or waits for a later vowel | Produces `ư` |
 | V1–V3 rules | Included | Included |
 
 Current Telex must remain unchanged to avoid collisions in English and source code.
@@ -70,8 +93,9 @@ official escape.
 ## Out of scope
 
 V5 does not include deferred tones, arbitrary modifier permutations, a dictionary,
-prediction, autocorrect, or changes to default Telex behavior. Mapping `{` → `Ư` and
-`}` → `Ơ` requires a separate product decision before entering the specification.
+prediction, autocorrect, or changes to default Telex behavior. Mapping `{` → `Ơ` and
+`}` → `Ư` (UniKey's capitals for `[`/`]`) requires a separate product decision before
+entering the specification.
 
 ## Architecture contract
 

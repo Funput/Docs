@@ -8,7 +8,8 @@ description: Đặc tả V5 cho mode Full Telex có thể chọn riêng trong Fu
 
 :::info[Trạng thái]
 
-Đây là đặc tả cho **V5**, chưa phải tính năng đã phát hành.
+Telex nâng cao đã có trên cả 5 nền tảng: macOS, Windows, Linux, iOS và Android. Trang
+này mô tả đặc tả **V5** mà bản hiện thực tuân theo.
 
 :::
 
@@ -19,33 +20,54 @@ Telex hiện tại và bổ sung các phím tắt Full Telex phổ biến. Telex
 
 | Phím | Kết quả trong Telex nâng cao |
 | --- | --- |
-| `[` | `ư` |
-| `]` | `ơ` |
-| `w` ở đầu từ hoặc đứng độc lập | `ư` |
+| `]` | `ư` |
+| `[` | `ơ` |
+| `w` khi âm tiết chưa có nguyên âm | `ư` |
 
 Các nguyên âm được tạo bằng cú pháp trên tiếp tục nhận dấu thanh và tham gia vào các
 quy tắc Telex hiện có như nguyên âm được tạo theo cách thông thường.
 
 ```text
-t[       → tư
-m]       → mơ
-tr[]ngf  → trường
-ng[]if   → người
+t]       → tư
+m[       → mơ
+tr][ngf  → trường
+ng][if   → người
 w        → ư
 wf       → ừ
+thw      → thư
+giwx     → giữ
 wngf     → ừng
 ```
 
-Các ánh xạ `[` → `ư`, `]` → `ơ` và `w` độc lập → `ư` tương thích với bảng Full Telex
-trong [hướng dẫn UniKey](https://www.unikey.org/support/ukmanual.html). Funput dùng tên
+Cặp `]` → `ư`, `[` → `ơ` theo đúng hành vi của UniKey (engine dùng chung cho UniKey trên
+Windows và các bản Linux) và OpenKey, nên người quen UniKey gõ `][` vẫn ra `ươ`. Lưu ý
+[trang hướng dẫn UniKey](https://www.unikey.org/support/ukmanual.html) in ngược cặp này;
+Funput theo hành vi thực tế của UniKey chứ không theo trang hướng dẫn. Funput dùng tên
 “Telex nâng cao” để phân biệt mode này với Telex mặc định an toàn hơn.
+
+### `w` sau âm đầu \{#w-after-onset\}
+
+`w` là phím `ư` ở mọi chỗ âm tiết chưa có nguyên âm, không chỉ ở đầu từ: `thw` → `thư`,
+`nhwng` → `nhưng`. Âm đầu `gi` cũng tính là chưa có nguyên âm, vì chữ `i` của nó là âm
+đệm: `giwx` → `giữ`, `giwax` → `giữa`. Riêng `q` được loại trừ vì không có âm tiết `qư`.
+
+Đổi lại, `w` gõ ngay sau âm đầu không còn chờ để thêm dấu cho nguyên âm phía sau như
+trong Telex thường:
+
+| Gõ | Telex | Telex nâng cao | Cách gõ khác trong Telex nâng cao |
+| --- | --- | --- | --- |
+| `cwon` | `cơn` | `cươn` | `conw`, `cown`, `c[n` |
+| `giwof` | `giờ` | `giuờ` | `giowf`, `gi[f` |
+
+Vần `ươ` vẫn về đích: `thwongf` → `thường`, `ngwoif` → `người`.
 
 ## Hành vi được kế thừa \{#inherited-behavior\}
 
 Telex nâng cao phải dùng chung implementation với Telex và kế thừa:
 
 - Free-position `aa`, `ee`, `oo` và hội tụ dấu thanh.
-- Deferred/free-order `w` sau onset và chuẩn hóa `ươ`, `ưa`, `ưu`.
+- Deferred/free-order `w` sau nguyên âm và chuẩn hóa `ươ`, `ưa`, `ưu` (`w` ngay sau
+  âm đầu là ngoại lệ — xem [`w` sau âm đầu](#w-after-onset)).
 - Hội tụ một deferred `w` với modifier `d`.
 - Kiểu đặt dấu Traditional và Modern.
 - Spell check, smart/eager restore, Vietnamese-first và Flip.
@@ -58,8 +80,8 @@ Flip phải khôi phục chính xác chuỗi phím gốc khi người dùng mu�
 
 | Tình huống | Telex | Telex nâng cao |
 | --- | --- | --- |
-| `[` và `]` | Ký tự literal | Tạo `ư` và `ơ` |
-| `w` đầu từ/độc lập | Literal | Tạo `ư` |
+| `]` và `[` | Ký tự literal | Tạo `ư` và `ơ` |
+| `w` khi âm tiết chưa có nguyên âm | Literal hoặc chờ nguyên âm sau | Tạo `ư` |
 | Các quy tắc V1–V3 | Có | Có |
 
 Mode Telex hiện tại phải giữ nguyên để tránh collision khi nhập tiếng Anh hoặc mã nguồn.
@@ -69,8 +91,9 @@ Flip làm escape chính thức.
 ## Ngoài phạm vi \{#out-of-scope\}
 
 V5 không bao gồm deferred tone, hoán vị modifier tùy ý, dictionary, prediction,
-autocorrect hoặc thay đổi behavior mặc định của Telex. Ánh xạ `{` → `Ư` và `}` → `Ơ`
-cần một quyết định sản phẩm riêng trước khi được thêm vào đặc tả.
+autocorrect hoặc thay đổi behavior mặc định của Telex. Ánh xạ `{` → `Ơ` và `}` → `Ư`
+(bản viết hoa của `[`/`]` trong UniKey) cần một quyết định sản phẩm riêng trước khi được
+thêm vào đặc tả.
 
 ## Hợp đồng kiến trúc \{#architecture-contract\}
 
