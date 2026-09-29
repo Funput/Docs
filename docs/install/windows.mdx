@@ -5,7 +5,9 @@ sidebar_position: 3
 
 # Cài đặt trên Windows
 
-Funput trên Windows là app **portable một file `.exe`** — chạy nền ở **khay hệ thống (System Tray)**, gõ được ngay trên mọi ứng dụng. Không cần thêm Input Source như macOS hay Linux, cũng chưa có MSI/installer: double-click là chạy.
+Funput đã có trên **[Microsoft Store](https://apps.microsoft.com/store/detail/9NR3WL5PD4ZS)**. Cài miễn phí, mở từ menu Start và cập nhật qua Store. Ứng dụng chạy nền ở **khay hệ thống (System Tray)** để bạn gõ tiếng Việt, không cần thêm Input Source như macOS hay Linux.
+
+Nếu cần mang ứng dụng theo trong một thư mục, bản **portable một file `.exe`** vẫn có trên GitHub Releases.
 
 ## Yêu cầu \{#requirements\}
 
@@ -23,7 +25,13 @@ Riêng nền **Mica** chỉ có trên Windows 11. Trên Windows 10, cửa sổ C
 
 ## Tải xuống \{#download\}
 
-Tải bản phát hành mới nhất từ [GitHub Releases](https://github.com/Funput/Funput/releases):
+### Microsoft Store (khuyến nghị)
+
+Mở **[Funput trên Microsoft Store](https://apps.microsoft.com/store/detail/9NR3WL5PD4ZS)** và chọn **Nhận / Get** hoặc **Cài đặt / Install**. Nếu trình duyệt đề nghị mở ứng dụng Microsoft Store, tiếp tục trong Store để hoàn tất cài đặt.
+
+### Bản portable
+
+Tải bản portable từ [GitHub Releases](https://github.com/Funput/Funput/releases):
 
 | File | Mô tả |
 | ---- | ----- |
@@ -39,6 +47,19 @@ Get-FileHash .\Funput-*.exe -Algorithm SHA256
 So sánh kết quả với nội dung file `.sha256` trên trang release.
 
 ## Cài đặt / chạy lần đầu \{#install\}
+
+### Cài từ Microsoft Store
+
+1. Mở [trang Funput trên Microsoft Store](https://apps.microsoft.com/store/detail/9NR3WL5PD4ZS) và cài ứng dụng.
+2. Chọn **Mở / Open** trong Store hoặc tìm **Funput** trong menu Start.
+3. Làm theo hướng dẫn chọn kiểu gõ. Biểu tượng Funput xuất hiện ở khay hệ thống.
+4. Chọn Telex, Telex+ hoặc VNI và thử gõ trong Notepad.
+
+Nếu đang dùng bản portable hoặc bộ gõ khác, thoát bộ gõ đang chạy trước khi mở bản mới. Khi chuyển bản cài, có thể giữ thiết lập bằng **Cài đặt → Dữ liệu → Xuất cấu hình**, rồi nhập lại trong bản mới.
+
+### Chạy bản portable
+
+Các bước về thư mục, đổi tên tệp và SmartScreen dưới đây chỉ dành cho bản portable.
 
 1. Tải file `Funput-*.exe` từ GitHub Releases.
 2. Đặt file vào một thư mục cố định, ví dụ `%LOCALAPPDATA%\Programs\Funput\`.
@@ -59,7 +80,7 @@ So sánh kết quả với nội dung file `.sha256` trên trang release.
 
 :::warning[SmartScreen]
 
-Windows có thể hiện cảnh báo **SmartScreen** lần đầu (Funput chưa ký Authenticode). Nếu bạn tải từ [GitHub Releases](https://github.com/Funput/Funput/releases) chính thức:
+Bản portable tải từ GitHub có thể hiện cảnh báo **SmartScreen** lần đầu. Nếu bạn tải từ [GitHub Releases](https://github.com/Funput/Funput/releases) chính thức:
 
 1. Chọn **More info** (Thông tin thêm)
 2. Chọn **Run anyway** (Vẫn chạy)
@@ -102,7 +123,7 @@ Icon Funput trên khay hệ thống là trung tâm điều khiển:
 - Xem **phím chuyển** và **kiểu đặt dấu** đang dùng
 - **Mở cài đặt đầy đủ**
 
-**Menu click phải** gồm đúng bốn mục:
+**Menu click phải** của bản portable gồm bốn mục; bản Microsoft Store không có mục Kiểm tra cập nhật:
 
 - **Cài đặt…**
 - **Chuyển mã…**
@@ -130,7 +151,7 @@ Thay đổi có hiệu lực ngay và được giữ qua các lần khởi độ
 
 ### Cấu hình lưu ở đâu \{#config-location\}
 
-Funput ưu tiên **portable**: cấu hình nằm ngay cạnh file `Funput.exe` để cả app đi theo USB được. Nó chọn vị trí theo thứ tự sau:
+Với bản **portable**, cấu hình nằm ngay cạnh file `Funput.exe` để cả app đi theo USB được. Nó chọn vị trí theo thứ tự sau:
 
 | Thứ tự | Vị trí | Khi nào dùng |
 | --- | --- | --- |
@@ -142,25 +163,31 @@ Funput ưu tiên **portable**: cấu hình nằm ngay cạnh file `Funput.exe` �
 Đặt app trong `C:\Program Files\Funput\` sẽ rơi vào trường hợp 3, vì thư mục đó cần quyền admin để ghi. Đặt trong `%LOCALAPPDATA%\Programs\Funput\` thì cấu hình nằm cùng chỗ với app.
 :::
 
+Với bản **Microsoft Store**, Windows quản lý thư mục cài đặt. Không di chuyển hoặc sửa tệp trong `WindowsApps`; dùng **Cài đặt → Dữ liệu** để xuất / nhập cấu hình.
+
 ## Giới hạn đã biết \{#known-limitations\}
 
 :::danger[Không gõ được vào ứng dụng chạy quyền Administrator]
 
 Task Manager, Registry Editor, một số trình cài đặt và công cụ quản trị chạy ở quyền cao hơn Funput, nên Windows **chặn** Funput đưa phím vào các cửa sổ đó. Đây là cơ chế bảo vệ của hệ điều hành, không phải lỗi của app.
 
-**Cách xử lý:** click phải `Funput.exe` → **Run as administrator**. Funput sẽ gõ được vào cả ứng dụng thường lẫn ứng dụng elevated.
+**Với bản portable:** click phải `Funput.exe` → **Run as administrator**. Funput sẽ gõ được vào cả ứng dụng thường lẫn ứng dụng elevated.
 
 :::
 
-- **Không tự kiểm tra cập nhật nền.** Bạn phải chủ động chọn **Kiểm tra cập nhật…**.
-- **Chưa có installer.** Bản phát hành là một file `.exe` portable, chưa có MSI.
-- **Chưa ký Authenticode**, nên SmartScreen sẽ cảnh báo ở lần chạy đầu tiên.
+- **Bản portable không tự kiểm tra cập nhật nền.** Bạn phải chủ động chọn **Kiểm tra cập nhật…**.
+- **Bản Store cập nhật qua Microsoft Store.** Không thay tệp ứng dụng thủ công.
+- **Bản portable có thể hiện SmartScreen** ở lần chạy đầu tiên; chỉ tải từ GitHub Releases chính thức.
 
 ## Cập nhật \{#update\}
 
-Windows **không có** kho package như Linux (`repo.funput.app`). Cập nhật qua **app** (tương tự Sparkle trên macOS) hoặc tải thủ công từ GitHub.
+### Bản Microsoft Store
 
-### Cập nhật trong app (khuyến nghị) \{#update-in-app\}
+Mở Microsoft Store và kiểm tra bản cập nhật Funput trong phần quản lý ứng dụng / Thư viện. Store quản lý cập nhật của bản cài này; trong **Cài đặt → Giới thiệu**, Funput hiển thị **Cập nhật qua Microsoft Store** và không có thao tác tải bản GitHub.
+
+Các cách cập nhật dưới đây dành cho **bản portable**.
+
+### Cập nhật bản portable trong app \{#update-in-app\}
 
 | Cách truy cập | Thao tác |
 | ------------- | -------- |
@@ -178,7 +205,7 @@ Quy trình khi có bản mới:
 Funput **không tự kiểm tra cập nhật nền** — bạn cần chủ động chọn **Kiểm tra cập nhật…**.
 :::
 
-### Cập nhật thủ công \{#update-manual\}
+### Cập nhật bản portable thủ công \{#update-manual\}
 
 1. Tải `Funput-<version>.exe` mới từ [GitHub Releases](https://github.com/Funput/Funput/releases)
 2. Thoát Funput (menu tray → **Thoát**)
@@ -187,7 +214,13 @@ Funput **không tự kiểm tra cập nhật nền** — bạn cần chủ độ
 
 ## Gỡ cài đặt \{#uninstall\}
 
-Funput là app portable, không có trình gỡ cài đặt. Cần dọn ba thứ:
+### Bản Microsoft Store
+
+Thoát Funput từ khay hệ thống. Mở **Settings → Apps**, tìm **Funput** trong danh sách ứng dụng đã cài và chọn **Uninstall / Gỡ cài đặt**. Xuất cấu hình từ **Cài đặt → Dữ liệu** trước khi gỡ nếu muốn giữ thiết lập.
+
+### Bản portable
+
+Bản portable không có trình gỡ cài đặt. Cần dọn ba thứ:
 
 1. **Thoát Funput** từ menu tray, rồi xoá thư mục chứa app.
 2. **Xoá mục khởi động cùng Windows**, nếu bạn đã bật.
@@ -209,11 +242,11 @@ Xoá thư mục app cũng xoá `settings.json` nằm trong đó. Muốn giữ l�
 
 ### SmartScreen chặn hoặc cảnh báo \{#smartscreen\}
 
-Xem mục [Cài đặt / chạy lần đầu](#install). Chỉ tải từ [GitHub Releases](https://github.com/Funput/Funput/releases) chính thức.
+Với bản portable, xem mục [Cài đặt / chạy lần đầu](#install). Chỉ tải từ [GitHub Releases](https://github.com/Funput/Funput/releases) chính thức.
 
 ### Không gõ được trong app chạy quyền Admin \{#admin-apps\}
 
-Xem mục [Giới hạn đã biết](#known-limitations) — chạy Funput bằng **Run as administrator**.
+Xem mục [Giới hạn đã biết](#known-limitations). Với bản portable, chạy Funput bằng **Run as administrator**.
 
 ### File `Funput-<version>.exe` biến mất sau khi chạy \{#exe-disappears\}
 
@@ -225,12 +258,12 @@ VNI đặt dấu bằng **chữ số** (`chao2` → `chào`), không phải ch�
 
 ### Funput không tự khởi động khi bật máy \{#no-autostart\}
 
-Bật **Khởi động cùng Windows** trong **Cài đặt → Tổng quan**. Nếu bạn di chuyển `Funput.exe` sang thư mục khác, hãy tắt rồi bật lại tuỳ chọn này để Funput ghi lại đường dẫn mới.
+Bật **Khởi động cùng Windows** trong **Cài đặt → Tổng quan**. Với bản Store, kiểm tra thêm **Settings → Apps → Startup** nếu Windows đã tắt quyền khởi động. Với bản portable, nếu bạn di chuyển `Funput.exe` sang thư mục khác, hãy tắt rồi bật lại tuỳ chọn này để Funput ghi lại đường dẫn mới.
 
 ### Không thấy icon Funput trên khay hệ thống \{#no-tray-icon\}
 
 - Kiểm tra vùng **hidden icons** (mũi tên ^ trên taskbar) — Windows thường ẩn icon mới.
-- Chạy lại `Funput.exe`. Nếu Funput đã chạy sẵn, lần chạy thứ hai chỉ mở cửa sổ Cài đặt — đó là dấu hiệu app vẫn sống và icon chỉ đang bị ẩn.
+- Mở Funput từ menu Start (bản Store) hoặc chạy lại `Funput.exe` (bản portable). Nếu Funput đã chạy sẵn, lần chạy thứ hai chỉ mở cửa sổ Cài đặt — đó là dấu hiệu app vẫn sống và icon chỉ đang bị ẩn.
 - Khởi động lại Windows nếu app bị crash im lặng.
 
 ### Cài đặt không được lưu \{#settings-not-saved\}
@@ -244,4 +277,5 @@ Thư mục chứa app có thể chỉ đọc. Kiểm tra xem `settings.json` n�
 ## Cần trợ giúp thêm? \{#help\}
 
 - [Báo lỗi hoặc thảo luận trên GitHub](https://github.com/Funput/Funput/issues)
+- [Tải Funput trên Microsoft Store](https://apps.microsoft.com/store/detail/9NR3WL5PD4ZS)
 - [Website Funput](https://funput.app)

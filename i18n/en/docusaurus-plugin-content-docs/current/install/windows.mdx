@@ -5,7 +5,9 @@ sidebar_position: 3
 
 # Install on Windows
 
-On Windows, Funput is a **single portable `.exe` file** — it runs in the background in the **system tray** and works in every app. There is no Input Source to add as on macOS or Linux, and no MSI/installer yet: double-click to run.
+Funput is available on **[Microsoft Store](https://apps.microsoft.com/store/detail/9NR3WL5PD4ZS)**. Install it for free, open it from Start, and receive updates through the Store. It runs in the **system tray** for Vietnamese typing, with no Input Source to add as on macOS or Linux.
+
+A **single portable `.exe` file** is also available on GitHub Releases if you prefer to keep the app in a folder you can carry with you.
 
 ## Requirements
 
@@ -23,7 +25,13 @@ The **Mica** backdrop is Windows 11 only. On Windows 10 the Settings window is d
 
 ## Download
 
-Get the latest release from [GitHub Releases](https://github.com/Funput/Funput/releases):
+### Microsoft Store (recommended)
+
+Open **[Funput on Microsoft Store](https://apps.microsoft.com/store/detail/9NR3WL5PD4ZS)** and choose **Get** or **Install**. If your browser asks to open the Microsoft Store app, continue there to finish installing.
+
+### Portable build
+
+Get the portable build from [GitHub Releases](https://github.com/Funput/Funput/releases):
 
 | File | Description |
 | ---- | ----------- |
@@ -39,6 +47,19 @@ Get-FileHash .\Funput-*.exe -Algorithm SHA256
 Compare the output with the contents of the `.sha256` file on the release page.
 
 ## Install / first run
+
+### Install from Microsoft Store
+
+1. Open [Funput on Microsoft Store](https://apps.microsoft.com/store/detail/9NR3WL5PD4ZS) and install the app.
+2. Choose **Open** in the Store or search for **Funput** in Start.
+3. Follow onboarding to pick an input method. The Funput icon appears in the system tray.
+4. Choose Telex, Telex+ or VNI and try typing in Notepad.
+
+Quit any running portable build or other Vietnamese input method before opening the new build. To keep settings when switching builds, use **Settings → Data → Export configuration**, then import it in the new build.
+
+### Run the portable build
+
+The folder, executable rename and SmartScreen instructions below apply only to the portable build.
 
 1. Download `Funput-*.exe` from GitHub Releases.
 2. Put the file in a fixed folder, e.g. `%LOCALAPPDATA%\Programs\Funput\`.
@@ -59,7 +80,7 @@ This is deliberate: launch-at-login and auto-update need a stable path that does
 
 :::warning[SmartScreen]
 
-Windows may show a **SmartScreen** warning the first time (Funput is not Authenticode-signed yet). If you downloaded from the official [GitHub Releases](https://github.com/Funput/Funput/releases):
+The portable build downloaded from GitHub may show a **SmartScreen** warning the first time. If you downloaded from the official [GitHub Releases](https://github.com/Funput/Funput/releases):
 
 1. Click **More info**
 2. Click **Run anyway**
@@ -102,7 +123,7 @@ The **Control Center** (left click) is a quick panel, so you rarely need full Se
 - See the current **toggle shortcut** and **tone placement style**
 - **Open full settings**
 
-The **right-click menu** has exactly four items:
+The portable build’s **right-click menu** has four items. The Microsoft Store build omits Check for updates:
 
 - **Settings…**
 - **Charset converter…**
@@ -130,7 +151,7 @@ Changes take effect immediately and persist across restarts.
 
 ### Where settings are stored
 
-Funput is **portable-first**: its configuration lives next to `Funput.exe` so the whole app can travel on a USB stick. It picks a location in this order:
+In the **portable build**, configuration lives next to `Funput.exe` so the whole app can travel on a USB stick. It picks a location in this order:
 
 | Order | Location | When it applies |
 | --- | --- | --- |
@@ -142,25 +163,31 @@ Funput is **portable-first**: its configuration lives next to `Funput.exe` so th
 Putting the app in `C:\Program Files\Funput\` lands you in case 3, because that folder needs admin rights to write. Putting it in `%LOCALAPPDATA%\Programs\Funput\` keeps settings alongside the app.
 :::
 
+For the **Microsoft Store build**, Windows manages the install directory. Do not move or modify files in `WindowsApps`; use **Settings → Data** to export and import configuration.
+
 ## Known limitations
 
 :::danger[Typing does not work in apps running as Administrator]
 
 Task Manager, Registry Editor, some installers and admin tools run at a higher privilege level than Funput, so Windows **blocks** it from sending keystrokes into those windows. This is an OS security boundary, not an app bug.
 
-**Workaround:** right-click `Funput.exe` → **Run as administrator**. Funput will then type into both normal and elevated apps.
+**For the portable build:** right-click `Funput.exe` → **Run as administrator**. Funput will then type into both normal and elevated apps.
 
 :::
 
-- **No background update checks.** You have to choose **Check for updates…** yourself.
-- **No installer yet.** Releases ship as a single portable `.exe`, not an MSI.
-- **Not Authenticode-signed**, so SmartScreen warns on the first run.
+- **The portable build has no background update checks.** Choose **Check for updates…** yourself.
+- **The Store build updates through Microsoft Store.** Do not replace its executable manually.
+- **The portable build may show SmartScreen** on the first run. Only download it from the official GitHub Releases page.
 
 ## Updating
 
-Windows has **no package repository** like Linux (`repo.funput.app`). Update from inside the **app** (similar to Sparkle on macOS) or download manually from GitHub.
+### Microsoft Store build
 
-### In-app update (recommended)
+Open Microsoft Store and check for Funput updates in its app management / Library section. The Store manages updates for this build; **Settings → About** displays **Cập nhật qua Microsoft Store** (Update through Microsoft Store), without GitHub download actions.
+
+The update methods below apply to the **portable build**.
+
+### Portable in-app update
 
 | Where | Action |
 | ----- | ------ |
@@ -178,7 +205,7 @@ When a newer version exists:
 Funput **never checks for updates in the background** — you have to choose **Check for updates…**.
 :::
 
-### Manual update
+### Portable manual update
 
 1. Download the new `Funput-<version>.exe` from [GitHub Releases](https://github.com/Funput/Funput/releases)
 2. Quit Funput (tray menu → **Quit**)
@@ -187,7 +214,13 @@ Funput **never checks for updates in the background** — you have to choose **C
 
 ## Uninstalling
 
-Funput is portable, so there is no uninstaller. Three things to clean up:
+### Microsoft Store build
+
+Quit Funput from the tray. Open **Settings → Apps**, find **Funput** in the installed apps list and choose **Uninstall**. Export your configuration from **Settings → Data** first if you want to keep it.
+
+### Portable build
+
+The portable build has no uninstaller. Three things to clean up:
 
 1. **Quit Funput** from the tray menu, then delete the folder holding the app.
 2. **Remove the launch-at-login entry**, if you enabled it.
@@ -209,11 +242,11 @@ Deleting the app folder also deletes the `settings.json` inside it. To keep your
 
 ### SmartScreen blocks or warns
 
-See [Install / first run](#install--first-run). Only download from the official [GitHub Releases](https://github.com/Funput/Funput/releases).
+For the portable build, see [Install / first run](#install--first-run). Only download from the official [GitHub Releases](https://github.com/Funput/Funput/releases).
 
 ### Typing does not work in apps running as Administrator
 
-See [Known limitations](#known-limitations) — run Funput via **Run as administrator**.
+See [Known limitations](#known-limitations). For the portable build, run Funput via **Run as administrator**.
 
 ### `Funput-<version>.exe` disappeared after I ran it
 
@@ -225,12 +258,12 @@ VNI marks tones with **digits** (`chao2` → `chào`), not letters. If `chaof` i
 
 ### Funput does not start with Windows
 
-Enable **Launch at login** in **Settings → Overview**. If you moved `Funput.exe` to a different folder, toggle the option off and on again so Funput records the new path.
+Enable **Launch at login** in **Settings → Overview**. For the Store build, also check **Settings → Apps → Startup** if Windows disabled startup. For the portable build, if you moved `Funput.exe` to a different folder, toggle the option off and on again so Funput records the new path.
 
 ### The Funput icon is missing from the system tray
 
 - Check the **hidden icons** area (the ^ arrow on the taskbar) — Windows usually hides new icons there.
-- Run `Funput.exe` again. If Funput is already running, the second launch simply opens the Settings window — a sign the app is alive and the icon is only hidden.
+- Open Funput from Start (Store build) or run `Funput.exe` again (portable build). If Funput is already running, the second launch simply opens the Settings window — a sign the app is alive and the icon is only hidden.
 - Restart Windows if the app crashed silently.
 
 ### Settings are not being saved
@@ -244,4 +277,5 @@ Compare the SHA-256 (see [Download](#download)) and re-download if it does not m
 ## Need more help?
 
 - [Report a bug or start a discussion on GitHub](https://github.com/Funput/Funput/issues)
+- [Get Funput on Microsoft Store](https://apps.microsoft.com/store/detail/9NR3WL5PD4ZS)
 - [Funput website](https://funput.app)
