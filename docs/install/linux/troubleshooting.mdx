@@ -35,11 +35,13 @@ Nhớ rằng biến chỉ có hiệu lực sau khi **đăng xuất/đăng nhập
 
 Nếu chỉ **một vài ứng dụng** không ăn (thường là app Qt hoặc XWayland như WPS): đó là `QT_IM_MODULE` — xem [khối Wayland ở bước 3](./index.mdx#step-3-wire-session), và [ghi chú Qt 6.8.2](./session-setup.mdx).
 
-## Gõ được nhưng preedit không hiện (Chrome, WPS) \{#no-preedit\}
+## Chữ có gạch chân, hoặc preedit không hiện (WPS) \{#no-preedit\}
 
-Một số ứng dụng tự giấu preedit. Fcitx5 vẽ được preedit trên panel của nó cho những trường hợp này.
+Mặc định Funput đưa chữ thẳng vào ô nhập, không có dòng gạch chân. Không có công tắc cho việc này: Funput tự quyết cho từng ứng dụng, và dùng gạch chân (preedit) khi ứng dụng không nhận được cách gõ thẳng. Vì vậy thấy gạch chân ở terminal hay ở một số app tự vẽ ô nhập là bình thường. Từ đầu tiên sau khi chuyển cửa sổ cũng có thể có gạch chân, cho tới khi ứng dụng gửi văn bản lần đầu cho bộ gõ.
 
-Ngoài ra app **Funput** có công tắc **Gõ thẳng vào ứng dụng → Bật gõ thẳng** (tab Tổng quan): chữ hiện ngay trong ô gõ thay vì ở dòng gạch chân. Chính app ghi rõ tính năng này **đang thử nghiệm** — app nào chưa hỗ trợ thì Funput tự quay về cách cũ.
+Một số ứng dụng tự giấu preedit, nên từ đang gõ trở nên vô hình cho tới khi bấm Space. WPS Office là trường hợp điển hình. Với Fcitx5, Funput vẽ preedit trên panel của Fcitx5 cho những ứng dụng này, và không thử gõ thẳng vì WPS không nhận được. IBus không có kênh nào làm được việc đó.
+
+Nếu một ứng dụng lúc nào cũng gạch chân, hoặc ra sai chữ ở từ đầu rồi mới chuyển sang gạch chân, hãy [báo lỗi](https://github.com/Funput/Funput/issues) kèm tên ứng dụng và tên tiến trình của nó.
 
 ## `apt` báo dependency not installable \{#apt-dependency-error\}
 
