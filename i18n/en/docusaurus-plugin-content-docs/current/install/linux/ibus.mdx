@@ -22,6 +22,8 @@ Pick IBus when you are **on GNOME or Ubuntu** and do not want to touch the sessi
 
 **The trade-off:** Fcitx5 is the more complete build. It can draw the preedit on its own panel for applications that hide it (WPS Office) — something the IBus side has no channel for — and it supports switching input method per application.
 
+For direct typing, IBus has two more limits compared with Fcitx5. First, IBus does not know the application's name, so an application that drops the delete that goes with a correction is tried again each time you come back, costing one word each time. Second, an empty field right after another empty field can underline exactly the first word. See also [Text is underlined](./troubleshooting.mdx#no-preedit).
+
 :::info
 The two packages **can be installed side by side** (they do not fight over files). But only **one framework** should be active per login session: enable both and two input methods receive the same keystrokes.
 :::

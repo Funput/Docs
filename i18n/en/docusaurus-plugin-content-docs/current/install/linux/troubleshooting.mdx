@@ -35,11 +35,13 @@ Remember that the variables only take effect after you **log out and back in**, 
 
 If only **some applications** are affected (usually Qt or XWayland apps such as WPS), it is `QT_IM_MODULE` — see the [Wayland block in step 3](./index.mdx#step-3-wire-session) and the [Qt 6.8.2 note](./session-setup.mdx).
 
-## Typing works but no preedit shows (Chrome, WPS) \{#no-preedit\}
+## Text is underlined, or the preedit does not show (WPS) \{#no-preedit\}
 
-Some applications hide the preedit. Fcitx5 can draw it on its own panel for those cases.
+By default Funput puts letters straight into the text field, with no underline. There is no switch for it: Funput decides per application, and uses the underlined preedit when an application cannot take direct typing. So seeing the underline in a terminal or in some apps that draw their own text fields is normal. The first word after switching windows can also be underlined, until the application sends its text to the input method for the first time.
 
-The **Funput** app also has a **Type directly into the application → Enable direct typing** switch (Overview tab): text appears in the input field itself instead of on an underlined line. The app itself notes this feature is **experimental** — where an application does not support it, Funput falls back to the old behaviour.
+Some applications hide the preedit, so the word you are typing is invisible until you press Space. WPS Office is the typical case. With Fcitx5, Funput draws the preedit on Fcitx5's own panel for these applications, and does not try direct typing because WPS cannot take it. IBus has no channel that can do that.
+
+If one application always shows the underline, or gets the first word wrong before switching to the underline, [report it](https://github.com/Funput/Funput/issues) with the application name and its process name.
 
 ## `apt` reports a dependency that is not installable \{#apt-dependency-error\}
 
