@@ -65,6 +65,12 @@
   border-top: 1px solid var(--ifm-toc-border-color);
 }
 
+.bottom :global(.footer__copyright) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
+}
+
 @media screen and (max-width: 996px) {
   .footer {
     padding-top: 2.5rem;

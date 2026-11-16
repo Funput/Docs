@@ -27,18 +27,16 @@ const sidebars: SidebarsConfig = {
         'install/android',
         'install/macos',
         'install/windows',
-        // Linux is the only platform with sub-pages: its session wiring, the IBus
-        // variant and the fallback install paths are each their own page so the
-        // main guide can stay a single five-step path.
         {
           type: 'category',
           label: 'Linux',
           link: {type: 'doc', id: 'install/linux/index'},
           items: [
-            'install/linux/session-setup',
+            'install/linux/fcitx5',
             'install/linux/ibus',
             'install/linux/other-methods',
             'install/linux/troubleshooting',
+            'install/linux/session-setup',
           ],
         },
       ],

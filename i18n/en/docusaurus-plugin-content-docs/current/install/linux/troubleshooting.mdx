@@ -1,74 +1,120 @@
 ---
 title: Troubleshooting
 sidebar_position: 5
+hide_table_of_contents: true
 ---
+
+import LinuxGuideDisclosure from '@site/src/components/LinuxGuideDisclosure';
+import styles from '@site/src/css/linuxInstall.module.css';
 
 # Troubleshooting
 
-Before anything else, run this:
+<div className={styles.guideBody}>
+
+Open the section that matches what you see. The `funput` package is for **Fcitx5**, and the `funput-ibus` package is for **IBus**.
+
+<LinuxGuideDisclosure id="not-listed" label="Funput is missing from the input method list">
+
+**Fcitx5**
+
+1. Open **Fcitx 5 Configuration**, click **+**, and clear **Only Show Current Language**. Look for **Funput** under **Vietnamese**.
+2. If the settings window does not open, look for `fcitx5-config-qt` on Debian or Ubuntu. On Fedora, openSUSE, and Arch Linux, look for `fcitx5-configtool` in the package manager.
+3. If Funput still does not appear, check the **Funput** app for setup guidance. Log out and back in. To see whether Fcitx5 has loaded Funput, run `fcitx5-diagnose` in Terminal.
+
+**IBus on GNOME**
+
+1. Go to **Settings → Keyboard → Input Sources**, choose **+** or **Add Input Source**, then look for **Vietnamese → Funput**.
+2. If Funput is still missing, check that `funput-ibus` is installed. Run `ibus restart` in Terminal, then reopen Settings. You can also log out and back in to reload it.
+
+[Add Funput to IBus](./ibus.mdx#enable)
+
+</LinuxGuideDisclosure>
+
+<LinuxGuideDisclosure id="typing-does-nothing" label="Funput is on, but Vietnamese accents are missing">
+
+Open a text editor and turn on Vietnamese typing in **Funput**. Type the keys for the input style you selected in the Funput app, then press **Space**.
+
+<div className={styles.typingExample}>
+
+- **Telex** `tieengs` → **tiếng**
+- **VNI** `tie61ng` → **tiếng**
+
+</div>
+
+- **It happens in every app.** For Fcitx5, check your X11 or Wayland settings, then log out and back in to apply them. Run `fcitx5-diagnose` to see which settings are active. For IBus, check the GNOME input source.
+  - [Set up Fcitx5](./fcitx5.mdx#step-3-wire-session)
+  - [Enable Funput in IBus](./ibus.mdx#enable)
+- **It happens in just one app.** If the same keys work in the text editor, check the settings for the affected app first. This is especially useful for Qt or XWayland apps.
+  - [Qt apps on Wayland](./session-setup.mdx#qt-6-8-2)
+  - [App-specific settings on KDE](./session-setup.mdx#undo-im-config-kde)
+
+</LinuxGuideDisclosure>
+
+<LinuxGuideDisclosure id="no-preedit" label="Text is underlined or hidden in WPS Office">
+
+Press **Space** to finish the word. If it appears correctly, the underline or hidden text is how the app handles words you are still typing. This is called *preedit*. You may see an underline in Terminal, in certain text fields, or on the first word after switching windows. Funput selects the typing behavior for each app.
+
+WPS Office can hide the word until you press **Space**. With Fcitx5, Funput can show the unfinished word in a separate panel. With IBus, press **Space** to see the finished word in WPS.
+
+If the first word is incorrect or the underline persists after **Space**, note the app name, the keys you pressed, and the app's process name if you know it. [What to include in a bug report](#still-stuck)
+
+</LinuxGuideDisclosure>
+
+<LinuxGuideDisclosure id="apt-dependency-error" label="APT reports a missing dependency">
+
+- **Installing from a `.deb` file.** Check that the Funput input method package and `funput-settings` have the same version and architecture. Include both in the same install command. Run `dpkg --print-architecture` to check whether you need `amd64` or `arm64`. [Choose packages from GitHub Releases](./other-methods.mdx#releases)
+- **Installing from the Funput repository.** Run `sudo apt update` and try again. If the error remains, note the missing package and version. Older Linux releases may lack the version of a library Funput needs. [What to include in a bug report](#still-stuck)
+
+</LinuxGuideDisclosure>
+
+<LinuxGuideDisclosure id="two-frameworks" label="Two input methods receive the same keystrokes">
+
+Check whether Fcitx5 and IBus are active in the same session. You can keep both packages installed and use one framework at a time. Turn off autostart or undo the setup for the framework you are not using, then log out and back in. [See how Fcitx5 starts at login](./fcitx5.mdx#step-3a-autostart)
+
+</LinuxGuideDisclosure>
+
+## Repository and bug reports
+
+<LinuxGuideDisclosure id="remove-repo" label="Remove the Funput repository">
+
+Installed packages stay on your computer. Removing the repository stops updates from this source. Run only the commands for your distribution.
+
+**Debian or Ubuntu.** The second command removes the entry used by the older guide.
 
 ```bash
-fcitx5-diagnose
+sudo rm -f /etc/apt/sources.list.d/funput.sources
+sudo rm -f /etc/apt/sources.list.d/funput.list
+sudo apt update
 ```
 
-It checks both the session environment variables and the loaded addons, and points straight at whatever is missing — it catches most of what follows on its own.
-
-## Funput does not appear in the input method list \{#not-listed\}
-
-**Fcitx5:**
-
-1. Run `fcitx5-diagnose` first.
-2. Restart the daemon: `fcitx5 -r -d` — **except on KDE**, see [this warning](./session-setup.mdx#kde-no-restart).
-3. Reopen `fcitx5-configtool`, click **+**, clear *Only Show Current Language*, and look for **Funput**.
-
-**IBus:** run `ibus restart` or log back in. See also the [IBus page](./ibus.mdx).
-
-Check that you installed the package matching your framework: `funput` for Fcitx5, `funput-ibus` for IBus.
-
-Open the **Funput** app from your application menu — onboarding may point out the missing step.
-
-## Funput is added in Fcitx5 but typing does nothing in applications \{#typing-does-nothing\}
-
-This is almost always the session environment variables — redo [step 3](./index.mdx#step-3-wire-session) for your session type. `fcitx5-diagnose` lists every variable with its current value.
-
-Remember that the variables only take effect after you **log out and back in**, not after opening a new terminal.
-
-If only **some applications** are affected (usually Qt or XWayland apps such as WPS), it is `QT_IM_MODULE` — see the [Wayland block in step 3](./index.mdx#step-3-wire-session) and the [Qt 6.8.2 note](./session-setup.mdx).
-
-## Text is underlined, or the preedit does not show (WPS) \{#no-preedit\}
-
-By default Funput puts letters straight into the text field, with no underline. There is no switch for it: Funput decides per application, and uses the underlined preedit when an application cannot take direct typing. So seeing the underline in a terminal or in some apps that draw their own text fields is normal. The first word after switching windows can also be underlined, until the application sends its text to the input method for the first time.
-
-Some applications hide the preedit, so the word you are typing is invisible until you press Space. WPS Office is the typical case. With Fcitx5, Funput draws the preedit on Fcitx5's own panel for these applications, and does not try direct typing because WPS cannot take it. IBus has no channel that can do that.
-
-If one application always shows the underline, or gets the first word wrong before switching to the underline, [report it](https://github.com/Funput/Funput/issues) with the application name and its process name.
-
-## `apt` reports a dependency that is not installable \{#apt-dependency-error\}
-
-Usually the **wrong architecture** — for example an `amd64` package on an `arm64` machine, or the other way round. Download the package matching your machine; see [GitHub Releases](./other-methods.mdx#releases).
-
-## Two input methods receive the same keystrokes \{#two-frameworks\}
-
-You have both Fcitx5 and IBus active in one session. `funput` and `funput-ibus` can be installed side by side, but only **one framework** should be active per session — disable the autostart of the one you do not use, or remove that package entirely.
-
-## Removing the Funput repository \{#remove-repo\}
+**Fedora**
 
 ```bash
-# Debian / Ubuntu
-sudo rm -f /etc/apt/sources.list.d/funput.sources
-sudo rm -f /etc/apt/sources.list.d/funput.list   # if you added the repo per the older guide
-sudo apt update
-
-# Fedora
 sudo rm /etc/yum.repos.d/funput.repo
+```
 
-# openSUSE
+**openSUSE**
+
+```bash
 sudo zypper removerepo funput
+```
 
-# Arch — delete the [funput] section from /etc/pacman.conf, then:
+**Arch Linux.** Open `/etc/pacman.conf` with administrator access, remove the `[funput]` section and its `Server` line, then remove the repository key.
+
+```bash
 sudo pacman-key --delete hello@funput.app
 ```
 
-## Still stuck? \{#still-stuck\}
+</LinuxGuideDisclosure>
 
-- [Report a bug or start a discussion on GitHub](https://github.com/Funput/Funput/issues) — attaching the output of `fcitx5-diagnose` gets you an answer much faster.
+<LinuxGuideDisclosure id="still-stuck" label="What to include in a bug report">
+
+- Your Linux distribution, desktop, whether you use Fcitx5 or IBus, and the step where the error occurs.
+- The app name and version if only one app is affected. Include the keys you pressed if they help reproduce the problem.
+- For Fcitx5, the relevant part of the `fcitx5-diagnose` output. Review it before sharing.
+
+[Report a Funput issue on GitHub](https://github.com/Funput/Funput/issues)
+
+</LinuxGuideDisclosure>
+
+</div>

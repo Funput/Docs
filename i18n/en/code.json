@@ -365,19 +365,70 @@
   "distro.search.placeholder": {
     "message": "Ubuntu, Mint, Fedora, Manjaro…"
   },
-  "distro.coverage.before": {
-    "message": "This list mirrors how"
+  "distro.group.label": {
+    "message": "Distribution family"
   },
-  "distro.coverage.after": {
-    "message": "identifies distros, but Funput has not been tested on all of them. If your package manager reports a missing library, your distro is older than the machine the packages were built on — please report it on GitHub, or use the install into ~/.local."
+  "distro.search.match": {
+    "message": "Use the commands for the {family} family."
+  },
+  "distro.search.multiple": {
+    "message": "Several families match. Enter a more specific name or select a family above."
+  },
+  "distro.coverage": {
+    "message": "Use this list to find the commands for your distribution. Some distributions may lack a library that Funput needs. If the installation fails, see Troubleshooting."
   },
   "distro.search.empty": {
-    "message": "No distro matches. Distros outside these four groups can still be installed — see Other install methods below."
+    "message": "No distribution matches. Check the name or see Other install methods."
   },
   "distro.note.fedora": {
-    "message": "Immutable variants (Silverblue, Kinoite, Bazzite) have no dnf: still drop the .repo file as above, then install with rpm-ostree install funput and reboot."
+    "message": "Fedora Silverblue and Kinoite have separate install instructions below."
   },
   "distro.note.arch": {
-    "message": "x86_64 only. SteamOS has a read-only rootfs, so it must be unlocked before pacman can write."
+    "message": "The Funput repository is for x86_64. For Arch Linux ARM or a read-only system such as SteamOS, see Other install methods."
+  },
+  "linuxGuide.step.prefix": {
+    "message": "Step {n}: "
+  },
+  "linuxGuide.desktop.legend": {
+    "message": "The Linux desktop you use"
+  },
+  "linuxGuide.desktop.empty": {
+    "message": "Pick the card that looks like your screen to see the commands to run."
+  },
+  "linuxGuide.fcitx5Figure.a": {
+    "message": "Clear this box to see other languages."
+  },
+  "linuxGuide.fcitx5Figure.b": {
+    "message": "Type funput in the search box, then select Funput."
+  },
+  "linuxGuide.fcitx5Figure.c": {
+    "message": "Click the arrow button to move Funput into the left column."
+  },
+  "linuxGuide.gnomeFigure.a": {
+    "message": "In Keyboard, click Add Input Source."
+  },
+  "linuxGuide.gnomeFigure.b": {
+    "message": "Select Vietnamese. If it is not listed, click the three dots at the end of the list."
+  },
+  "linuxGuide.gnomeFigure.c": {
+    "message": "Select Vietnamese (Funput), then click Add."
+  },
+  "linuxGuide.demo.method": {
+    "message": "Typing method"
+  },
+  "linuxGuide.demo.replay": {
+    "message": "Replay"
+  },
+  "linuxGuide.demo.description": {
+    "message": "Type the keys {keys}, then press Space, and Funput produces {word}."
+  },
+  "linuxGuide.demo.note": {
+    "message": "Letters appear straight in your text as you type. Some apps underline the unfinished word until you press Space."
+  },
+  "linuxGuide.fcitx5Figure.label": {
+    "message": "The Fcitx 5 Configuration window: the left column lists the input methods in use, the right column lists those you can add, and Funput is in the Vietnamese group."
+  },
+  "linuxGuide.gnomeFigure.label": {
+    "message": "GNOME's Add an Input Source dialog: choose Vietnamese, then Vietnamese (Funput)."
   }
 }

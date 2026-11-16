@@ -217,7 +217,7 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `© ${new Date().getFullYear()} Funput · <a href="${GITHUB_URL}/blob/main/LICENSE">Giấy phép MIT</a>`,
+      copyright: `<span>© ${new Date().getFullYear()} Funput</span><a href="${GITHUB_URL}/blob/main/LICENSE">Giấy phép MIT</a>`,
     },
     prism: {
       theme: prismThemes.github,
