@@ -1,0 +1,273 @@
+---
+title: Cài bộ gõ Funput với Fcitx5 trên Linux
+sidebar_label: Cài với Fcitx5
+description: Cài gói Funput cho Fcitx5 trên Linux, thiết lập X11 hoặc Wayland, thêm Funput và gõ thử tiếng Việt bằng Telex hoặc VNI.
+hide_table_of_contents: true
+---
+
+import Link from '@docusaurus/Link';
+import LinuxGuideDisclosure from '@site/src/components/LinuxGuideDisclosure';
+import DistroPicker, {DistroFamily} from '@site/src/components/DistroPicker';
+import LinuxRepositoryCommands from '@site/src/components/LinuxRepositoryCommands';
+import GuideSteps, {GuideStep} from '@site/src/components/LinuxGuide/GuideStep';
+import DesktopPicker, {DesktopOption} from '@site/src/components/LinuxGuide/DesktopPicker';
+import {Fcitx5ConfigIllustration, TrayHint} from '@site/src/components/LinuxGuide/Illustrations';
+import TypingDemo from '@site/src/components/LinuxGuide/TypingDemo';
+import styles from '@site/src/css/linuxInstall.module.css';
+
+# Cài bộ gõ Funput với Fcitx5 trên Linux
+
+<div className={styles.guideBody}>
+
+Bốn bước, khoảng 10 phút, có một lần đăng xuất. Bạn cần mở **Terminal** và biết mật khẩu đăng nhập máy. [Đang dùng IBus trên GNOME?](./ibus.mdx)
+
+<GuideSteps>
+
+<GuideStep n={1} id="step-2-add-repo" title="Cài gói Funput" meta="Khoảng 2 phút. Chạy lệnh trong Terminal.">
+
+Mở **Terminal** từ menu ứng dụng, chọn bản Linux của bạn bên dưới rồi chạy lệnh theo thứ tự. Nếu đã thêm kho Funput, chuyển thẳng đến **Cài gói**.
+
+<DistroPicker compact>
+<DistroFamily id="debian">
+
+**Thêm kho lần đầu.**
+
+<LinuxRepositoryCommands family="debian" />
+
+**Cài gói.**
+
+```bash
+sudo apt install funput
+```
+
+</DistroFamily>
+<DistroFamily id="fedora">
+
+**Thêm kho lần đầu.**
+
+<LinuxRepositoryCommands family="fedora" />
+
+**Cài gói.** DNF có thể hỏi xác nhận khóa ký khi cài lần đầu.
+
+```bash
+sudo dnf install funput
+```
+
+Nếu bạn dùng Fedora Silverblue hoặc Kinoite, thêm kho bằng lệnh ở trên, sau đó cài bằng `sudo rpm-ostree install funput` và khởi động lại máy.
+
+</DistroFamily>
+<DistroFamily id="suse">
+
+**Thêm kho lần đầu.**
+
+<LinuxRepositoryCommands family="suse" />
+
+**Cài gói.**
+
+```bash
+sudo zypper install funput
+```
+
+</DistroFamily>
+<DistroFamily id="arch">
+
+Dùng Arch Linux ARM? [Cài cho tài khoản của bạn](./other-methods.mdx#user-install).
+
+**Thêm kho một lần.** Nếu bạn đã thấy mục `[funput]` trong `/etc/pacman.conf`, chuyển thẳng đến lệnh cài đặt bên dưới.
+
+<LinuxRepositoryCommands family="arch" />
+
+**Cài gói và cập nhật hệ thống cùng lúc.** [Hướng dẫn cập nhật của Arch Linux](https://wiki.archlinux.org/title/System_maintenance#Partial_upgrades_are_unsupported)
+
+```bash
+sudo pacman -Syu funput fcitx5-configtool fcitx5-gtk fcitx5-qt
+```
+
+Arch không tự cài cửa sổ cấu hình Fcitx5 và phần giúp ứng dụng GTK, Qt nhận bộ gõ, nên lệnh trên cài thêm ba gói này.
+
+<details>
+<summary>Nếu Funput ngừng hoạt động sau khi Arch cập nhật thư viện</summary>
+
+Đôi khi Funput cần được dựng lại để dùng phiên bản thư viện mới của Arch. Kho có lịch dựng lại hai lần mỗi tháng. Khi có gói mới, bạn sẽ nhận được qua lần cập nhật bằng <code>sudo pacman -Syu</code>.
+
+</details>
+
+</DistroFamily>
+</DistroPicker>
+
+<LinuxGuideDisclosure label="Terminal hỏi mật khẩu hoặc báo thiếu curl">
+
+- Khi `sudo` hỏi mật khẩu, nhập mật khẩu tài khoản rồi nhấn **Enter**. Terminal không hiện ký tự khi bạn gõ, đó là bình thường.
+- Nếu thiếu `curl`, hãy cài gói đó từ trình quản lý phần mềm của bản phân phối.
+- Nếu tài khoản thiếu quyền quản trị, [xem cách cài cho tài khoản của bạn](./other-methods.mdx#user-install).
+
+</LinuxGuideDisclosure>
+
+</GuideStep>
+
+<GuideStep n={2} id="step-3-wire-session" title="Thiết lập Fcitx5 cho giao diện của bạn" meta="Khoảng 3 phút. Cần đăng xuất một lần.">
+
+<Link id="step-3a-autostart" className={styles.fcitxRouteAnchor} />
+
+<DesktopPicker id="step-3b-env-vars">
+
+<DesktopOption id="nếu-dòng-đầu-là-wayland-và-dòng-thứ-hai-có-gnome-hoặc-sway" look="gnome" title="GNOME" tag="Wayland" hint="Ubuntu, Fedora Workstation, Debian. Thanh mỏng ở cạnh trên màn hình.">
+
+**1. Cho Fcitx5 chạy khi đăng nhập.**
+
+```bash
+mkdir -p ~/.config/autostart
+cp /usr/share/applications/org.fcitx.Fcitx5.desktop ~/.config/autostart/
+```
+
+**2. Đặt cấu hình cho Wayland.** Nếu tệp `~/.config/environment.d/fcitx5.conf` đã có, hãy sửa hai dòng tương ứng và giữ các thiết lập khác thay vì chạy lệnh dưới đây. Để trống `GTK_IM_MODULE` cho phiên này.
+
+```bash
+mkdir -p ~/.config/environment.d
+cat > ~/.config/environment.d/fcitx5.conf <<'CONF'
+XMODIFIERS=@im=fcitx
+QT_IM_MODULE=fcitx
+CONF
+```
+
+**3. Nên cài thêm tiện ích Kimpanel.** Không có tiện ích [Input Method Panel](https://extensions.gnome.org/extension/261/kimpanel/), khung chữ đang gõ của Fcitx5 có thể không hiện, chẳng hạn trong WPS Office hoặc ô tìm kiếm của GNOME.
+
+Dùng sway? [Thiết lập trong cấu hình khởi động của sway](https://fcitx-im.org/wiki/Using_Fcitx_5_on_Wayland#Sway), rồi làm bước 2 ở trên.
+
+</DesktopOption>
+
+<DesktopOption id="nếu-dòng-đầu-là-wayland-và-dòng-thứ-hai-có-kde-hoặc-plasma" look="kde" title="KDE Plasma" tag="Wayland" hint="Kubuntu, Fedora KDE, openSUSE. Thanh tác vụ ở cạnh dưới màn hình.">
+
+**1. Bật Fcitx5 trong KDE.** Mở **System Settings → Virtual Keyboard** rồi chọn **Fcitx 5**.
+
+**2. Đặt `XMODIFIERS`.** Nếu tệp `~/.config/environment.d/fcitx5.conf` đã có, chỉ cần sửa dòng `XMODIFIERS` trong tệp thay vì chạy lệnh dưới đây.
+
+```bash
+mkdir -p ~/.config/environment.d
+cat > ~/.config/environment.d/fcitx5.conf <<'CONF'
+XMODIFIERS=@im=fcitx
+CONF
+```
+
+KDE Wayland chỉ cần dòng này. Nếu đã đặt `GTK_IM_MODULE` hoặc `QT_IM_MODULE` cho cả phiên, [gỡ thiết lập cũ trước khi đăng nhập lại](./session-setup.mdx#undo-im-config-kde).
+
+</DesktopOption>
+
+<DesktopOption id="nếu-dòng-đầu-là-x11" look="other" title="Giao diện khác hoặc X11" tag="X11" hint="Linux Mint, Xfce, MATE. Cũng chọn thẻ này khi GNOME hay KDE chạy phiên X11.">
+
+**Debian, Ubuntu, Linux Mint hoặc Pop!_OS.** Công cụ này chọn và bật Fcitx5 cho phiên đăng nhập.
+
+```bash
+im-config -n fcitx5
+```
+
+Nếu thiếu công cụ, chạy `sudo apt install im-config` rồi thử lại.
+
+**Fedora.** Cài gói để cấu hình X11 và cho Fcitx5 tự chạy.
+
+```bash
+sudo dnf install fcitx5-autostart
+```
+
+**Arch, openSUSE hoặc bản phân phối chưa có công cụ riêng.** Làm cả hai bước dưới đây, kể cả khi bạn dùng GNOME hoặc KDE.
+
+*Bước 1. Cho Fcitx5 chạy khi đăng nhập.* Với GNOME, KDE, Xfce và các giao diện đọc thư mục autostart, chạy:
+
+```bash
+mkdir -p ~/.config/autostart
+cp /usr/share/applications/org.fcitx.Fcitx5.desktop ~/.config/autostart/
+```
+
+Với trình quản lý cửa sổ có cấu hình khởi động riêng, [dùng cách tự khởi động của giao diện đó](https://fcitx-im.org/wiki/Setup_Fcitx_5#Autostart).
+
+*Bước 2. Báo cho ứng dụng dùng Fcitx5.* Thêm các dòng sau vào [tệp cấu hình đăng nhập phù hợp](./session-setup.mdx#where-to-set).
+
+```bash
+export XMODIFIERS=@im=fcitx
+export GTK_IM_MODULE=fcitx
+export QT_IM_MODULE=fcitx
+```
+
+</DesktopOption>
+
+</DesktopPicker>
+
+<LinuxGuideDisclosure id="step-1-check-session" label="Không chắc máy dùng X11 hay Wayland?">
+
+Mở Terminal và chạy cả hai dòng:
+
+```bash
+echo "$XDG_SESSION_TYPE"
+echo "$XDG_CURRENT_DESKTOP"
+```
+
+- **Dòng 1** là `x11`: chọn thẻ **Giao diện khác hoặc X11**, dù bạn dùng GNOME hay KDE.
+- **Dòng 1** là `wayland`: xem **dòng 2**, chẳng hạn `ubuntu:GNOME` là GNOME, `KDE` là KDE Plasma.
+
+Nếu kết quả trống hoặc là `tty`, hãy mở Terminal từ menu ứng dụng sau khi vào giao diện đồ họa rồi thử lại. Dùng giao diện Wayland khác? [Xem cách thiết lập theo từng trình quản lý](https://fcitx-im.org/wiki/Using_Fcitx_5_on_Wayland).
+
+</LinuxGuideDisclosure>
+
+<div className={styles.relogin}>
+
+### Đăng xuất rồi đăng nhập lại \{#step-3c-relogin\}
+
+Lưu công việc rồi đăng xuất khỏi giao diện Linux và đăng nhập lại để máy nạp cấu hình. [Nếu thiết lập chưa có hiệu lực](./session-setup.mdx#where-to-set)
+
+</div>
+
+</GuideStep>
+
+<GuideStep n={3} id="step-4-enable" title="Thêm Funput vào Fcitx5" meta="Khoảng 1 phút.">
+
+Tìm **Fcitx 5 Configuration** trong menu ứng dụng, hoặc chạy `fcitx5-configtool` trong Terminal. Trên KDE, cửa sổ này nằm trong **System Settings** và có nút **Add Input Method** để mở danh sách bộ gõ.
+
+<Fcitx5ConfigIllustration />
+
+<TrayHint>
+
+Chọn **Funput** từ biểu tượng Fcitx5 gần đồng hồ. Khi đang gõ tiếng Việt, biểu tượng là logo Funput có màu. Khi tắt, logo chuyển sang màu trắng. Nhấn <kbd>Ctrl</kbd> + <kbd>{'`'}</kbd> để bật hoặc tắt gõ tiếng Việt, phím này đổi được trong **Funput → Phím tắt**.
+
+</TrayHint>
+
+[Không thấy Funput trong danh sách?](./troubleshooting.mdx#not-listed)
+
+</GuideStep>
+
+<GuideStep n={4} id="step-5-verify" title="Gõ thử tiếng Việt">
+
+Mở ứng dụng **Funput** để chọn **Telex** hoặc **VNI**. Sau đó mở một trình soạn thảo văn bản và gõ giống hoạt cảnh dưới đây.
+
+<TypingDemo />
+
+Nếu vẫn ra chữ không dấu, kiểm tra xem **Funput** đã được chọn trong Fcitx5 chưa và chế độ tiếng Việt đã bật chưa. Nếu vẫn chưa được, xem [các bước kiểm tra khi Funput không gõ được tiếng Việt](./troubleshooting.mdx#typing-does-nothing).
+
+</GuideStep>
+
+</GuideSteps>
+
+<LinuxGuideDisclosure id="after-install" label="Tùy chỉnh sau khi cài">
+
+- Xem [cách gõ Telex và VNI](../../input-methods/vietnamese.mdx) để biết phím nào dùng cho từng dấu.
+- Nếu hay gõ xen tiếng Anh, bạn có thể bật **Lật từ** trong **Funput → Phím tắt**. Ví dụ với Telex, bạn có thể đổi từ đang gõ giữa `má` và `mas` trước khi nhấn **Space**.
+- Nếu cần tìm tệp cài đặt, Funput lưu các tùy chọn ở `~/.config/Funput/settings.json`. Thay đổi trong ứng dụng Funput có hiệu lực ngay, không cần khởi động lại bộ gõ.
+- Funput gõ thẳng vào ô nhập. Với ứng dụng không hỗ trợ cách này, Funput tự chuyển sang hiện từ đang gõ dở có gạch chân. [Vì sao chữ đang gõ bị gạch chân?](./troubleshooting.mdx#no-preedit)
+
+</LinuxGuideDisclosure>
+
+<LinuxGuideDisclosure id="update" label="Cập nhật Funput">
+
+Nếu cài từ kho, bạn có thể nhận bản Funput mới khi cập nhật phần mềm trên máy. Nếu cập nhật qua Terminal, chỉ chạy lệnh dành cho bản phân phối bạn dùng.
+
+```bash
+sudo apt update && sudo apt upgrade funput   # Debian / Ubuntu
+sudo dnf upgrade funput                      # Fedora
+sudo zypper update funput                    # openSUSE
+sudo pacman -Syu                             # Arch (cập nhật cả hệ thống)
+```
+
+Nếu bộ gõ chưa hoạt động bình thường sau khi cập nhật, hãy đăng xuất rồi đăng nhập lại.
+
+</LinuxGuideDisclosure>
+
+</div>

@@ -1,39 +1,41 @@
 ---
-title: Funput on IBus
+title: Install the Funput Vietnamese input method with IBus
+sidebar_label: Install with IBus
+description: Install the funput-ibus package on Linux, add the Funput input source in GNOME or Ubuntu, and try typing Vietnamese with Telex or VNI.
 sidebar_position: 3
+hide_table_of_contents: true
 ---
 
 import DistroPicker, {DistroFamily} from '@site/src/components/DistroPicker';
+import LinuxGuideDisclosure from '@site/src/components/LinuxGuideDisclosure';
+import LinuxRepositoryCommands from '@site/src/components/LinuxRepositoryCommands';
+import GuideSteps, {GuideStep} from '@site/src/components/LinuxGuide/GuideStep';
+import {GnomeInputSourceIllustration} from '@site/src/components/LinuxGuide/Illustrations';
+import TypingDemo from '@site/src/components/LinuxGuide/TypingDemo';
+import styles from '@site/src/css/linuxInstall.module.css';
 
-# Funput on IBus
+# Install the Funput Vietnamese input method with IBus
 
-Funput ships two separate packages for the two input method frameworks:
+<div className={styles.guideBody}>
 
-| Package | Framework | Use when |
-| ------- | --------- | -------- |
-| `funput` | **Fcitx5** — recommended | The default on every desktop. [Install guide](./index.mdx) |
-| `funput-ibus` | **IBus** | You are already on IBus (GNOME/Ubuntu) and would rather not change the session |
+<span id="when-to-choose-ibus" />
 
-This page is for the second choice.
+Use this guide if your desktop already uses IBus. Three steps, about 5 minutes, no sign-out needed. On GNOME, you add Funput under **Input Sources** in Settings.
 
-## When should you pick IBus? \{#when-to-choose-ibus\}
+<GuideSteps>
 
-Pick IBus when you are **on GNOME or Ubuntu** and do not want to touch the session's environment variables. The default GNOME session is already wired to IBus, so `funput-ibus` works right after a single `ibus restart` — no logging out and back in the way the Fcitx5 route requires.
+<GuideStep n={1} id="install" title="Install the Funput package for IBus" meta="About 2 minutes. Run commands in Terminal.">
 
-**The trade-off:** Fcitx5 is the more complete build. It can draw the preedit on its own panel for applications that hide it (WPS Office) — something the IBus side has no channel for — and it supports switching input method per application.
+Open **Terminal** from your application menu and select your Linux distribution below. If you already added `repo.funput.app`, start at **Install the package**. If this is your first time using the Funput repository, run both command blocks in order.
 
-For direct typing, IBus has two more limits compared with Fcitx5. First, IBus does not know the application's name, so an application that drops the delete that goes with a correction is tried again each time you come back, costing one word each time. Second, an empty field right after another empty field can underline exactly the first word. See also [Text is underlined](./troubleshooting.mdx#no-preedit).
-
-:::info
-The two packages **can be installed side by side** (they do not fight over files). But only **one framework** should be active per login session: enable both and two input methods receive the same keystrokes.
-:::
-
-## Installing \{#install\}
-
-Add the `repo.funput.app` repository **exactly** as on the Fcitx5 route — see [step 2 of the main guide](./index.mdx#step-2-add-repo) — then install `funput-ibus` instead of `funput`:
-
-<DistroPicker>
+<DistroPicker compact>
 <DistroFamily id="debian">
+
+**Add the repository once.**
+
+<LinuxRepositoryCommands family="debian" />
+
+**Install the package.**
 
 ```bash
 sudo apt install funput-ibus
@@ -42,12 +44,34 @@ sudo apt install funput-ibus
 </DistroFamily>
 <DistroFamily id="fedora">
 
+**Add the repository once.**
+
+<LinuxRepositoryCommands family="fedora" />
+
+**Install the package with DNF.** On Fedora Silverblue or Kinoite, open the section right below.
+
 ```bash
 sudo dnf install funput-ibus
 ```
 
+<LinuxGuideDisclosure label="Install on Fedora Silverblue or Kinoite">
+
+After adding the repository, run this command and reboot.
+
+```bash
+sudo rpm-ostree install funput-ibus
+```
+
+</LinuxGuideDisclosure>
+
 </DistroFamily>
 <DistroFamily id="suse">
+
+**Add the repository once.**
+
+<LinuxRepositoryCommands family="suse" />
+
+**Install the package.**
 
 ```bash
 sudo zypper install funput-ibus
@@ -56,45 +80,83 @@ sudo zypper install funput-ibus
 </DistroFamily>
 <DistroFamily id="arch">
 
+Using Arch Linux ARM? [Install for your account](./other-methods.mdx#user-install).
+
+**Add the repository once.** If `/etc/pacman.conf` already has a `[funput]` section, skip to the install command.
+
+<LinuxRepositoryCommands family="arch" />
+
+**Install the package and update the system in one go.**
+
 ```bash
-sudo pacman -S funput-ibus
+sudo pacman -Syu funput-ibus
 ```
 
 </DistroFamily>
 </DistroPicker>
 
-This package also pulls in `funput-settings` — the shared Settings app — at the exact same version.
+<LinuxGuideDisclosure label="Terminal asks for a password, or you lack install rights?">
 
-:::tip
-`install.sh` installs the Fcitx5 build by default. Force IBus with the `--ibus` flag — see [Other install methods](./other-methods.mdx).
-:::
+- If `sudo` asks for a password, type your account password and press **Enter**. Terminal shows nothing while you type, which is normal.
+- If your account has no administrator rights, [install Funput for your account instead](./other-methods.mdx#user-install).
 
-## Enabling the input method \{#enable\}
+</LinuxGuideDisclosure>
 
-1. Reload the engine: `ibus restart` (or log back in).
-2. **Settings → Keyboard → Input Sources → +** → **Vietnamese** → **Funput**.
-3. Switch input source: **`Super + Space`**.
-4. Toggle Vietnamese while on Funput: **`` Ctrl + ` ``**.
+</GuideStep>
 
-## Updating \{#update\}
+<GuideStep n={2} id="enable" title="Add Funput as an input source" meta="About 1 minute.">
 
-Once the repository is added, updates are automatic, alongside your system packages:
+Run this command so IBus loads Funput. Signing out and back in works too.
+
+```bash
+ibus restart
+```
+
+Open **Settings → Keyboard** and add Funput as shown.
+
+<GnomeInputSourceIllustration />
+
+Switch to **Funput** from the language icon in the top bar, or press <kbd>Super</kbd> + <kbd>Space</kbd>. The **Super** key usually has the Windows logo. With Funput selected, press <kbd>Ctrl</kbd> + <kbd>{'`'}</kbd> to turn Vietnamese typing on or off. You can change this shortcut in **Funput → Phím tắt** (Shortcuts).
+
+</GuideStep>
+
+<GuideStep n={3} id="try-typing" title="Try typing Vietnamese">
+
+Open the **Funput** app to choose **Telex** or **VNI**. Then open a text editor and type along with the animation below.
+
+<TypingDemo />
+
+</GuideStep>
+
+</GuideSteps>
+
+<LinuxGuideDisclosure id="update" label="Update Funput on IBus">
+
+If you added the Funput repository, new releases arrive with your system updates. If you use Terminal, run only the line for your distribution.
 
 ```bash
 sudo apt update && sudo apt upgrade funput-ibus   # Debian / Ubuntu
 sudo dnf upgrade funput-ibus                      # Fedora
 sudo zypper update funput-ibus                    # openSUSE
-sudo pacman -Syu                                  # Arch
+sudo pacman -Syu                                  # Arch (updates the whole system)
 ```
 
-If the input method misbehaves after an update: `ibus restart`, or log back in.
+If Funput misbehaves after an update, run `ibus restart` or sign out and back in.
 
-## Troubleshooting \{#troubleshooting\}
+</LinuxGuideDisclosure>
 
-- **Funput does not appear in the input source list:** run `ibus restart` or log back in. Check that you installed `funput-ibus` and not `funput`.
-- **Both packages installed and the input method behaves oddly:** only one framework should be active per session. Remove the one you do not use, or disable its autostart.
-- Anything else: see [Troubleshooting](./troubleshooting.mdx).
+<LinuxGuideDisclosure id="troubleshooting" label="If Funput is missing or Vietnamese typing doesn't work">
 
-## Switching to Fcitx5 \{#switch-to-fcitx5\}
+- **Funput is missing from Input Sources.** Check that you installed the `funput-ibus` package, then reload IBus and reopen Settings.
+- **Funput is there but letters have no accents.** Select **Funput** again from the input source menu, then check the typing method and whether Vietnamese typing is on in the **Funput** app.
+- **Two input methods handle the same keys.** Check whether Fcitx5 is set to start alongside IBus. [Fix two input methods receiving keys](./troubleshooting.mdx#two-frameworks)
 
-To move to the more complete build: install `funput` (keeping or removing `funput-ibus` is up to you), then follow [step 3 of the install guide](./index.mdx#step-3-wire-session) and log out and back in.
+</LinuxGuideDisclosure>
+
+<LinuxGuideDisclosure id="switch-to-fcitx5" label="Switch from IBus to Fcitx5">
+
+Follow the Fcitx5 guide from the step that installs the `funput` package. If the Funput repository is already on your machine, you can reuse it. After setting up and signing back in, use Fcitx5 as the input method framework for your session. [Install and enable Funput with Fcitx5](./fcitx5.mdx)
+
+</LinuxGuideDisclosure>
+
+</div>

@@ -1,74 +1,122 @@
 ---
-title: Xử lý sự cố
+title: Sửa lỗi Funput không gõ được tiếng Việt trên Linux
+sidebar_label: Xử lý sự cố
+description: Cách kiểm tra khi không thấy Funput trong Fcitx5 hoặc IBus, gõ tiếng Việt không ra dấu, chữ bị gạch chân hoặc gặp lỗi khi cài gói.
 sidebar_position: 5
+hide_table_of_contents: true
 ---
 
-# Xử lý sự cố
+import LinuxGuideDisclosure from '@site/src/components/LinuxGuideDisclosure';
+import styles from '@site/src/css/linuxInstall.module.css';
 
-Trước mọi thứ khác, chạy lệnh này:
+# Sửa lỗi Funput không gõ được tiếng Việt trên Linux
+
+<div className={styles.guideBody}>
+
+Mở mục khớp với dấu hiệu bạn gặp. Nếu đã cài gói `funput`, hãy làm theo phần **Fcitx5**. Gói `funput-ibus` dùng với **IBus**.
+
+<LinuxGuideDisclosure id="not-listed" label="Không thấy Funput trong danh sách bộ gõ">
+
+**Fcitx5**
+
+1. Mở **Fcitx 5 Configuration**, nhấn **+** và bỏ chọn **Only Show Current Language**. Tìm **Funput** trong nhóm **Vietnamese**.
+2. Nếu chưa mở được cửa sổ cấu hình, kiểm tra gói `fcitx5-config-qt` trên Debian hoặc Ubuntu. Trên Fedora, openSUSE và Arch Linux, tìm `fcitx5-configtool` trong trình quản lý gói.
+3. Nếu vẫn chưa thấy Funput, mở ứng dụng **Funput** trong menu để xem bước còn thiếu. Đăng xuất rồi đăng nhập lại. Nếu cần kiểm tra Fcitx5 đã nạp Funput chưa, chạy `fcitx5-diagnose` trong Terminal.
+
+**IBus trên GNOME**
+
+1. Vào **Settings → Keyboard → Input Sources**, chọn **+** hoặc **Add Input Source** rồi tìm **Vietnamese → Funput**.
+2. Nếu danh sách vẫn thiếu Funput, kiểm tra gói `funput-ibus`, chạy `ibus restart` trong Terminal rồi mở lại Cài đặt.
+
+[Cách thêm Funput vào IBus](./ibus.mdx#enable)
+
+</LinuxGuideDisclosure>
+
+<LinuxGuideDisclosure id="typing-does-nothing" label="Đã bật Funput nhưng vẫn gõ không dấu">
+
+Mở trình soạn thảo và bật gõ tiếng Việt trong **Funput**. Gõ chuỗi phím tương ứng với kiểu gõ bạn đã chọn trong ứng dụng, rồi nhấn **Space**.
+
+<div className={styles.typingExample}>
+
+- **Telex** `tieengs` → **tiếng**
+- **VNI** `tie61ng` → **tiếng**
+
+</div>
+
+- **Mọi ứng dụng đều gõ không dấu.** Với Fcitx5, kiểm tra lại cấu hình X11 hoặc Wayland rồi đăng xuất và đăng nhập lại để nạp thiết lập. Lệnh `fcitx5-diagnose` cho biết cấu hình đang dùng. Với IBus, kiểm tra lại nguồn nhập trong GNOME.
+  - [Thiết lập Fcitx5](./fcitx5.mdx#step-3-wire-session)
+  - [Bật Funput trong IBus](./ibus.mdx#enable)
+- **Chỉ một ứng dụng gặp lỗi.** Nếu cùng chuỗi phím gõ đúng trong trình soạn thảo, hãy kiểm tra thiết lập riêng của ứng dụng gặp lỗi, nhất là khi ứng dụng dùng Qt hoặc XWayland.
+  - [Ứng dụng Qt trên Wayland](./session-setup.mdx#qt-6-8-2)
+  - [Thiết lập riêng trên KDE](./session-setup.mdx#undo-im-config-kde)
+
+</LinuxGuideDisclosure>
+
+<LinuxGuideDisclosure id="no-preedit" label="Chữ bị gạch chân hoặc chưa hiện trong WPS Office">
+
+Nhấn **Space** để hoàn tất từ. Nếu từ hiện đúng, dấu gạch chân hoặc phần chữ chưa hiện là cách ứng dụng xử lý từ bạn đang gõ. Phần chữ này còn gọi là *preedit*. Bạn có thể thấy gạch chân trong Terminal, trong một số ô nhập liệu hoặc ở từ đầu tiên sau khi chuyển cửa sổ.
+
+WPS Office có thể ẩn từ cho tới khi bạn nhấn **Space**. Với Fcitx5, Funput có thể hiện từ đang gõ trong một ô nhỏ riêng. Với IBus, nhấn **Space** để thấy từ đã hoàn tất trong WPS.
+
+Nếu từ đầu tiên bị sai hoặc vẫn có gạch chân sau khi nhấn **Space**, hãy ghi lại tên ứng dụng và chuỗi phím bạn đã gõ. [Thông tin cần gửi khi báo lỗi](#still-stuck)
+
+</LinuxGuideDisclosure>
+
+<LinuxGuideDisclosure id="apt-dependency-error" label="APT báo thiếu gói phụ thuộc">
+
+- **Cài từ tệp `.deb`.** Kiểm tra gói Funput và `funput-settings` có cùng phiên bản, cùng kiến trúc và đã được đưa vào cùng lệnh cài. Dùng `dpkg --print-architecture` để xem máy cần gói `amd64` hay `arm64`. [Chọn gói trên GitHub Releases](./other-methods.mdx#releases)
+- **Cài từ kho Funput.** Chạy `sudo apt update` rồi thử cài lại. Nếu vẫn lỗi, ghi lại tên và phiên bản gói trong thông báo. Bản Linux cũ có thể thiếu phiên bản thư viện Funput cần. [Thông tin cần gửi khi báo lỗi](#still-stuck)
+
+</LinuxGuideDisclosure>
+
+<LinuxGuideDisclosure id="two-frameworks" label="Hai bộ gõ cùng nhận phím">
+
+Kiểm tra xem Fcitx5 và IBus có cùng chạy trong phiên đăng nhập không. Bạn có thể giữ cả hai gói đã cài và chỉ cho một hệ thống bộ gõ hoạt động trong mỗi phiên. Tắt mục tự khởi động hoặc bỏ thiết lập của hệ thống bạn không dùng, rồi đăng xuất và đăng nhập lại. [Xem cách Fcitx5 được thiết lập để tự khởi động](./fcitx5.mdx#step-3a-autostart)
+
+</LinuxGuideDisclosure>
+
+## Quản lý kho và báo lỗi
+
+<LinuxGuideDisclosure id="remove-repo" label="Gỡ kho phần mềm Funput">
+
+Các gói đã cài vẫn ở trên máy. Sau khi gỡ kho, bạn sẽ ngừng nhận bản Funput mới từ nguồn này. Chỉ chạy lệnh dành cho bản phân phối bạn dùng.
+
+**Debian hoặc Ubuntu.** Lệnh thứ hai dọn tệp còn sót lại nếu bạn từng thêm kho theo hướng dẫn cũ.
 
 ```bash
-fcitx5-diagnose
+sudo rm -f /etc/apt/sources.list.d/funput.sources
+sudo rm -f /etc/apt/sources.list.d/funput.list
+sudo apt update
 ```
 
-Nó soát cả biến môi trường session lẫn addon đã nạp, và chỉ thẳng ra chỗ còn thiếu — phần lớn các mục dưới đây đều được nó phát hiện hộ bạn.
-
-## Funput không xuất hiện trong danh sách bộ gõ \{#not-listed\}
-
-**Fcitx5:**
-
-1. Chạy `fcitx5-diagnose` trước tiên.
-2. Khởi động lại daemon: `fcitx5 -r -d` — **trừ trên KDE**, xem [cảnh báo này](./session-setup.mdx#kde-no-restart).
-3. Mở lại `fcitx5-configtool`, bấm **+**, bỏ dấu *Only Show Current Language* rồi tìm **Funput**.
-
-**IBus:** chạy `ibus restart` hoặc đăng nhập lại. Xem thêm [trang IBus](./ibus.mdx).
-
-Kiểm tra bạn đã cài đúng gói cho framework đang dùng: `funput` cho Fcitx5, `funput-ibus` cho IBus.
-
-Mở app **Funput** từ menu ứng dụng — onboarding có thể hướng dẫn bước còn thiếu.
-
-## Đã thêm Funput trong Fcitx5 nhưng gõ vào ứng dụng không ăn \{#typing-does-nothing\}
-
-Gần như luôn là biến môi trường của session — làm lại [bước 3](./index.mdx#step-3-wire-session) cho đúng loại session của bạn. `fcitx5-diagnose` liệt kê từng biến kèm giá trị đang có.
-
-Nhớ rằng biến chỉ có hiệu lực sau khi **đăng xuất/đăng nhập lại**, không phải sau khi mở terminal mới.
-
-Nếu chỉ **một vài ứng dụng** không ăn (thường là app Qt hoặc XWayland như WPS): đó là `QT_IM_MODULE` — xem [khối Wayland ở bước 3](./index.mdx#step-3-wire-session), và [ghi chú Qt 6.8.2](./session-setup.mdx).
-
-## Chữ có gạch chân, hoặc preedit không hiện (WPS) \{#no-preedit\}
-
-Mặc định Funput đưa chữ thẳng vào ô nhập, không có dòng gạch chân. Không có công tắc cho việc này: Funput tự quyết cho từng ứng dụng, và dùng gạch chân (preedit) khi ứng dụng không nhận được cách gõ thẳng. Vì vậy thấy gạch chân ở terminal hay ở một số app tự vẽ ô nhập là bình thường. Từ đầu tiên sau khi chuyển cửa sổ cũng có thể có gạch chân, cho tới khi ứng dụng gửi văn bản lần đầu cho bộ gõ.
-
-Một số ứng dụng tự giấu preedit, nên từ đang gõ trở nên vô hình cho tới khi bấm Space. WPS Office là trường hợp điển hình. Với Fcitx5, Funput vẽ preedit trên panel của Fcitx5 cho những ứng dụng này, và không thử gõ thẳng vì WPS không nhận được. IBus không có kênh nào làm được việc đó.
-
-Nếu một ứng dụng lúc nào cũng gạch chân, hoặc ra sai chữ ở từ đầu rồi mới chuyển sang gạch chân, hãy [báo lỗi](https://github.com/Funput/Funput/issues) kèm tên ứng dụng và tên tiến trình của nó.
-
-## `apt` báo dependency not installable \{#apt-dependency-error\}
-
-Thường do **sai kiến trúc** — ví dụ tải gói `amd64` trên máy `arm64` (hoặc ngược lại). Tải đúng gói cho kiến trúc máy bạn, xem [GitHub Releases](./other-methods.mdx#releases).
-
-## Hai bộ gõ cùng nhận phím \{#two-frameworks\}
-
-Bạn đang bật cả Fcitx5 lẫn IBus trong một phiên. Hai gói `funput` và `funput-ibus` cài chung được, nhưng mỗi phiên chỉ nên **bật một framework** — tắt autostart của cái không dùng, hoặc gỡ hẳn gói đó.
-
-## Gỡ kho Funput \{#remove-repo\}
+**Fedora**
 
 ```bash
-# Debian / Ubuntu
-sudo rm -f /etc/apt/sources.list.d/funput.sources
-sudo rm -f /etc/apt/sources.list.d/funput.list   # nếu bạn đã thêm kho theo hướng dẫn cũ
-sudo apt update
-
-# Fedora
 sudo rm /etc/yum.repos.d/funput.repo
+```
 
-# openSUSE
+**openSUSE**
+
+```bash
 sudo zypper removerepo funput
+```
 
-# Arch — xoá phần [funput] trong /etc/pacman.conf, rồi:
+**Arch Linux.** Mở `/etc/pacman.conf` với quyền quản trị, xóa mục `[funput]` cùng dòng `Server` ngay bên dưới, rồi bỏ khóa của kho.
+
+```bash
 sudo pacman-key --delete hello@funput.app
 ```
 
-## Vẫn chưa được? \{#still-stuck\}
+</LinuxGuideDisclosure>
 
-- [Báo lỗi hoặc thảo luận trên GitHub](https://github.com/Funput/Funput/issues) — kèm output của `fcitx5-diagnose` sẽ được trả lời nhanh hơn nhiều.
+<LinuxGuideDisclosure id="still-stuck" label="Thông tin cần gửi khi báo lỗi">
+
+- Bản phân phối Linux, giao diện đang dùng, Fcitx5 hay IBus, và bước xảy ra lỗi.
+- Tên và phiên bản ứng dụng nếu lỗi chỉ xảy ra trong một ứng dụng. Ghi thêm chuỗi phím đã gõ nếu có.
+- Với Fcitx5, phần liên quan trong kết quả `fcitx5-diagnose`. Xem lại phần này trước khi gửi.
+
+[Báo lỗi Funput trên GitHub](https://github.com/Funput/Funput/issues)
+
+</LinuxGuideDisclosure>
+
+</div>

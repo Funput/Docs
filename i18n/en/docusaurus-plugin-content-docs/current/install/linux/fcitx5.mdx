@@ -1,0 +1,273 @@
+---
+title: Install Funput with Fcitx5 on Linux
+sidebar_label: Install with Fcitx5
+description: Install the Funput package for Fcitx5, configure X11 or Wayland, add Funput, and try typing Vietnamese with Telex or VNI.
+hide_table_of_contents: true
+---
+
+import Link from '@docusaurus/Link';
+import LinuxGuideDisclosure from '@site/src/components/LinuxGuideDisclosure';
+import DistroPicker, {DistroFamily} from '@site/src/components/DistroPicker';
+import LinuxRepositoryCommands from '@site/src/components/LinuxRepositoryCommands';
+import GuideSteps, {GuideStep} from '@site/src/components/LinuxGuide/GuideStep';
+import DesktopPicker, {DesktopOption} from '@site/src/components/LinuxGuide/DesktopPicker';
+import {Fcitx5ConfigIllustration, TrayHint} from '@site/src/components/LinuxGuide/Illustrations';
+import TypingDemo from '@site/src/components/LinuxGuide/TypingDemo';
+import styles from '@site/src/css/linuxInstall.module.css';
+
+# Install Funput with Fcitx5 on Linux
+
+<div className={styles.guideBody}>
+
+Four steps, about 10 minutes, with one sign-out. You need to open **Terminal** and know the password you sign in with. [Already using IBus on GNOME?](./ibus.mdx)
+
+<GuideSteps>
+
+<GuideStep n={1} id="step-2-add-repo" title="Install the Funput package" meta="About 2 minutes. Run commands in Terminal.">
+
+Open **Terminal** from your application menu, select your Linux distribution below, and run the commands in order. If you already added the Funput repository, skip to **Install the package**.
+
+<DistroPicker compact>
+<DistroFamily id="debian">
+
+**Add the repository once.**
+
+<LinuxRepositoryCommands family="debian" />
+
+**Install the package.**
+
+```bash
+sudo apt install funput
+```
+
+</DistroFamily>
+<DistroFamily id="fedora">
+
+**Add the repository once.**
+
+<LinuxRepositoryCommands family="fedora" />
+
+**Install the package.** DNF may ask you to confirm the signing key on the first install.
+
+```bash
+sudo dnf install funput
+```
+
+On Fedora Silverblue or Kinoite, add the repository as shown above, then install with `sudo rpm-ostree install funput` and reboot.
+
+</DistroFamily>
+<DistroFamily id="suse">
+
+**Add the repository once.**
+
+<LinuxRepositoryCommands family="suse" />
+
+**Install the package.**
+
+```bash
+sudo zypper install funput
+```
+
+</DistroFamily>
+<DistroFamily id="arch">
+
+Using Arch Linux ARM? [Install for your account](./other-methods.mdx#user-install).
+
+**Add the repository once.** If `/etc/pacman.conf` already has a `[funput]` section, skip to the install command below.
+
+<LinuxRepositoryCommands family="arch" />
+
+**Install the package and update the system in one go.** [Arch Linux system maintenance](https://wiki.archlinux.org/title/System_maintenance#Partial_upgrades_are_unsupported)
+
+```bash
+sudo pacman -Syu funput fcitx5-configtool fcitx5-gtk fcitx5-qt
+```
+
+Arch does not install the Fcitx5 configuration window or the pieces that let GTK and Qt apps reach the input method on its own, so the command above adds those three packages.
+
+<details>
+<summary>If Funput stops working after Arch updates its libraries</summary>
+
+Funput sometimes needs a rebuild to use Arch's new library versions. The repository rebuilds the packages twice a month. When a new package is available, you get it with your next <code>sudo pacman -Syu</code>.
+
+</details>
+
+</DistroFamily>
+</DistroPicker>
+
+<LinuxGuideDisclosure label="Terminal asks for a password or says curl is missing">
+
+- When `sudo` asks for a password, type your account password and press **Enter**. Terminal shows nothing while you type, which is normal.
+- If `curl` is missing, install it from your distribution's software manager.
+- If your account has no administrator rights, [install Funput for your account instead](./other-methods.mdx#user-install).
+
+</LinuxGuideDisclosure>
+
+</GuideStep>
+
+<GuideStep n={2} id="step-3-wire-session" title="Set up Fcitx5 for your desktop" meta="About 3 minutes. Needs one sign-out.">
+
+<Link id="step-3a-autostart" className={styles.fcitxRouteAnchor} />
+
+<DesktopPicker id="step-3b-env-vars">
+
+<DesktopOption id="wayland-gnome-sway" look="gnome" title="GNOME" tag="Wayland" hint="Ubuntu, Fedora Workstation, Debian. A thin bar along the top of the screen.">
+
+**1. Start Fcitx5 when you sign in.**
+
+```bash
+mkdir -p ~/.config/autostart
+cp /usr/share/applications/org.fcitx.Fcitx5.desktop ~/.config/autostart/
+```
+
+**2. Configure Wayland.** If `~/.config/environment.d/fcitx5.conf` already exists, edit the two matching lines and keep your other settings instead of running the commands below. Leave `GTK_IM_MODULE` unset for this session.
+
+```bash
+mkdir -p ~/.config/environment.d
+cat > ~/.config/environment.d/fcitx5.conf <<'CONF'
+XMODIFIERS=@im=fcitx
+QT_IM_MODULE=fcitx
+CONF
+```
+
+**3. Install the Kimpanel extension as well.** Without the [Input Method Panel](https://extensions.gnome.org/extension/261/kimpanel/) extension, the Fcitx5 box that shows the word you are typing may not appear, for example in WPS Office or the GNOME search field.
+
+Using sway? [Set it up in sway's startup configuration](https://fcitx-im.org/wiki/Using_Fcitx_5_on_Wayland#Sway), then do step 2 above.
+
+</DesktopOption>
+
+<DesktopOption id="wayland-kde-plasma" look="kde" title="KDE Plasma" tag="Wayland" hint="Kubuntu, Fedora KDE, openSUSE. A taskbar along the bottom of the screen.">
+
+**1. Enable Fcitx5 in KDE.** Open **System Settings → Virtual Keyboard** and select **Fcitx 5**.
+
+**2. Set `XMODIFIERS`.** If `~/.config/environment.d/fcitx5.conf` already exists, edit only its `XMODIFIERS` line instead of running the commands below.
+
+```bash
+mkdir -p ~/.config/environment.d
+cat > ~/.config/environment.d/fcitx5.conf <<'CONF'
+XMODIFIERS=@im=fcitx
+CONF
+```
+
+KDE Wayland only needs this line. If you set `GTK_IM_MODULE` or `QT_IM_MODULE` for the whole session, [remove the old settings before signing back in](./session-setup.mdx#undo-im-config-kde).
+
+</DesktopOption>
+
+<DesktopOption id="x11-settings" look="other" title="Other desktops or X11" tag="X11" hint="Linux Mint, Xfce, MATE. Also pick this card when GNOME or KDE runs an X11 session.">
+
+**Debian, Ubuntu, Linux Mint or Pop!_OS.** This tool selects Fcitx5 and starts it for your session.
+
+```bash
+im-config -n fcitx5
+```
+
+If the tool is missing, run `sudo apt install im-config` and try again.
+
+**Fedora.** This package configures X11 and starts Fcitx5 when you sign in.
+
+```bash
+sudo dnf install fcitx5-autostart
+```
+
+**Arch, openSUSE or a distribution without its own tool.** Do both steps below, even on GNOME or KDE.
+
+*Step 1. Start Fcitx5 when you sign in.* On GNOME, KDE, Xfce and other desktops that read the autostart folder, run:
+
+```bash
+mkdir -p ~/.config/autostart
+cp /usr/share/applications/org.fcitx.Fcitx5.desktop ~/.config/autostart/
+```
+
+For window managers with their own startup settings, [use that desktop's autostart method](https://fcitx-im.org/wiki/Setup_Fcitx_5#Autostart).
+
+*Step 2. Tell apps to use Fcitx5.* Add these lines to the [right login profile](./session-setup.mdx#where-to-set).
+
+```bash
+export XMODIFIERS=@im=fcitx
+export GTK_IM_MODULE=fcitx
+export QT_IM_MODULE=fcitx
+```
+
+</DesktopOption>
+
+</DesktopPicker>
+
+<LinuxGuideDisclosure id="step-1-check-session" label="Not sure whether you use X11 or Wayland?">
+
+Open Terminal and run both lines:
+
+```bash
+echo "$XDG_SESSION_TYPE"
+echo "$XDG_CURRENT_DESKTOP"
+```
+
+- **Line 1** says `x11`: pick **Other desktops or X11**, whether you use GNOME or KDE.
+- **Line 1** says `wayland`: look at **line 2**. For example, `ubuntu:GNOME` is GNOME and `KDE` is KDE Plasma.
+
+If the result is blank or says `tty`, open Terminal from the application menu of your graphical desktop and try again. Using another Wayland desktop? [See the setup for each compositor](https://fcitx-im.org/wiki/Using_Fcitx_5_on_Wayland).
+
+</LinuxGuideDisclosure>
+
+<div className={styles.relogin}>
+
+### Sign out and back in \{#step-3c-relogin\}
+
+Save your work, then sign out of the Linux desktop and back in so the new settings load. [If the settings still don't apply](./session-setup.mdx#where-to-set)
+
+</div>
+
+</GuideStep>
+
+<GuideStep n={3} id="step-4-enable" title="Add Funput to Fcitx5" meta="About 1 minute.">
+
+Find **Fcitx 5 Configuration** in your application menu, or run `fcitx5-configtool` in Terminal. On KDE, this window lives in **System Settings** and has an **Add Input Method** button that opens the list of input methods.
+
+<Fcitx5ConfigIllustration />
+
+<TrayHint>
+
+Select **Funput** from the Fcitx5 icon near the clock. While Vietnamese typing is on, the icon is the colored Funput logo. When it is off, the logo turns white. Press <kbd>Ctrl</kbd> + <kbd>{'`'}</kbd> to turn Vietnamese typing on or off. You can change this shortcut in **Funput → Phím tắt** (Shortcuts).
+
+</TrayHint>
+
+[Can't find Funput in the list?](./troubleshooting.mdx#not-listed)
+
+</GuideStep>
+
+<GuideStep n={4} id="step-5-verify" title="Try typing Vietnamese">
+
+Open the **Funput** app to choose **Telex** or **VNI**. Then open a text editor and type along with the animation below.
+
+<TypingDemo />
+
+If you still get letters without accents, check that **Funput** is selected in Fcitx5 and that Vietnamese typing is on. If it still doesn't work, see [what to check when Funput doesn't type Vietnamese](./troubleshooting.mdx#typing-does-nothing).
+
+</GuideStep>
+
+</GuideSteps>
+
+<LinuxGuideDisclosure id="after-install" label="Customize Funput after installing">
+
+- See the [Telex and VNI guide](../../input-methods/vietnamese.mdx) for which key adds which mark.
+- If you often mix in English words, you can turn on **Lật từ** (word flip) in **Funput → Phím tắt** (Shortcuts). With Telex, for example, it switches the word you are typing between `má` and `mas` before you press **Space**.
+- Funput keeps its settings in `~/.config/Funput/settings.json`. Changes made in the Funput app take effect right away, without restarting the input method.
+- Letters go straight into the text field. In apps that cannot take that, Funput falls back to showing the unfinished word underlined. [Why is the word I'm typing underlined?](./troubleshooting.mdx#no-preedit)
+
+</LinuxGuideDisclosure>
+
+<LinuxGuideDisclosure id="update" label="Update Funput">
+
+If you installed from the repository, new Funput releases arrive with your system updates. If you update from Terminal, run only the line for your distribution.
+
+```bash
+sudo apt update && sudo apt upgrade funput   # Debian / Ubuntu
+sudo dnf upgrade funput                      # Fedora
+sudo zypper update funput                    # openSUSE
+sudo pacman -Syu                             # Arch (updates the whole system)
+```
+
+If the input method misbehaves after an update, sign out and back in.
+
+</LinuxGuideDisclosure>
+
+</div>

@@ -18,6 +18,7 @@ type FamilyMeta = {
    * themselves, so it names actual distributions rather than the family id.
    */
   distros: string[];
+  searchAliases?: string[];
   /**
    * Caveat shown under the list — immutable distros need a different route.
    * Translated at render time under the id `distro.note.<family id>`.
@@ -61,7 +62,8 @@ const FAMILIES: FamilyMeta[] = [
       'AlmaLinux',
       'CentOS Stream',
     ],
-    note: 'Bản immutable (Silverblue, Kinoite, Bazzite) không có dnf: vẫn thả file .repo như trên, rồi cài bằng rpm-ostree install funput và khởi động lại.',
+    searchAliases: ['Fedora Silverblue', 'Fedora Kinoite'],
+    note: 'Fedora Silverblue và Kinoite có bước cài riêng trong hướng dẫn bên dưới.',
   },
   {
     id: 'suse',
@@ -87,7 +89,7 @@ const FAMILIES: FamilyMeta[] = [
       'ArcoLinux',
       'SteamOS',
     ],
-    note: 'Chỉ có x86_64. SteamOS có rootfs chỉ đọc nên phải mở khoá trước khi pacman ghi được.',
+    note: 'Kho Funput dành cho máy x86_64. Nếu dùng Arch Linux ARM hoặc hệ thống chỉ đọc như SteamOS, xem Các cách cài khác.',
   },
 ];
 
@@ -112,14 +114,17 @@ function normalize(value: string): string {
 
 export default function DistroPicker({
   children,
+  compact = false,
 }: {
   children: ReactNode;
+  compact?: boolean;
 }): ReactNode {
   // Deterministic first render so hydration matches the SSR output; the stored
   // choice is applied afterwards.
   const [selected, setSelected] = useState<FamilyId>('debian');
   const [query, setQuery] = useState('');
   const searchId = useId();
+  const panelId = `${searchId}-commands`;
 
   useEffect(() => {
     try {
@@ -148,12 +153,17 @@ export default function DistroPicker({
     }
     return FAMILIES.map((family) => ({
       id: family.id,
-      hits: family.distros.filter((d) => normalize(d).includes(needle)),
+      hits: [...family.distros, ...(family.searchAliases ?? [])].filter((distro) =>
+        normalize(distro).includes(needle),
+      ),
     }));
   }, [needle]);
 
-  const nothingFound =
-    matches !== null && matches.every((m) => m.hits.length === 0);
+  const matchCount = matches?.filter((result) => result.hits.length > 0).length;
+  const nothingFound = matchCount === 0;
+  const multipleMatches = matchCount !== undefined && matchCount > 1;
+  const matchedFamily = matchCount === 1 ? matches?.find((result) => result.hits.length > 0) : undefined;
+  const showCommands = !compact || matches === null || matchedFamily?.id === selected;
 
   // A search that narrows to one family selects it, so typing "manjaro" shows
   // the pacman commands without a second click.
@@ -174,12 +184,28 @@ export default function DistroPicker({
       isValidElement(child) && Boolean((child.props as {id?: string}).id),
   );
   const panel = panels.find((child) => child.props.id === selected);
+  const selectedFamily = FAMILIES.find((family) => family.id === selected);
+  const emptySearch = (
+    <Translate id="distro.search.empty">
+      Không tìm thấy bản phân phối này. Kiểm tra lại tên hoặc xem trang
+      Các cách cài khác.
+    </Translate>
+  );
+  const coverageNote = (
+    <p className={styles.disclaimer}>
+      <Translate id="distro.coverage">
+        Danh sách cho biết nhóm lệnh phù hợp với từng bản phân phối. Một số bản
+        có thể thiếu thư viện mà gói Funput cần. Nếu gặp lỗi khi cài, xem trang
+        Xử lý sự cố.
+      </Translate>
+    </p>
+  );
 
   return (
-    <div className={styles.root}>
+    <div className={clsx(styles.root, compact && styles.compact)}>
       <div className={styles.header}>
         <label className={styles.searchLabel} htmlFor={searchId}>
-          <Translate id="distro.search.label">Tìm distro của bạn</Translate>
+          <Translate id="distro.search.label">Tìm bản phân phối Linux bạn dùng</Translate>
         </label>
         <input
           id={searchId}
@@ -195,73 +221,114 @@ export default function DistroPicker({
         />
       </div>
 
-      <div className={styles.grid}>
-        {FAMILIES.map((family) => {
-          const hits = matches?.find((m) => m.id === family.id)?.hits;
-          const dimmed =
-            hits !== undefined && hits.length === 0 && selected !== family.id;
-          return (
-            <button
-              type="button"
-              key={family.id}
-              onClick={() => choose(family.id)}
-              aria-pressed={selected === family.id}
-              className={clsx(
-                styles.card,
-                selected === family.id && styles.cardSelected,
-                dimmed && styles.cardDimmed,
-              )}>
-              <span className={styles.cardHead}>
-                <span className={styles.cardTitle}>{family.label}</span>
-                <code className={styles.pm}>{family.pm}</code>
-              </span>
-              <span className={styles.distros}>
-                {family.distros.map((distro) => (
-                  <span
-                    key={distro}
-                    className={clsx(
-                      styles.distro,
-                      hits?.includes(distro) && styles.distroHit,
-                    )}>
-                    {distro}
-                  </span>
-                ))}
-              </span>
-              {family.note && (
-                <span className={styles.note}>
-                  {translate({
-                    id: `distro.note.${family.id}`,
-                    message: family.note,
-                  })}
+      {compact ? (
+        <fieldset className={styles.segmented}>
+          <legend className={styles.segmentLegend}>
+            <Translate id="distro.group.label">Nhóm bản phân phối</Translate>
+          </legend>
+          <div className={styles.segments}>
+            {FAMILIES.map((family) => (
+              <label key={family.id} className={styles.segment}>
+                <input
+                  className={styles.segmentInput}
+                  type="radio"
+                  name={`${searchId}-family`}
+                  value={family.id}
+                  checked={selected === family.id}
+                  aria-controls={panelId}
+                  onClick={() => {
+                    if (selected === family.id) setQuery('');
+                  }}
+                  onChange={() => {
+                    setQuery('');
+                    choose(family.id);
+                  }}
+                />
+                <span className={styles.segmentLabel}>{family.label}</span>
+              </label>
+            ))}
+          </div>
+        </fieldset>
+      ) : (
+        <div className={styles.grid}>
+          {FAMILIES.map((family) => {
+            const hits = matches?.find((m) => m.id === family.id)?.hits;
+            const dimmed =
+              hits !== undefined && hits.length === 0 && selected !== family.id;
+            return (
+              <button
+                type="button"
+                key={family.id}
+                onClick={() => choose(family.id)}
+                aria-pressed={selected === family.id}
+                className={clsx(
+                  styles.card,
+                  selected === family.id && styles.cardSelected,
+                  dimmed && styles.cardDimmed,
+                )}>
+                <span className={styles.cardHead}>
+                  <span className={styles.cardTitle}>{family.label}</span>
+                  <code className={styles.pm}>{family.pm}</code>
                 </span>
-              )}
-            </button>
-          );
-        })}
-      </div>
-
-      <p className={styles.disclaimer}>
-        <Translate id="distro.coverage.before">
-          Danh sách theo đúng cách
-        </Translate>{' '}
-        <code>install.sh</code>{' '}
-        <Translate id="distro.coverage.after">
-          nhận diện distro, nhưng Funput chưa được kiểm thử trên tất cả. Nếu
-          package manager báo thiếu thư viện, distro của bạn cũ hơn máy dựng
-          gói — hãy báo lỗi trên GitHub, hoặc dùng đường cài vào ~/.local.
-        </Translate>
-      </p>
-
-      {nothingFound && (
-        <p className={styles.empty}>
-          <Translate id="distro.search.empty">
-            Không có distro nào khớp. Distro ngoài bốn nhóm này vẫn cài được —
-            xem mục Cách cài khác bên dưới.
-          </Translate>
-        </p>
+                <span className={styles.distros}>
+                  {family.distros.map((distro) => (
+                    <span
+                      key={distro}
+                      className={clsx(
+                        styles.distro,
+                        hits?.includes(distro) && styles.distroHit,
+                      )}>
+                      {distro}
+                    </span>
+                  ))}
+                </span>
+                {family.note && (
+                  <span className={styles.note}>
+                    {translate({
+                      id: `distro.note.${family.id}`,
+                      message: family.note,
+                    })}
+                  </span>
+                )}
+              </button>
+            );
+          })}
+        </div>
       )}
 
-      <div className={styles.panel}>{panel}</div>
+      {!compact && coverageNote}
+
+      {compact ? (
+        <div className={styles.matchStatus} role="status">
+          {nothingFound && emptySearch}
+          {multipleMatches && (
+            <Translate id="distro.search.multiple">
+              Có nhiều nhóm khớp. Gõ tên cụ thể hơn hoặc chọn một nhóm bên trên.
+            </Translate>
+          )}
+          {matchedFamily?.id === selected && selectedFamily && (
+            <Translate id="distro.search.match" values={{family: selectedFamily.label}}>
+              {'Lệnh phù hợp thuộc nhóm {family}.'}
+            </Translate>
+          )}
+        </div>
+      ) : nothingFound && (
+        <p className={styles.empty}>{emptySearch}</p>
+      )}
+
+      <div id={panelId} className={styles.panel} hidden={!showCommands}>
+        {compact && selectedFamily?.note && (
+          <p className={styles.compactNote}>
+            {translate({
+              id: `distro.note.${selectedFamily.id}`,
+              message: selectedFamily.note,
+            })}
+          </p>
+        )}
+        {panel}
+      </div>
+
+      {compact && coverageNote}
     </div>
   );
 }

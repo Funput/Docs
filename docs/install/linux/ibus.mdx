@@ -1,39 +1,41 @@
 ---
-title: Funput trên IBus
+title: Cài bộ gõ tiếng Việt Funput với IBus
+sidebar_label: Cài với IBus
+description: Cài gói funput-ibus trên Linux, thêm nguồn nhập Funput trong GNOME hoặc Ubuntu và gõ thử tiếng Việt bằng Telex hoặc VNI.
 sidebar_position: 3
+hide_table_of_contents: true
 ---
 
 import DistroPicker, {DistroFamily} from '@site/src/components/DistroPicker';
+import LinuxGuideDisclosure from '@site/src/components/LinuxGuideDisclosure';
+import LinuxRepositoryCommands from '@site/src/components/LinuxRepositoryCommands';
+import GuideSteps, {GuideStep} from '@site/src/components/LinuxGuide/GuideStep';
+import {GnomeInputSourceIllustration} from '@site/src/components/LinuxGuide/Illustrations';
+import TypingDemo from '@site/src/components/LinuxGuide/TypingDemo';
+import styles from '@site/src/css/linuxInstall.module.css';
 
-# Funput trên IBus
+# Cài bộ gõ tiếng Việt Funput với IBus
 
-Funput có hai gói riêng biệt cho hai input method framework:
+<div className={styles.guideBody}>
 
-| Gói | Framework | Dùng khi |
-| --- | --------- | -------- |
-| `funput` | **Fcitx5** — khuyến nghị | Mặc định cho mọi desktop. [Hướng dẫn cài](./index.mdx) |
-| `funput-ibus` | **IBus** | Bạn đang dùng IBus sẵn (GNOME/Ubuntu) và không muốn đổi session |
+<span id="when-to-choose-ibus" />
 
-Trang này dành cho lựa chọn thứ hai.
+Dùng hướng dẫn này nếu máy đang dùng IBus. Ba bước, khoảng 5 phút, không cần đăng xuất. Trên GNOME, bạn sẽ thêm Funput trong mục **Nguồn nhập** của Cài đặt.
 
-## Nên chọn IBus khi nào? \{#when-to-choose-ibus\}
+<GuideSteps>
 
-Chọn IBus khi bạn **đang ở GNOME hoặc Ubuntu** và không muốn đụng vào biến môi trường của session. Session GNOME mặc định đã nối vào IBus, nên `funput-ibus` cài xong là dùng được sau một lệnh `ibus restart` — không cần đăng xuất/đăng nhập lại như đường Fcitx5.
+<GuideStep n={1} id="install" title="Cài gói Funput cho IBus" meta="Khoảng 2 phút. Chạy lệnh trong Terminal.">
 
-**Đánh đổi:** Fcitx5 là bản đầy đủ hơn. Nó vẽ được preedit trên panel cho những ứng dụng tự giấu preedit (WPS Office) — điều mà phía IBus không có kênh nào làm được — và hỗ trợ tự chuyển bộ gõ theo từng ứng dụng.
+Mở **Terminal** từ menu ứng dụng rồi chọn bản phân phối bên dưới. Nếu máy đã thêm kho `repo.funput.app`, bắt đầu ở **Cài gói**. Nếu đây là lần đầu dùng kho Funput, chạy cả hai khối lệnh theo thứ tự.
 
-Về gõ thẳng, IBus còn hai hạn chế so với Fcitx5. Một là IBus không biết tên ứng dụng, nên ứng dụng nào bỏ lệnh xoá đi kèm lúc sửa chữ thì bị thử lại mỗi lần bạn quay lại, và hỏng một từ mỗi lần. Hai là ô trống ngay sau một ô trống có thể gạch chân đúng từ đầu tiên. Xem thêm [Chữ có gạch chân](./troubleshooting.mdx#no-preedit).
-
-:::info
-Hai gói **cài chung được** (chúng không giành file của nhau). Nhưng mỗi phiên đăng nhập chỉ nên **bật một framework**: bật cả hai thì hai bộ gõ cùng nhận phím.
-:::
-
-## Cài đặt \{#install\}
-
-Thêm kho `repo.funput.app` **giống hệt** đường Fcitx5 — xem [bước 2 của hướng dẫn chính](./index.mdx#step-2-add-repo) — rồi cài gói `funput-ibus` thay vì `funput`:
-
-<DistroPicker>
+<DistroPicker compact>
 <DistroFamily id="debian">
+
+**Thêm kho lần đầu.**
+
+<LinuxRepositoryCommands family="debian" />
+
+**Cài gói.**
 
 ```bash
 sudo apt install funput-ibus
@@ -42,12 +44,34 @@ sudo apt install funput-ibus
 </DistroFamily>
 <DistroFamily id="fedora">
 
+**Thêm kho lần đầu.**
+
+<LinuxRepositoryCommands family="fedora" />
+
+**Cài gói bằng DNF.** Nếu dùng Fedora Silverblue hoặc Kinoite, mở phần hướng dẫn ngay bên dưới.
+
 ```bash
 sudo dnf install funput-ibus
 ```
 
+<LinuxGuideDisclosure label="Cài gói trên Fedora Silverblue hoặc Kinoite">
+
+Sau khi thêm kho, chạy lệnh này rồi khởi động lại máy.
+
+```bash
+sudo rpm-ostree install funput-ibus
+```
+
+</LinuxGuideDisclosure>
+
 </DistroFamily>
 <DistroFamily id="suse">
+
+**Thêm kho lần đầu.**
+
+<LinuxRepositoryCommands family="suse" />
+
+**Cài gói.**
 
 ```bash
 sudo zypper install funput-ibus
@@ -56,45 +80,83 @@ sudo zypper install funput-ibus
 </DistroFamily>
 <DistroFamily id="arch">
 
+Dùng Arch Linux ARM? [Cài cho tài khoản của bạn](./other-methods.mdx#user-install).
+
+**Thêm kho lần đầu.** Nếu `/etc/pacman.conf` đã có mục `[funput]`, chuyển thẳng đến lệnh cài.
+
+<LinuxRepositoryCommands family="arch" />
+
+**Cài gói và cập nhật hệ thống cùng lúc.**
+
 ```bash
-sudo pacman -S funput-ibus
+sudo pacman -Syu funput-ibus
 ```
 
 </DistroFamily>
 </DistroPicker>
 
-Gói này cũng kéo theo `funput-settings` — ứng dụng Cài đặt dùng chung — đúng cùng phiên bản.
+<LinuxGuideDisclosure label="Terminal hỏi mật khẩu hoặc bạn thiếu quyền cài đặt?">
 
-:::tip
-Script `install.sh` mặc định cài Fcitx5. Ép sang IBus bằng cờ `--ibus` — xem [Cách cài khác](./other-methods.mdx).
-:::
+- Nếu `sudo` hỏi mật khẩu, nhập mật khẩu tài khoản rồi nhấn **Enter**. Terminal không hiện ký tự khi bạn gõ, đó là bình thường.
+- Nếu tài khoản thiếu quyền quản trị, [xem cách cài cho tài khoản của bạn](./other-methods.mdx#user-install).
 
-## Bật bộ gõ \{#enable\}
+</LinuxGuideDisclosure>
 
-1. Nạp lại engine: `ibus restart` (hoặc đăng nhập lại).
-2. **Settings → Keyboard → Input Sources → +** → **Vietnamese** → **Funput**.
-3. Chuyển nguồn nhập: **`Super + Space`**.
-4. Bật/tắt tiếng Việt khi đang ở Funput: **`` Ctrl + ` ``**.
+</GuideStep>
 
-## Cập nhật \{#update\}
+<GuideStep n={2} id="enable" title="Thêm Funput vào nguồn nhập" meta="Khoảng 1 phút.">
 
-Đã thêm kho thì cập nhật là tự động, đi cùng gói hệ thống:
+Chạy lệnh sau để IBus nạp Funput. Bạn cũng có thể đăng xuất rồi đăng nhập lại.
+
+```bash
+ibus restart
+```
+
+Mở **Settings (Cài đặt) → Keyboard (Bàn phím)** rồi thêm Funput như hình.
+
+<GnomeInputSourceIllustration />
+
+Chuyển sang **Funput** từ biểu tượng ngôn ngữ trên thanh hệ thống hoặc nhấn <kbd>Super</kbd> + <kbd>Space</kbd>. Phím **Super** thường có biểu tượng Windows. Khi đang dùng Funput, nhấn <kbd>Ctrl</kbd> + <kbd>{'`'}</kbd> để bật hoặc tắt chế độ gõ tiếng Việt, phím này đổi được trong **Funput → Phím tắt**.
+
+</GuideStep>
+
+<GuideStep n={3} id="try-typing" title="Gõ thử tiếng Việt">
+
+Mở ứng dụng **Funput** để chọn **Telex** hoặc **VNI**. Sau đó mở một trình soạn thảo văn bản và gõ giống hoạt cảnh dưới đây.
+
+<TypingDemo />
+
+</GuideStep>
+
+</GuideSteps>
+
+<LinuxGuideDisclosure id="update" label="Cập nhật Funput trên IBus">
+
+Nếu đã thêm kho Funput, bạn có thể nhận bản mới khi cập nhật phần mềm trên máy. Nếu dùng Terminal, chỉ chạy lệnh dành cho bản phân phối của bạn.
 
 ```bash
 sudo apt update && sudo apt upgrade funput-ibus   # Debian / Ubuntu
 sudo dnf upgrade funput-ibus                      # Fedora
 sudo zypper update funput-ibus                    # openSUSE
-sudo pacman -Syu                                  # Arch
+sudo pacman -Syu                                  # Arch (cập nhật cả hệ thống)
 ```
 
-Sau khi cập nhật mà bộ gõ không hoạt động bình thường: `ibus restart`, hoặc đăng nhập lại.
+Nếu Funput hoạt động chưa ổn sau khi cập nhật, chạy `ibus restart` hoặc đăng xuất rồi đăng nhập lại.
 
-## Xử lý sự cố \{#troubleshooting\}
+</LinuxGuideDisclosure>
 
-- **Funput không xuất hiện trong danh sách nguồn nhập:** chạy `ibus restart` hoặc đăng nhập lại. Kiểm tra bạn đã cài đúng gói `funput-ibus` (chứ không phải `funput`).
-- **Cài nhầm cả hai và bộ gõ hoạt động lạ:** mỗi phiên chỉ nên bật một framework. Gỡ cái không dùng, hoặc tắt autostart của nó.
-- Các vấn đề khác: xem [Xử lý sự cố](./troubleshooting.mdx).
+<LinuxGuideDisclosure id="troubleshooting" label="Nếu chưa thấy Funput hoặc chưa gõ được tiếng Việt">
 
-## Đổi sang Fcitx5 \{#switch-to-fcitx5\}
+- **Không thấy Funput trong Nguồn nhập.** Kiểm tra bạn đã cài đúng gói `funput-ibus`, rồi nạp lại IBus và mở lại Cài đặt.
+- **Thấy Funput nhưng chữ vẫn không dấu.** Chọn lại **Funput** từ menu nguồn nhập, sau đó kiểm tra kiểu gõ và trạng thái tiếng Việt trong ứng dụng **Funput**.
+- **Hai bộ gõ cùng xử lý phím.** Kiểm tra xem Fcitx5 có được thiết lập tự khởi động cùng IBus hay không. [Xử lý lỗi hai bộ gõ cùng nhận phím](./troubleshooting.mdx#two-frameworks)
 
-Muốn chuyển sang bản đầy đủ hơn: cài `funput` (giữ hay gỡ `funput-ibus` đều được), rồi làm theo [bước 3 của hướng dẫn cài đặt](./index.mdx#step-3-wire-session) và đăng xuất/đăng nhập lại.
+</LinuxGuideDisclosure>
+
+<LinuxGuideDisclosure id="switch-to-fcitx5" label="Chuyển từ IBus sang Fcitx5">
+
+Làm theo hướng dẫn Fcitx5 từ bước cài gói `funput`. Nếu máy đã có kho Funput, bạn có thể dùng lại kho đó. Sau khi thiết lập và đăng nhập lại, dùng Fcitx5 làm hệ thống bộ gõ của phiên hiện tại. [Cài và bật Funput với Fcitx5](./fcitx5.mdx)
+
+</LinuxGuideDisclosure>
+
+</div>
