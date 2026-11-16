@@ -56,7 +56,7 @@
     "description": "The label of footer link with label=Facebook linking to https://www.facebook.com/FunputIME"
   },
   "copyright": {
-    "message": "© 2026 Funput · <a href=\"https://github.com/Funput/Funput/blob/main/LICENSE\">MIT License</a>",
+    "message": "<span>© 2026 Funput</span><a href=\"https://github.com/Funput/Funput/blob/main/LICENSE\">MIT License</a>",
     "description": "The footer copyright"
   }
 }
