@@ -49,6 +49,15 @@ Expected: Tôi yêu tiếng Việt.
 Meaning:  I love Vietnamese.
 ```
 
+Funput automatically adds a circumflex to `iê` when a final consonant or `u` follows, because `ie` before a final consonant must be `iê`. Typing an extra circumflex key (as in Unikey) still produces the same result and no longer removes the circumflex.
+
+| VNI | Result |
+| --- | --- |
+| `viec5` | việc (circumflex added automatically) |
+| `viec56` | việc |
+
+Typing the circumflex key once more after it is already present removes it, as before. Only `iê` gets an automatic circumflex; `uô` still requires typing the circumflex key.
+
 <div className="text--center">
   <img
     src="/img/funput-vni.png"
@@ -102,6 +111,16 @@ Type:     Tooi yeeu tieengs Vieetj.
 Expected: Tôi yêu tiếng Việt.
 Meaning:  I love Vietnamese.
 ```
+
+Funput automatically adds a circumflex to `iê` when a final consonant or `u` follows, because `ie` before a final consonant must be `iê`. Typing an extra circumflex key (as in Unikey) still produces the same result and no longer removes the circumflex.
+
+| Telex | Result |
+| --- | --- |
+| `viecj` | việc (circumflex added automatically) |
+| `vieecj`, `viecej`, `viecje` | việc |
+| `tiengs`, `tiengse` | tiếng |
+
+Typing the circumflex key once more after you have already typed it removes the circumflex (`vieecje` → viẹce). Only `iê` gets an automatic circumflex; `uô` still requires typing the circumflex key (`muoonj` or `muonjo` → muộn).
 
 <div className="text--center">
   <img
