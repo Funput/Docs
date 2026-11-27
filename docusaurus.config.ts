@@ -57,6 +57,15 @@ const config: Config = {
     },
   ],
 
+  // Self-hosted Umami analytics for docs.funput.app.
+  scripts: [
+    {
+      src: 'https://ana.pulsefu.com/script.js',
+      defer: true,
+      'data-website-id': '0909d476-941d-44e5-a883-bb006b1fcf4b',
+    },
+  ],
+
   i18n: {
     defaultLocale: 'vi',
     locales: ['vi', 'en'],
